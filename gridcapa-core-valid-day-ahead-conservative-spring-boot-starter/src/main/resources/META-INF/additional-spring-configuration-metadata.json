@@ -1,0 +1,29 @@
+{
+  "properties": [
+    {
+      "name": "core-valid-day-ahead-conservative-runner.amqp.application-id",
+      "type": "java.lang.String",
+      "description": "Name of the application that calls core valid day ahead conservative through starter."
+    },
+    {
+      "name": "core-valid-day-ahead-conservative-runner.amqp.queue-name",
+      "type": "java.lang.String",
+      "description": "AMQP queue to be used to send Core valid day ahead conservative requests."
+    },
+    {
+      "name": "core-valid-day-ahead-conservative-runner.amqp.exchange",
+      "type": "java.lang.String",
+      "description": "AMQP exchange to be used to send core valid day ahead conservative requests."
+    },
+    {
+      "name": "core-valid-day-ahead-conservative-runner.amqp.routing-key",
+      "type": "java.lang.String",
+      "description": "AMQP routing key to associate to core valid day ahead conservative requests."
+    },
+    {
+      "name": "core-valid-day-ahead-conservative-runner.amqp.expiration",
+      "type": "java.lang.String",
+      "description": "Expiration time of core valid day ahead conservative requests."
+    }
+  ]
+}

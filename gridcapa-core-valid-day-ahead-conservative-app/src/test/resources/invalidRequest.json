@@ -1,0 +1,38 @@
+{
+  "data": {
+    "type": "core-valid-day-ahead-conservative-request",
+    "id": "id",
+    "currentRunId": "run-123",
+    "launchedAutomatically": false,
+    "timestamp": "2025-10-01T00:30Z",
+    "attributes": {
+      "cnecRam": {
+        "filename": "cnecRam.txt"
+      },
+      "vertice": {
+        "filename": "vertice.txt",
+        "url": "https://vertice/file/url"
+      },
+      "cgm": {
+        "filename": "cgm.txt",
+        "url": "https://cgm/file/url"
+      },
+      "glsk": {
+        "filename": "glsk.txt",
+        "url": "https://glsk/file/url"
+      },
+      "mergedCnec": {
+        "filename": "mergedCnec.txt",
+        "url": "https://mergedCnec/file/url"
+      },
+      "marketPoint": {
+        "filename": "marketPoint.txt",
+        "url": "https://marketPoint/file/url"
+      },
+      "pra": {
+        "filename": "pra.txt",
+        "url": "https://pra/file/url"
+      }
+    }
+  }
+}
