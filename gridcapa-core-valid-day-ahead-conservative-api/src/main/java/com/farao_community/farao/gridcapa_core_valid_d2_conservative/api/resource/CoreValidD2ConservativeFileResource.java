@@ -23,7 +23,7 @@ public class CoreValidD2ConservativeFileResource {
 
     @JsonCreator
     public CoreValidD2ConservativeFileResource(final @JsonProperty("filename") String filename,
-                                         final @JsonProperty("url") String url) {
+                                               final @JsonProperty("url") String url) {
         this.filename = Objects.requireNonNull(filename);
         this.url = Objects.requireNonNull(url);
     }

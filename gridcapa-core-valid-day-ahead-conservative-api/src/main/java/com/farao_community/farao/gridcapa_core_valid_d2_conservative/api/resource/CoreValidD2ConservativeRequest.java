@@ -39,11 +39,11 @@ public class CoreValidD2ConservativeRequest {
 
     @JsonCreator
     public CoreValidD2ConservativeRequest(final @JsonProperty("id") String id,
-                                    final @JsonProperty("currentRunId") String currentRunId,
-                                    final @JsonProperty("timestamp") OffsetDateTime timestamp,
-                                    final @JsonProperty("cnecRam") CoreValidD2ConservativeFileResource cnecRam,
-                                    final @JsonProperty("vertice") CoreValidD2ConservativeFileResource vertice,
-                                    final @JsonProperty("launchedAutomatically") boolean launchedAutomatically) {
+                                          final @JsonProperty("currentRunId") String currentRunId,
+                                          final @JsonProperty("timestamp") OffsetDateTime timestamp,
+                                          final @JsonProperty("cnecRam") CoreValidD2ConservativeFileResource cnecRam,
+                                          final @JsonProperty("vertice") CoreValidD2ConservativeFileResource vertice,
+                                          final @JsonProperty("launchedAutomatically") boolean launchedAutomatically) {
         this.id = id;
         this.currentRunId = currentRunId;
         this.timestamp = timestamp;
@@ -53,10 +53,10 @@ public class CoreValidD2ConservativeRequest {
     }
 
     public CoreValidD2ConservativeRequest(final String id,
-                                    final String currentRunId,
-                                    final OffsetDateTime timestamp,
-                                    final CoreValidD2ConservativeFileResource cnecRam,
-                                    final CoreValidD2ConservativeFileResource vertice) {
+                                          final String currentRunId,
+                                          final OffsetDateTime timestamp,
+                                          final CoreValidD2ConservativeFileResource cnecRam,
+                                          final CoreValidD2ConservativeFileResource vertice) {
         this(id, currentRunId, timestamp, cnecRam, vertice, false);
     }
 

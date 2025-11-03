@@ -37,12 +37,13 @@ public class JsonApiConverter {
         this.converter = createConverter();
     }
 
-    public <T> T fromJsonMessage(byte[] jsonMessage, Class<T> tClass) {
+    public <T> T fromJsonMessage(final byte[] jsonMessage,
+                                 final Class<T> tClass) {
         return converter.readDocument(jsonMessage, tClass).get();
     }
 
-    public <T> byte[] toJsonMessage(T jsonApiObject) {
-        JSONAPIDocument<?> jsonapiDocument = new JSONAPIDocument<>(jsonApiObject);
+    public <T> byte[] toJsonMessage(final T jsonApiObject) {
+        final JSONAPIDocument<?> jsonapiDocument = new JSONAPIDocument<>(jsonApiObject);
         try {
             return converter.writeDocument(jsonapiDocument);
         } catch (DocumentSerializationException e) {
@@ -50,8 +51,8 @@ public class JsonApiConverter {
         }
     }
 
-    public byte[] toJsonMessage(AbstractCoreValidD2ConservativeException exception) {
-        JSONAPIDocument<?> jsonapiDocument = new JSONAPIDocument<>(convertExceptionToJsonError(exception));
+    public byte[] toJsonMessage(final AbstractCoreValidD2ConservativeException exception) {
+        final JSONAPIDocument<?> jsonapiDocument = new JSONAPIDocument<>(convertExceptionToJsonError(exception));
         try {
             return converter.writeDocument(jsonapiDocument);
         } catch (DocumentSerializationException e) {
@@ -60,13 +61,13 @@ public class JsonApiConverter {
     }
 
     private ResourceConverter createConverter() {
-        ResourceConverter resourceConverter = new ResourceConverter(objectMapper, CoreValidD2ConservativeRequest.class);
+        final ResourceConverter resourceConverter = new ResourceConverter(objectMapper, CoreValidD2ConservativeRequest.class);
         resourceConverter.disableSerializationOption(SerializationFeature.INCLUDE_META);
         return resourceConverter;
     }
 
-    private Error convertExceptionToJsonError(AbstractCoreValidD2ConservativeException exception) {
-        Error error = new Error();
+    private Error convertExceptionToJsonError(final AbstractCoreValidD2ConservativeException exception) {
+        final Error error = new Error();
         error.setStatus(Integer.toString(exception.getStatus()));
         error.setCode(exception.getCode());
         error.setTitle(exception.getTitle());

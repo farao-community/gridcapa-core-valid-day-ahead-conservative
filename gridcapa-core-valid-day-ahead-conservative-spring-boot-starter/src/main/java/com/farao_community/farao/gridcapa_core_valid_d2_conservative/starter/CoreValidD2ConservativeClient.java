@@ -33,7 +33,8 @@ public class CoreValidD2ConservativeClient {
     private final CoreValidD2ConservativeClientProperties coreValidD2ConservativeClientProperties;
     private final JsonApiConverter jsonConverter;
 
-    public CoreValidD2ConservativeClient(final AmqpTemplate amqpTemplate, final CoreValidD2ConservativeClientProperties coreValidD2ConservativeClientProperties) {
+    public CoreValidD2ConservativeClient(final AmqpTemplate amqpTemplate,
+                                         final CoreValidD2ConservativeClientProperties coreValidD2ConservativeClientProperties) {
         this.amqpTemplate = amqpTemplate;
         this.coreValidD2ConservativeClientProperties = coreValidD2ConservativeClientProperties;
         this.jsonConverter = new JsonApiConverter();
@@ -51,7 +52,8 @@ public class CoreValidD2ConservativeClient {
         run(coreValidD2ConservativeRequest, DEFAULT_PRIORITY);
     }
 
-    public Message buildMessage(final CoreValidD2ConservativeRequest coreValidD2ConservativeRequest, final int priority) {
+    public Message buildMessage(final CoreValidD2ConservativeRequest coreValidD2ConservativeRequest,
+                                final int priority) {
         return MessageBuilder.withBody(jsonConverter.toJsonMessage(coreValidD2ConservativeRequest))
                 .andProperties(buildMessageProperties(priority))
                 .build();

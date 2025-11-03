@@ -20,7 +20,9 @@ import java.time.OffsetDateTime;
  */
 public class OffsetDateTimeSerializer extends JsonSerializer<OffsetDateTime> {
     @Override
-    public void serialize(OffsetDateTime offsetDateTime, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+    public void serialize(final OffsetDateTime offsetDateTime,
+                          final JsonGenerator jsonGenerator,
+                          final SerializerProvider serializerProvider) throws IOException {
         jsonGenerator.writeString(offsetDateTime.toString());
     }
 }
