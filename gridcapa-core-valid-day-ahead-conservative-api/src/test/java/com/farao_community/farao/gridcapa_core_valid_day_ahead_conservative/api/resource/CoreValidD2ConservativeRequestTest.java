@@ -36,20 +36,20 @@ class CoreValidD2ConservativeRequestTest {
 
     @Test
     void checkManualCoreValidRequest() {
-        CoreValidD2ConservativeRequest coreValidD2ConservativeRequest = new CoreValidD2ConservativeRequest("id", "runId", dateTime, cnecRam, vertice);
-        assertNotNull(coreValidD2ConservativeRequest);
-        assertEquals("id", coreValidD2ConservativeRequest.getId());
-        assertEquals("runId", coreValidD2ConservativeRequest.getCurrentRunId());
-        assertEquals("2025-10-01T00:30Z", coreValidD2ConservativeRequest.getTimestamp().toString());
-        assertEquals("cnecRam.txt", coreValidD2ConservativeRequest.getCnecRam().getFilename());
-        assertEquals("vertice.txt", coreValidD2ConservativeRequest.getVertice().getFilename());
-        assertFalse(coreValidD2ConservativeRequest.getLaunchedAutomatically());
+        final CoreValidD2ConservativeRequest request = new CoreValidD2ConservativeRequest("id", "runId", dateTime, cnecRam, vertice);
+        assertNotNull(request);
+        assertEquals("id", request.getId());
+        assertEquals("runId", request.getCurrentRunId());
+        assertEquals("2025-10-01T00:30Z", request.getTimestamp().toString());
+        assertEquals("cnecRam.txt", request.getCnecRam().getFilename());
+        assertEquals("vertice.txt", request.getVertice().getFilename());
+        assertFalse(request.getLaunchedAutomatically());
     }
 
     @Test
     void checkAutoCoreValidRequest() {
-        CoreValidD2ConservativeRequest coreValidD2ConservativeRequest = new CoreValidD2ConservativeRequest("id", "runId", dateTime, cnecRam, vertice, true);
-        assertTrue(coreValidD2ConservativeRequest.getLaunchedAutomatically());
+        final CoreValidD2ConservativeRequest request = new CoreValidD2ConservativeRequest("id", "runId", dateTime, cnecRam, vertice, true);
+        assertTrue(request.getLaunchedAutomatically());
     }
 
 }

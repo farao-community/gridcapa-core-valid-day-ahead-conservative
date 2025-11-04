@@ -24,9 +24,9 @@ class CoreValidD2ConservativeClientTest {
 
     @Test
     void checkThatClientHandleMessageCorrectly() throws IOException {
-        AmqpTemplate amqpTemplate = Mockito.mock(AmqpTemplate.class);
-        CoreValidD2ConservativeClient client = new CoreValidD2ConservativeClient(amqpTemplate, buildProperties());
-        CoreValidD2ConservativeRequest request = jsonApiConverter
+        final AmqpTemplate amqpTemplate = Mockito.mock(AmqpTemplate.class);
+        final CoreValidD2ConservativeClient client = new CoreValidD2ConservativeClient(amqpTemplate, buildProperties());
+        final CoreValidD2ConservativeRequest request = jsonApiConverter
                 .fromJsonMessage(getClass().getResourceAsStream("/coreValidD2ConservativeRequest.json")
                                          .readAllBytes(),
                                  CoreValidD2ConservativeRequest.class);

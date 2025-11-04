@@ -26,21 +26,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class JsonApiConverterTest {
     @Test
     void checkCoreValidInputsJsonConversion() throws URISyntaxException, IOException {
-        JsonApiConverter jsonApiConverter = new JsonApiConverter();
-        String inputMessage = Files.readString(Paths.get(getClass().getResource("/validRequest.json").toURI()));
-        CoreValidD2ConservativeRequest coreValidD2ConservativeRequest = jsonApiConverter.fromJsonMessage(inputMessage.getBytes(), CoreValidD2ConservativeRequest.class);
-        assertEquals("id", coreValidD2ConservativeRequest.getId());
-        assertEquals("cnecRam.txt", coreValidD2ConservativeRequest.getCnecRam().getFilename());
-        assertEquals("https://cnecRam/file/url", coreValidD2ConservativeRequest.getCnecRam().getUrl());
-        assertEquals("vertice.txt", coreValidD2ConservativeRequest.getVertice().getFilename());
-        assertEquals("https://vertice/file/url", coreValidD2ConservativeRequest.getVertice().getUrl());
+        final JsonApiConverter jsonApiConverter = new JsonApiConverter();
+        final String inputMessage = Files.readString(Paths.get(getClass().getResource("/validRequest.json").toURI()));
+        final CoreValidD2ConservativeRequest request = jsonApiConverter.fromJsonMessage(inputMessage.getBytes(), CoreValidD2ConservativeRequest.class);
+        assertEquals("id", request.getId());
+        assertEquals("cnecRam.txt", request.getCnecRam().getFilename());
+        assertEquals("https://cnecRam/file/url", request.getCnecRam().getUrl());
+        assertEquals("vertice.txt", request.getVertice().getFilename());
+        assertEquals("https://vertice/file/url", request.getVertice().getUrl());
     }
 
     @Test
     void checkInternalExceptionJsonConversion() throws URISyntaxException, IOException {
-        JsonApiConverter jsonApiConverter = new JsonApiConverter();
-        AbstractCoreValidD2ConservativeException exception = new CoreValidD2ConservativeInternalException("Something really bad happened");
-        String expectedMessage = Files.readString(Paths.get(getClass().getResource("/coreValidD2ConservativeInternalError.json").toURI()));
+        final JsonApiConverter jsonApiConverter = new JsonApiConverter();
+        final AbstractCoreValidD2ConservativeException exception = new CoreValidD2ConservativeInternalException("Something really bad happened");
+        final String expectedMessage = Files.readString(Paths.get(getClass().getResource("/coreValidD2ConservativeInternalError.json").toURI()));
         assertEquals(expectedMessage, new String(jsonApiConverter.toJsonMessage(exception)));
     }
 
