@@ -10,7 +10,6 @@ package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api
 
 /**
  * @author Antoine Limouzin {@literal <antoine.limouzin at rte-france.com>}
- * @author Marc Schwitzguebel {@literal <marc.schwitzguebel_external at rte-france.com>}
  */
 public class CoreValidD2ConservativeInvalidDataException extends AbstractCoreValidD2ConservativeException {
 

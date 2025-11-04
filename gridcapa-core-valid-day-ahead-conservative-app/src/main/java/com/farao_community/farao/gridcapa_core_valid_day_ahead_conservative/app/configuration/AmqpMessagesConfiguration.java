@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * @author Antoine Limouzin {@literal <antoine.limouzin at rte-france.com>}
- * @author Marc Schwitzguebel {@literal <marc.schwitzguebel_external at rte-france.com>}
  */
 @Configuration
 public class AmqpMessagesConfiguration {

@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * @author Antoine Limouzin {@literal <antoine.limouzin at rte-france.com>}
- * @author Marc Schwitzguebel {@literal <marc.schwitzguebel_external at rte-france.com>}
  */
 class CoreValidD2ConservativeInvalidDataExceptionTest {
     @Test

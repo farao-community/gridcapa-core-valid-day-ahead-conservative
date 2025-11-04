@@ -23,7 +23,6 @@ import java.time.OffsetDateTime;
 
 /**
  * @author Antoine Limouzin {@literal <antoine.limouzin at rte-france.com>}
- * @author Marc Schwitzguebel {@literal <marc.schwitzguebel_external at rte-france.com>}
  */
 @Type("core-valid-day-ahead-conservative-request")
 public class CoreValidD2ConservativeRequest {

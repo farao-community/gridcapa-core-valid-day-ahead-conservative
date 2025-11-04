@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Antoine Limouzin {@literal <antoine.limouzin at rte-france.com>}
- * @author Marc Schwitzguebel {@literal <marc.schwitzguebel_external at rte-france.com>}
  */
 class JsonApiConverterTest {
     @Test

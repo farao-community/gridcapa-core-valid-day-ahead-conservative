@@ -17,7 +17,6 @@ import java.time.OffsetDateTime;
 
 /**
  * @author Antoine Limouzin {@literal <antoine.limouzin at rte-france.com>}
- * @author Marc Schwitzguebel {@literal <marc.schwitzguebel_external at rte-france.com>}
  */
 public class OffsetDateTimeSerializer extends JsonSerializer<OffsetDateTime> {
     @Override
