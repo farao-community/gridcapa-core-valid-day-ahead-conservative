@@ -16,6 +16,7 @@ import java.util.Objects;
 
 /**
  * @author Antoine Limouzin {@literal <antoine.limouzin at rte-france.com>}
+ * @author Marc Schwitzguebel {@literal <marc.schwitzguebel_external at rte-france.com>}
  */
 public class CoreValidD2ConservativeFileResource {
     private final String filename;

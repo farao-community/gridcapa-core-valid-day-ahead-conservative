@@ -13,6 +13,7 @@ import java.util.Optional;
 
 /**
  * @author Antoine Limouzin {@literal <antoine.limouzin at rte-france.com>}
+ * @author Marc Schwitzguebel {@literal <marc.schwitzguebel_external at rte-france.com>}
  */
 @ConfigurationProperties("core-valid-day-ahead-conservative-runner")
 public record CoreValidD2ConservativeClientProperties(BindingConfiguration binding) {

@@ -12,6 +12,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 
 /**
  * @author Antoine Limouzin {@literal <antoine.limouzin at rte-france.com>}
+ * @author Marc Schwitzguebel {@literal <marc.schwitzguebel_external at rte-france.com>}
  */
 @SuppressWarnings("HideUtilityClassConstructor")
 @EnableConfigurationProperties

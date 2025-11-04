@@ -29,6 +29,7 @@ import static com.farao_community.farao.gridcapa.task_manager.api.TaskStatus.SUC
 
 /**
  * @author Antoine Limouzin {@literal <antoine.limouzin at rte-france.com>}
+ * @author Marc Schwitzguebel {@literal <marc.schwitzguebel_external at rte-france.com>}
  */
 @Component
 public class CoreValidD2ConservativeListener {

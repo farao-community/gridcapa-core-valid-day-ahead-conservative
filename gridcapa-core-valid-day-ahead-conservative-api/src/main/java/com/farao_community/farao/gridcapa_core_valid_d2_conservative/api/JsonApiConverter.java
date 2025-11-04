@@ -25,6 +25,7 @@ import com.github.jasminb.jsonapi.models.errors.Error;
  * Allows automatic conversion from resources or exceptions towards JSON API formatted bytes.
  *
  * @author Antoine Limouzin {@literal <antoine.limouzin at rte-france.com>}
+ * @author Marc Schwitzguebel {@literal <marc.schwitzguebel_external at rte-france.com>}
  */
 public class JsonApiConverter {
     private final ObjectMapper objectMapper;

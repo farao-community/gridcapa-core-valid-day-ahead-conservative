@@ -17,6 +17,7 @@ import java.io.IOException;
 
 /**
  * @author Antoine Limouzin {@literal <antoine.limouzin at rte-france.com>}
+ * @author Marc Schwitzguebel {@literal <marc.schwitzguebel_external at rte-france.com>}
  */
 @SpringBootTest
 class UrlValidationServiceTest {

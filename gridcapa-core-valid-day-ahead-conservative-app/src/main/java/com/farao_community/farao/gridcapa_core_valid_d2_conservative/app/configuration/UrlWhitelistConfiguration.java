@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * @author Antoine Limouzin {@literal <antoine.limouzin at rte-france.com>}
+ * @author Marc Schwitzguebel {@literal <marc.schwitzguebel_external at rte-france.com>}
  */
 @Configuration
 @ConfigurationProperties("core-valid-day-ahead-conservative-runner")
