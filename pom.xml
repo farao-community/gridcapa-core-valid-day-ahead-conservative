@@ -145,6 +145,12 @@
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
+
+            <dependency>
+                <groupId>com.farao-community.farao</groupId>
+                <artifactId>gridcapa-core-valid-commons</artifactId>
+                <version>0.2.0-beta</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
