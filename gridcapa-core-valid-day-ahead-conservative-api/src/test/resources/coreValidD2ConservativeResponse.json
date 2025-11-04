@@ -1,6 +1,6 @@
 {
   "data": {
-    "type": "core-valid-response",
+    "type": "core-valid-day-ahead-conservative-response",
     "id": "test"
   }
 }
