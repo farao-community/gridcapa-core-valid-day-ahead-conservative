@@ -60,7 +60,7 @@ public final class CnecRamImporter {
                 }
             });
             return cnecRams;
-        } catch (IOException e) {
+        } catch (IOException | IllegalArgumentException e) {
             throw new CoreValidD2ConservativeInvalidDataException("Exception occurred during parsing Cnec Ram file", e);
         }
     }

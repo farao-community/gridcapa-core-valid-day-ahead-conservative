@@ -1,0 +1,9 @@
+NEC_ID,RAM_0Core,CNEC,PresolvedRegion,TESTKO1,PTDF_BE_AL,PTDF_SK,PTDF_SI,PTDF_RO,PTDF_PL,PTDF_NL,PTDF_HU,PTDF_HR,PTDF_FR,PTDF_DE,PTDF_CZ,PTDF_BE,PTDF_AT,TESTKO2
+testKO1,125,false,false,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1
+testKO2,256,true,false,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1
+testKO3,356,false,true,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1
+testKO4, ,true,true,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1
+testKO6,notok,true,true,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1
+testOK1,123,true,true,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1
+testOK2,234,true,true,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2
+testOK3,345,true,true,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3

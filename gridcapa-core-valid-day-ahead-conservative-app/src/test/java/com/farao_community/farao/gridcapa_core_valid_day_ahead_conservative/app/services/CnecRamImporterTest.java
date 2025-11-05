@@ -7,6 +7,7 @@
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services;
 
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubsConfiguration;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamData;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -64,6 +65,14 @@ class CnecRamImporterTest {
                     .doesNotContainValue(new BigDecimal("0.2"))
                     .containsValue(new BigDecimal("0.3"));
             Assertions.assertThat(cnecRams.get(2).ptdfValues().get("PTDF_BE_AL")).isEqualByComparingTo(BigDecimal.ZERO);
+        }
+    }
+
+    @Test
+    void tesFileImportThrowsException() throws IOException{
+        try(final InputStream inputStream = getClass().getResource("/cnecRamFileKo.csv").openStream()) {
+            Assertions.assertThatExceptionOfType(CoreValidD2ConservativeInvalidDataException.class).isThrownBy(() -> CnecRamImporter.importCnecRam(inputStream, coreHubsConfiguration.getCoreHubs()))
+                    .withMessage("Exception occurred during parsing Cnec Ram file");
         }
     }
 }
