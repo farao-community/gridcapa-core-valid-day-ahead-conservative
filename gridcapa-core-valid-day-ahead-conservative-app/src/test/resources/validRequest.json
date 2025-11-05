@@ -1,0 +1,19 @@
+{
+  "data": {
+    "type": "core-valid-day-ahead-conservative-request",
+    "id": "c7fc89da-dcd7-40d2-8d63-b8aef0a1ecdf",
+    "currentRunId": "run-123",
+    "launchedAutomatically": false,
+    "timestamp": "2025-10-01T00:30Z",
+    "attributes": {
+      "cnecRam": {
+        "filename": "cnecRam.txt",
+        "url": "https://cnecRam/file/url"
+      },
+      "vertice": {
+        "filename": "vertice.txt",
+        "url": "https://vertice/file/url"
+      }
+    }
+  }
+}
