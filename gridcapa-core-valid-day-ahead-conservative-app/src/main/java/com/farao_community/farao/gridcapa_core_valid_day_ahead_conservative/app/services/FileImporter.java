@@ -12,12 +12,9 @@ import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.VerticesImporter;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.resource.CoreValidD2ConservativeFileResource;
-import com.powsybl.openrao.data.refprog.referenceprogram.ReferenceProgram;
-import com.powsybl.openrao.data.refprog.refprogxmlimporter.RefProgImporter;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
-import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,15 +38,6 @@ public class FileImporter {
             return VerticesImporter.importVertices(verticefileInputStream, coreHubs);
         } catch (final Exception e) {
             throw new CoreValidD2ConservativeInvalidDataException(String.format("Cannot import vertex file from URL '%s'", verticesFile.getUrl()), e);
-        }
-    }
-
-    public ReferenceProgram importReferenceProgram(final CoreValidD2ConservativeFileResource refProgFile,
-                                                   final OffsetDateTime timestamp) {
-        try (final InputStream refProgStream = urlValidationService.openUrlStream(refProgFile.getUrl())) {
-            return RefProgImporter.importRefProg(refProgStream, timestamp);
-        } catch (final Exception e) {
-            throw new CoreValidD2ConservativeInvalidDataException(String.format("Cannot import reference program file from URL '%s'", refProgFile.getUrl()), e);
         }
     }
 }

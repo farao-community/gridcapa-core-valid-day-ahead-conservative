@@ -9,7 +9,6 @@ package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.resource.CoreValidD2ConservativeFileResource;
-import com.powsybl.openrao.data.refprog.referenceprogram.ReferenceProgram;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -18,11 +17,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.net.URI;
 import java.net.URL;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -37,33 +34,6 @@ class FileImporterTest {
 
     @Autowired
     private FileImporter fileImporter;
-
-    private static final OffsetDateTime TEST_DATE_TIME = OffsetDateTime.parse("2021-07-22T22:30Z");
-
-    @Test
-    void shouldImportReferenceProgramAndComputeGlobalNetPositions() {
-        final CoreValidD2ConservativeFileResource refProgFile = createFileResource("refprog", getClass().getResource("/20210723-FID2-632-v2-10V1001C--00264T-to-10V1001C--00085T.xml"));
-        final ReferenceProgram referenceProgram = fileImporter.importReferenceProgram(refProgFile, TEST_DATE_TIME);
-        assertEquals(-50, referenceProgram.getGlobalNetPosition("10YFR-RTE------C"));
-        assertEquals(-1325, referenceProgram.getGlobalNetPosition("10YCB-GERMANY--8"));
-        assertEquals(225, referenceProgram.getGlobalNetPosition("10YNL----------L"));
-        assertEquals(1150, referenceProgram.getGlobalNetPosition("10YBE----------2"));
-    }
-
-    @Test
-    void importReferenceProgramShouldThrowCoreValidD2ConservativeInvalidDataException() throws Exception {
-
-        final CoreValidD2ConservativeFileResource refProgFile = createFileResource("refprog", new URI("https://example.com/refprog.xml").toURL());
-
-        when(urlValidationService.openUrlStream(anyString())).thenThrow(new CoreValidD2ConservativeInvalidDataException("Connection failed"));
-
-        CoreValidD2ConservativeInvalidDataException exception = assertThrows(
-                CoreValidD2ConservativeInvalidDataException.class,
-                () -> fileImporter.importReferenceProgram(refProgFile, TEST_DATE_TIME)
-        );
-
-        assertTrue(exception.getMessage().contains("Cannot import reference program file from URL"));
-    }
 
     private CoreValidD2ConservativeFileResource createFileResource(final String filename, final URL resource) {
         return new CoreValidD2ConservativeFileResource(filename, resource.toExternalForm());
