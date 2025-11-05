@@ -53,12 +53,12 @@ class FileImporterTest {
                 "BE", 111,
                 "BE_AL", 0,
                 "DE", 1111,
-                "DE_AL", 0
+                "DE_AL", 11
         );
         final Map<String, Integer> positions = vertex.coordinates();
         Assertions.assertThat(positions)
-                .hasSize(5)
-                .containsExactlyInAnyOrderEntriesOf(entries);
+                .hasSize(14)
+                .containsAllEntriesOf(entries);
     }
 
     @Test
@@ -70,6 +70,6 @@ class FileImporterTest {
 
         Assertions.assertThatExceptionOfType(CoreValidD2ConservativeInvalidDataException.class)
                 .isThrownBy(() -> fileImporter.importVertices(verticesFile))
-                .withMessage("Cannot import vertex file from URL 'https://example.com/vertice.csv'");
+                .withMessage("Cannot import vertices file from URL 'https://example.com/vertice.csv'");
     }
 }

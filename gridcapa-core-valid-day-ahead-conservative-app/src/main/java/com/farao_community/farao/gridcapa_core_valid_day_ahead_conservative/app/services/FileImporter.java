@@ -8,8 +8,6 @@ package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app
 
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHub;
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubsConfiguration;
-import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHub;
-import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubsConfiguration;
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.VerticesImporter;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
@@ -35,16 +33,19 @@ public class FileImporter {
         this.urlValidationService = urlValidationService;
     }
 
+    public List<Vertex> importVertices(final CoreValidD2ConservativeFileResource verticesFile) {
+        try (final InputStream verticefileInputStream = urlValidationService.openUrlStream(verticesFile.getUrl())) {
+            return VerticesImporter.importVertices(verticefileInputStream, coreHubs);
+        } catch (final Exception e) {
+            throw new CoreValidD2ConservativeInvalidDataException(String.format("Cannot import vertices file from URL '%s'", verticesFile.getUrl()), e);
+        }
+    }
+
     public List<CnecRamData> importCnecRam(final CoreValidD2ConservativeFileResource cnecRamFile) {
         try (final InputStream cnecRamInputStream = urlValidationService.openUrlStream(cnecRamFile.getUrl())) {
             return CnecRamImporter.importCnecRam(cnecRamInputStream, coreHubs);
         } catch (Exception e) {
             throw new CoreValidD2ConservativeInvalidDataException(String.format("Cannot import cnec ram file from URL '%s'", cnecRamFile.getUrl()), e);
-    public List<Vertex> importVertices(final CoreValidD2ConservativeFileResource verticesFile) {
-        try (final InputStream verticefileInputStream = urlValidationService.openUrlStream(verticesFile.getUrl())) {
-            return VerticesImporter.importVertices(verticefileInputStream, coreHubs);
-        } catch (final Exception e) {
-            throw new CoreValidD2ConservativeInvalidDataException(String.format("Cannot import vertex file from URL '%s'", verticesFile.getUrl()), e);
         }
     }
 }
