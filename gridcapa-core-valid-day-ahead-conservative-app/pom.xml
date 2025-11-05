@@ -6,14 +6,14 @@
     <parent>
         <groupId>com.farao-community.farao</groupId>
         <artifactId>gridcapa-core-valid-day-ahead-conservative</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>0.1.0-alpha</version>
     </parent>
 
     <artifactId>gridcapa-core-valid-day-ahead-conservative-app</artifactId>
     <name>GridCapa Core day ahead conservative validation runner application</name>
     <description>Core day ahead conservative validation runner application in GridCapa environment</description>
     <packaging>jar</packaging>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>0.1.0-alpha</version>
     <build>
         <plugins>
             <plugin>
