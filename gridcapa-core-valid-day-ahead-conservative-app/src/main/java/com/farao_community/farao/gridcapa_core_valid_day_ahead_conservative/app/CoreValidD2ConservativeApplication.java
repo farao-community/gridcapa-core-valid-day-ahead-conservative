@@ -9,12 +9,14 @@ package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * @author Antoine Limouzin {@literal <antoine.limouzin at rte-france.com>}
  */
 @SuppressWarnings("HideUtilityClassConstructor")
 @EnableConfigurationProperties
+@ComponentScan("com.farao_community.farao")
 @SpringBootApplication
 public class CoreValidD2ConservativeApplication {
     public static void main(String[] args) {

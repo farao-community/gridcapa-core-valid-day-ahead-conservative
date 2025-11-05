@@ -6,9 +6,11 @@
  */
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services;
 
+import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.resource.CoreValidD2ConservativeFileResource;
 import com.powsybl.openrao.data.refprog.referenceprogram.ReferenceProgram;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.net.URI;
 import java.net.URL;
 import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -63,5 +67,39 @@ class FileImporterTest {
 
     private CoreValidD2ConservativeFileResource createFileResource(final String filename, final URL resource) {
         return new CoreValidD2ConservativeFileResource(filename, resource.toExternalForm());
+    }
+
+    @Test
+    void shouldImportVerticesFromCoreHubSettings() {
+        final CoreValidD2ConservativeFileResource verticesFile = createFileResource("vertex",  getClass().getResource("/fake-vertice.csv"));
+        final List<Vertex> vertices = fileImporter.importVertices(verticesFile);
+        Assertions.assertThat(vertices)
+                .isNotNull()
+                .hasSize(4);
+        final Vertex vertex = vertices.getFirst();
+        Assertions.assertThat(vertex.vertexId()).isEqualTo(1);
+        final Map<String, Integer> entries = Map.of(
+                "FR", 11,
+                "BE", 111,
+                "BE_AL", 0,
+                "DE", 1111,
+                "DE_AL", 0
+        );
+        final Map<String, Integer> positions = vertex.coordinates();
+        Assertions.assertThat(positions)
+                .hasSize(5)
+                .containsExactlyInAnyOrderEntriesOf(entries);
+    }
+
+    @Test
+    void importVerticeShouldThrowCoreValidIntradayInvalidDataException() throws Exception {
+
+        final CoreValidD2ConservativeFileResource verticesFile = createFileResource("vertex", new URI("https://example.com/vertice.csv").toURL());
+
+        when(urlValidationService.openUrlStream(anyString())).thenThrow(new CoreValidD2ConservativeInvalidDataException("Connection failed"));
+
+        Assertions.assertThatExceptionOfType(CoreValidD2ConservativeInvalidDataException.class)
+                .isThrownBy(() -> fileImporter.importVertices(verticesFile))
+                .withMessage("Cannot import vertex file from URL 'https://example.com/vertice.csv'");
     }
 }

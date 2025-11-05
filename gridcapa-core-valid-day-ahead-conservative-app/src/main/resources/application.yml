@@ -3,7 +3,7 @@ spring:
     function:
       definition: request
 
-core-valid-day-ahead-conservative-runner:
+core-valid-commons:
   core-hubs:
     - name: Autriche
       ramcep2-code: AT
