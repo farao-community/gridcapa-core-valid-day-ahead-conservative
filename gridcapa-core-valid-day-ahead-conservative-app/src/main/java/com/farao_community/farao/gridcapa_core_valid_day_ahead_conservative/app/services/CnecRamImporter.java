@@ -42,7 +42,7 @@ public final class CnecRamImporter {
     public static final String F_REF_HEADER = "F_ref";
     public static final String RAM_HEADER = "RAM";
     public static final String F_0CORE_HEADER = "F_0core";
-    public static final String MIN_RAM_FACTOR_HEADER = "minRAMFactor";
+    public static final String MIN_RAM_FACTOR_HEADER = "MinRAMFactor";
     public static final String F_UAF_HEADER = "F_uaf";
     public static final String F_0ALL_HEADER = "F_0all";
     public static final String AMR_HEADER = "AMR";
