@@ -98,12 +98,12 @@ public final class CnecRamImporter {
                 }
             });
             return cnecRams;
-        } catch (IOException | IllegalArgumentException e) {
+        } catch (final IOException | IllegalArgumentException e) {
             throw new CoreValidD2ConservativeInvalidDataException("Exception occurred during parsing Cnec Ram file", e);
         }
     }
 
-    private static boolean shouldImport(CSVRecord csvRecord, String ram0CoreString) {
+    private static boolean shouldImport(final CSVRecord csvRecord, final String ram0CoreString) {
         return Boolean.parseBoolean(csvRecord.get(IS_PRESOLVED_REGION_HEADER))
                && Boolean.parseBoolean(csvRecord.get(IS_CNEC_HEADER))
                && StringUtils.isNumeric(ram0CoreString);
@@ -123,7 +123,7 @@ public final class CnecRamImporter {
         return new BigDecimal(ptdfValueString);
     }
 
-    private static int get(CSVRecord csvRecord, String headerName) {
+    private static int get(final CSVRecord csvRecord, final String headerName) {
         return Integer.parseInt(csvRecord.get(headerName));
     }
 }

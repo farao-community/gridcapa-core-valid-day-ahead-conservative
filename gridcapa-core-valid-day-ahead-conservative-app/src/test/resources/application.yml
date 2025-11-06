@@ -39,7 +39,7 @@ core-valid-commons:
       cluster-vertice-code: BE
       is-hvdc-hub: false
       coefficient: 1
-    - name: République Tchéque
+    - name: République Tchèque
       ramcep2-code: CZ
       flowbased-code: PTDF_CZ
       forecast-code: CZ-CORE
