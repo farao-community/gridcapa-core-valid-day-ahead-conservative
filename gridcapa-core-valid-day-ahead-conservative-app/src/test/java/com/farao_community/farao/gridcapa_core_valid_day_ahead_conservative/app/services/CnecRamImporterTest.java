@@ -30,7 +30,7 @@ class CnecRamImporterTest {
     CoreHubsConfiguration coreHubsConfiguration;
 
     @Test
-    void importCnecRam() throws IOException {
+    void testImportCnecRam() throws IOException {
         try (final InputStream inputStream = getClass().getResource("/cnecRamFileOk.csv").openStream()) {
             final List<CnecRamData> cnecRams = CnecRamImporter.importCnecRam(inputStream, coreHubsConfiguration.getCoreHubs());
             Assertions.assertThat(cnecRams)
@@ -71,7 +71,7 @@ class CnecRamImporterTest {
     }
 
     @Test
-    void tesFileImportThrowsException() throws IOException {
+    void testFileImportThrowsException() throws IOException {
         try (final InputStream inputStream = getClass().getResource("/cnecRamFileKo.csv").openStream()) {
             final List<CoreHub> coreHubs = coreHubsConfiguration.getCoreHubs();
             Assertions.assertThatExceptionOfType(CoreValidD2ConservativeInvalidDataException.class).isThrownBy(() -> CnecRamImporter.importCnecRam(inputStream, coreHubs))
