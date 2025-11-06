@@ -50,6 +50,8 @@ public final class CnecRamImporter {
     public static final String LTA_MARGIN_HEADER = "LTA_margin";
     public static final String CVA_HEADER = "CVA";
     public static final String IVA_HEADER = "IVA";
+    public static final String CONTINGENCY_NAME_HEADER = "Contingency_Name";
+    public static final String BRANCH_STATUS_HEADER = "BranchStatus";
 
     private CnecRamImporter() {
         throw new IllegalStateException("Utility class");
@@ -76,6 +78,8 @@ public final class CnecRamImporter {
                     cnecRams.add(new CnecRamData(csvRecord.get(NEC_ID_HEADER),
                                                  csvRecord.get(NE_NAME_HEADER),
                                                  csvRecord.get(TSO_HEADER),
+                                                 csvRecord.get(CONTINGENCY_NAME_HEADER),
+                                                 csvRecord.get(BRANCH_STATUS_HEADER),
                                                  new CnecRamValuesData(get(csvRecord, RAM_HEADER),
                                                                        Integer.parseInt(ram0CoreString),
                                                                        new BigDecimal(csvRecord.get(MIN_RAM_FACTOR_HEADER)),

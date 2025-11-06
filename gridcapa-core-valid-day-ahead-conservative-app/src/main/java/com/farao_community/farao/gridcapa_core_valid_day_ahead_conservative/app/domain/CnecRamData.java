@@ -12,5 +12,5 @@ import java.util.Map;
 /**
  * @author Marc Schwitzguebel {@literal <marc.schwitzguebel_externe at rte-france.com>}
  */
-public record CnecRamData(String necId, String neName, String tso, CnecRamValuesData ramValues, CnecRamFValuesData fValues, Map<String, BigDecimal> ptdfValues) {
+public record CnecRamData(String necId, String neName, String tso, String contingencyName, String branchStatus, CnecRamValuesData ramValues, CnecRamFValuesData fValues, Map<String, BigDecimal> ptdfValues) {
 }
