@@ -69,8 +69,8 @@ class CnecRamImporterTest {
     }
 
     @Test
-    void tesFileImportThrowsException() throws IOException{
-        try(final InputStream inputStream = getClass().getResource("/cnecRamFileKo.csv").openStream()) {
+    void tesFileImportThrowsException() throws IOException {
+        try (final InputStream inputStream = getClass().getResource("/cnecRamFileKo.csv").openStream()) {
             Assertions.assertThatExceptionOfType(CoreValidD2ConservativeInvalidDataException.class).isThrownBy(() -> CnecRamImporter.importCnecRam(inputStream, coreHubsConfiguration.getCoreHubs()))
                     .withMessage("Exception occurred during parsing Cnec Ram file");
         }
