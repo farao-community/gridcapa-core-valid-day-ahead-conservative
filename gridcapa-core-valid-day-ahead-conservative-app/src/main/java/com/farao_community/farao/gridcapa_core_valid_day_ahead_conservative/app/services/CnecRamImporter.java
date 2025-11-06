@@ -62,7 +62,7 @@ public final class CnecRamImporter {
     }
 
     private static List<CnecRamData> importCnecRam(final Reader reader, final List<CoreHub> coreHubs) {
-        try {
+        try (reader) {
             final List<CnecRamData> cnecRams = new ArrayList<>();
             final Iterable<CSVRecord> csvRecords = CSVFormat.RFC4180.builder()
                     .setHeader()
@@ -115,7 +115,7 @@ public final class CnecRamImporter {
      * Otherwise, should launch an exception.
      */
     private static BigDecimal getPtdfValue(final CSVRecord csvRecord,
-                                         final CoreHub corehub) {
+                                           final CoreHub corehub) {
         final String ptdfValueString = csvRecord.get(corehub.flowbasedCode());
         if (corehub.isHvdcHub() && StringUtils.isBlank(ptdfValueString)) {
             return BigDecimal.ZERO;
