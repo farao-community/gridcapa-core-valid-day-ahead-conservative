@@ -6,11 +6,8 @@
  */
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain;
 
-import java.math.BigDecimal;
-import java.util.Map;
-
 /**
  * @author Marc Schwitzguebel {@literal <marc.schwitzguebel_externe at rte-france.com>}
  */
-public record CnecRamData(String necId, String neName, String tso, CnecRamValuesData ramValues, CnecRamFValuesData fValues, Map<String, BigDecimal> ptdfValues) {
+public record CnecRamFValuesData(int fMax, int frm, int fRef, int f0Core, int fUaf, int f0All, int fLtaMax) {
 }

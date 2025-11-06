@@ -21,11 +21,17 @@ class CnecRamDataTest {
                 "BBB", BigDecimal.valueOf(0.00200),
                 "CCCC", BigDecimal.valueOf(0.02500)
         );
-        final CnecRamData testData = new CnecRamData("testId", 223, ptdfs);
+        final BigDecimal minRamFactor = new BigDecimal(44.44);
+        final CnecRamValuesData ramValues = new CnecRamValuesData(22, 33, minRamFactor, 55, 66, 77, 88);
+        final CnecRamFValuesData fvalues = new CnecRamFValuesData(200, 300, 400, 500, 600, 700, 800);
+        final CnecRamData testData = new CnecRamData("testId", "testName", "testTSO", ramValues, fvalues, ptdfs);
         Assertions.assertThat(testData)
                 .isNotNull()
                 .hasFieldOrPropertyWithValue("necId", "testId")
-                .hasFieldOrPropertyWithValue("ram0Core", 223);
+                .hasFieldOrPropertyWithValue("neName", "testName")
+                .hasFieldOrPropertyWithValue("tso", "testTSO")
+                .hasFieldOrPropertyWithValue("ramValues", ramValues)
+                .hasFieldOrPropertyWithValue("fValues", fvalues);
         Assertions.assertThat(testData.ptdfValues())
                 .isNotNull()
                 .isNotEmpty()

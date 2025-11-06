@@ -9,6 +9,8 @@ package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHub;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamData;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamFValuesData;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamValuesData;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
@@ -31,8 +33,23 @@ public final class CnecRamImporter {
 
     public static final String IS_PRESOLVED_REGION_HEADER = "PresolvedRegion";
     public static final String IS_CNEC_HEADER = "CNEC";
-    public static final String RAM0_CORE_HEADER = "RAM_0Core";
+    public static final String RAM0_CORE_HEADER = "RAM_0core";
     public static final String NEC_ID_HEADER = "NEC_ID";
+    public static final String NE_NAME_HEADER = "NE_Name";
+    public static final String TSO_HEADER = "TSO";
+    public static final String F_MAX_HEADER = "F_max";
+    public static final String FRM_HEADER = "FRM";
+    public static final String F_REF_HEADER = "F_ref";
+    public static final String RAM_HEADER = "RAM";
+    public static final String F_0CORE_HEADER = "F_0core";
+    public static final String MIN_RAM_FACTOR_HEADER = "minRAMFactor";
+    public static final String F_UAF_HEADER = "F_uaf";
+    public static final String F_0ALL_HEADER = "F_0all";
+    public static final String AMR_HEADER = "AMR";
+    public static final String F_LTA_MAX_HEADER = "F_LTAmax";
+    public static final String LTA_MARGIN_HEADER = "LTA_margin";
+    public static final String CVA_HEADER = "CVA";
+    public static final String IVA_HEADER = "IVA";
 
     private CnecRamImporter() {
         throw new IllegalStateException("Utility class");
@@ -56,7 +73,24 @@ public final class CnecRamImporter {
                     final Map<String, BigDecimal> ptdfValues = coreHubs.stream().collect(Collectors.toMap(
                             CoreHub::flowbasedCode,
                             coreHub -> getPtdfValue(csvRecord, coreHub)));
-                    cnecRams.add(new CnecRamData(csvRecord.get(NEC_ID_HEADER), Integer.parseInt(ram0CoreString), ptdfValues));
+                    cnecRams.add(new CnecRamData(csvRecord.get(NEC_ID_HEADER),
+                                                 csvRecord.get(NE_NAME_HEADER),
+                                                 csvRecord.get(TSO_HEADER),
+                                                 new CnecRamValuesData(get(csvRecord, RAM_HEADER),
+                                                                       Integer.parseInt(ram0CoreString),
+                                                                       new BigDecimal(csvRecord.get(MIN_RAM_FACTOR_HEADER)),
+                                                                       get(csvRecord, AMR_HEADER),
+                                                                       get(csvRecord, LTA_MARGIN_HEADER),
+                                                                       get(csvRecord, CVA_HEADER),
+                                                                       get(csvRecord, IVA_HEADER)),
+                                                 new CnecRamFValuesData(get(csvRecord, F_MAX_HEADER),
+                                                                        get(csvRecord, FRM_HEADER),
+                                                                        get(csvRecord, F_REF_HEADER),
+                                                                        get(csvRecord, F_0CORE_HEADER),
+                                                                        get(csvRecord, F_UAF_HEADER),
+                                                                        get(csvRecord, F_0ALL_HEADER),
+                                                                        get(csvRecord, F_LTA_MAX_HEADER)),
+                                                 ptdfValues));
                 }
             });
             return cnecRams;
@@ -83,5 +117,9 @@ public final class CnecRamImporter {
             return BigDecimal.ZERO;
         }
         return new BigDecimal(ptdfValueString);
+    }
+
+    private static int get(CSVRecord csvRecord, String headerName) {
+        return Integer.parseInt(csvRecord.get(headerName));
     }
 }

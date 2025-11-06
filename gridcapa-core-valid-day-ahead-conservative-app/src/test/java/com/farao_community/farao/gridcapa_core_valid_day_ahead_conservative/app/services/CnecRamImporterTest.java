@@ -38,7 +38,8 @@ class CnecRamImporterTest {
                     .element(0)
                     .isNotNull()
                     .hasFieldOrPropertyWithValue("necId", "testOK1")
-                    .hasFieldOrPropertyWithValue("ram0Core", 123);
+                    .hasFieldOrPropertyWithValue("neName", "testOK1_NAME")
+                    .hasFieldOrPropertyWithValue("tso", "AT");
             Assertions.assertThat(cnecRams.getFirst().ptdfValues())
                     .isNotNull()
                     .isNotEmpty()
