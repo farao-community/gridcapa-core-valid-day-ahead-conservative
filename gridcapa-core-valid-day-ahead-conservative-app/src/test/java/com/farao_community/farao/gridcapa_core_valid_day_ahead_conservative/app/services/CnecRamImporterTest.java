@@ -6,6 +6,7 @@
  */
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services;
 
+import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHub;
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubsConfiguration;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamData;
@@ -72,7 +73,8 @@ class CnecRamImporterTest {
     @Test
     void tesFileImportThrowsException() throws IOException {
         try (final InputStream inputStream = getClass().getResource("/cnecRamFileKo.csv").openStream()) {
-            Assertions.assertThatExceptionOfType(CoreValidD2ConservativeInvalidDataException.class).isThrownBy(() -> CnecRamImporter.importCnecRam(inputStream, coreHubsConfiguration.getCoreHubs()))
+            final List<CoreHub> coreHubs = coreHubsConfiguration.getCoreHubs();
+            Assertions.assertThatExceptionOfType(CoreValidD2ConservativeInvalidDataException.class).isThrownBy(() -> CnecRamImporter.importCnecRam(inputStream, coreHubs))
                     .withMessage("Exception occurred during parsing Cnec Ram file");
         }
     }
