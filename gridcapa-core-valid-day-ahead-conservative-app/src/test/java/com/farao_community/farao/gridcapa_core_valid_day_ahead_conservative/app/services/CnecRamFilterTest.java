@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class CnecRamFilterTest {
 
     @Test
@@ -28,13 +26,13 @@ class CnecRamFilterTest {
     @Test
     void filterBeforeIvaCalculusFiltersGivesEmptty() {
         List<CnecRamData> data = new ArrayList<>();
-        data.add(new CnecRamData("1", "empty", "AT", "BASECASE", CnecRamFilter.BRANCH_STATU8S_OK,
+        data.add(new CnecRamData("1", "empty", "AT", "BASECASE", CnecRamFilter.BRANCH_STATUS_OK,
                                  new CnecRamValuesData(3, 4, BigDecimal.valueOf(5), 6 , 7, 8, 9),
                                  new CnecRamFValuesData(1, 2, 3, 4, 5, 6, 7),
                                  Map.of()
                  )
         );
-        data.add(new CnecRamData("1", CnecRamFilter.EXCLUDE_NE_NAME + " abbnndd", CnecRamFilter.TSO, "BASECASE", CnecRamFilter.BRANCH_STATU8S_OK,
+        data.add(new CnecRamData("1", CnecRamFilter.EXCLUDE_NE_NAME + " abbnndd", CnecRamFilter.TSO, "BASECASE", CnecRamFilter.BRANCH_STATUS_OK,
                                  new CnecRamValuesData(3, 4, BigDecimal.valueOf(5), 6 , 7, 8, 9),
                                  new CnecRamFValuesData(1, 2, 3, 4, 5, 6, 7),
                                  Map.of()
@@ -46,19 +44,19 @@ class CnecRamFilterTest {
                                  Map.of()
                  )
         );
-        data.add(new CnecRamData("1" + CnecRamFilter.EXCLUDE_SUFFIXE_NEC_ID_1, "abbnndd", CnecRamFilter.TSO, "BASECASE", CnecRamFilter.BRANCH_STATU8S_OK,
+        data.add(new CnecRamData("1" + CnecRamFilter.EXCLUDE_SUFFIXE_NEC_ID_1, "abbnndd", CnecRamFilter.TSO, "BASECASE", CnecRamFilter.BRANCH_STATUS_OK,
                                  new CnecRamValuesData(3, 4, BigDecimal.valueOf(5), 6 , 7, 8, 9),
                                  new CnecRamFValuesData(1, 2, 3, 4, 5, 6, 7),
                                  Map.of()
                  )
         );
-        data.add(new CnecRamData("1" + CnecRamFilter.EXCLUDE_SUFFIXE_NEC_ID_2, "abbnndd", CnecRamFilter.TSO, "BASECASE", CnecRamFilter.BRANCH_STATU8S_OK,
+        data.add(new CnecRamData("1" + CnecRamFilter.EXCLUDE_SUFFIXE_NEC_ID_2, "abbnndd", CnecRamFilter.TSO, "BASECASE", CnecRamFilter.BRANCH_STATUS_OK,
                                  new CnecRamValuesData(3, 4, BigDecimal.valueOf(5), 6 , 7, 8, 9),
                                  new CnecRamFValuesData(1, 2, 3, 4, 5, 6, 7),
                                  Map.of()
                  )
         );
-        data.add(new CnecRamData("1", "abbnndd", CnecRamFilter.TSO, "BASECASE", CnecRamFilter.BRANCH_STATU8S_OK,
+        data.add(new CnecRamData("1", "abbnndd", CnecRamFilter.TSO, "BASECASE", CnecRamFilter.BRANCH_STATUS_OK,
                                  new CnecRamValuesData(3, 4, BigDecimal.valueOf(5), CnecRamFilter.MIN_AMR_VALUE , 7, 8, 9),
                                  new CnecRamFValuesData(1, 2, 3, 4, 5, 6, 7),
                                  Map.of()
@@ -73,19 +71,19 @@ class CnecRamFilterTest {
     @Test
     void filterBeforeIvaCalculusFiltersGivesAllOK() {
         List<CnecRamData> data = new ArrayList<>();
-        data.add(new CnecRamData("1", "abbnndd", CnecRamFilter.TSO, "BASECASE", CnecRamFilter.BRANCH_STATU8S_OK,
+        data.add(new CnecRamData("1", "abbnndd", CnecRamFilter.TSO, "BASECASE", CnecRamFilter.BRANCH_STATUS_OK,
                                  new CnecRamValuesData(3, 4, BigDecimal.valueOf(5), 6 , 7, 8, 9),
                                  new CnecRamFValuesData(1, 2, 3, 4, 5, 6, 7),
                                  Map.of()
                  )
         );
-        data.add(new CnecRamData("2", "abbnndd", CnecRamFilter.TSO, "BASECASE", CnecRamFilter.BRANCH_STATU8S_OK,
+        data.add(new CnecRamData("2", "abbnndd", CnecRamFilter.TSO, "BASECASE", CnecRamFilter.BRANCH_STATUS_OK,
                                  new CnecRamValuesData(3, 4, BigDecimal.valueOf(5), 6 , 7, 8, 9),
                                  new CnecRamFValuesData(1, 2, 3, 4, 5, 6, 7),
                                  Map.of()
                  )
         );
-        data.add(new CnecRamData("3", "abbnndd", CnecRamFilter.TSO, "BASECASE", CnecRamFilter.BRANCH_STATU8S_OK,
+        data.add(new CnecRamData("3", "abbnndd", CnecRamFilter.TSO, "BASECASE", CnecRamFilter.BRANCH_STATUS_OK,
                                  new CnecRamValuesData(3, 4, BigDecimal.valueOf(5), 6 , 7, 8, 9),
                                  new CnecRamFValuesData(1, 2, 3, 4, 5, 6, 7),
                                  Map.of()

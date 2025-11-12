@@ -20,7 +20,7 @@ public final class CnecRamFilter {
     public static final String EXCLUDE_NE_NAME = "[NCL]";
     public static final String EXCLUDE_SUFFIXE_NEC_ID_1 = "_SpannedBefore";
     public static final String EXCLUDE_SUFFIXE_NEC_ID_2 = "_SpannedAfter";
-    public static final String BRANCH_STATU8S_OK = "OK";
+    public static final String BRANCH_STATUS_OK = "OK";
     public static final int MIN_AMR_VALUE = 0;
     
     private CnecRamFilter() {
@@ -37,7 +37,7 @@ public final class CnecRamFilter {
         return StringUtils.equalsIgnoreCase(cnecRamData.tso(), TSO)
                 && !StringUtils.startsWithIgnoreCase(cnecRamData.neName(), EXCLUDE_NE_NAME)
                 && !StringUtils.endsWithAny(cnecRamData.necId(), EXCLUDE_SUFFIXE_NEC_ID_1, EXCLUDE_SUFFIXE_NEC_ID_2)
-                && StringUtils.equalsIgnoreCase(cnecRamData.branchStatus(), BRANCH_STATU8S_OK)
+                && StringUtils.equalsIgnoreCase(cnecRamData.branchStatus(), BRANCH_STATUS_OK)
                 && cnecRamData.ramValues().amr() > MIN_AMR_VALUE;
     }
 
