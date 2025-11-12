@@ -14,6 +14,7 @@ import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -123,7 +124,7 @@ public final class CnecRamImporter {
     private static boolean shouldImport(final CSVRecord csvRecord, final String ram0CoreString) {
         return Boolean.parseBoolean(csvRecord.get(IS_PRESOLVED_REGION_HEADER))
                && Boolean.parseBoolean(csvRecord.get(IS_CNEC_HEADER))
-               && StringUtils.isNumeric(ram0CoreString);
+               && NumberUtils.isParsable(ram0CoreString);
     }
 
     /**
