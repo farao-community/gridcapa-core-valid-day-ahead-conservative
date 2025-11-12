@@ -19,9 +19,6 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * @author Antoine Limouzin {@literal <antoine.limouzin at rte-france.com>}
- */
 @Service
 public class FileImporter {
     private final List<CoreHub> coreHubs;
