@@ -14,7 +14,7 @@ import java.util.Map;
 class CnecRamFilterTest {
 
     @Test
-    void filterBeforeIvaCalculusEmptyGivesEmptty() {
+    void filterBeforeIvaCalculusEmptyGivesEmpty() {
         List<CnecRamData> data = new ArrayList<>();
         List<CnecRamData> output = CnecRamFilter.filterBeforeIvaCalculus(data);
         Assertions.assertThat(output)
@@ -23,7 +23,7 @@ class CnecRamFilterTest {
     }
 
     @Test
-    void filterBeforeIvaCalculusFiltersGivesEmptty() {
+    void filterBeforeIvaCalculusFiltersGivesEmpty() {
         List<CnecRamData> data = new ArrayList<>();
         data.add(new CnecRamData("1", "empty", "AT", "BASECASE", CnecRamFilter.BRANCH_STATUS_OK,
                                  new CnecRamValuesData(3, 4, BigDecimal.valueOf(5), 6, 7, 8, 9),
