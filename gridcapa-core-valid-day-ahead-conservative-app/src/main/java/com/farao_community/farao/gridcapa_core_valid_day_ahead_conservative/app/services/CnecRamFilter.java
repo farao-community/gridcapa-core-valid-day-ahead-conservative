@@ -13,10 +13,10 @@ import java.util.List;
 
 public final class CnecRamFilter {
 
-    public static final String TSO = "FR";
+    public static final String FRENCH_TSO = "FR";
     public static final String EXCLUDE_NE_NAME = "[NCL]";
-    public static final String EXCLUDE_SUFFIXE_NEC_ID_1 = "_SpannedBefore";
-    public static final String EXCLUDE_SUFFIXE_NEC_ID_2 = "_SpannedAfter";
+    public static final String EXCLUDE_SUFFIX_NEC_ID_BEFORE = "_SpannedBefore";
+    public static final String EXCLUDE_SUFFIX_NEC_ID_AFTER = "_SpannedAfter";
     public static final String BRANCH_STATUS_OK = "OK";
     public static final int MIN_AMR_VALUE = 0;
 
@@ -31,10 +31,10 @@ public final class CnecRamFilter {
     }
 
     private static boolean shouldImport(final CnecRamData cnecRamData) {
-        return StringUtils.equalsIgnoreCase(cnecRamData.tso(), TSO)
-                && !StringUtils.startsWithIgnoreCase(cnecRamData.neName(), EXCLUDE_NE_NAME)
-                && !StringUtils.endsWithAny(cnecRamData.necId(), EXCLUDE_SUFFIXE_NEC_ID_1, EXCLUDE_SUFFIXE_NEC_ID_2)
-                && StringUtils.equalsIgnoreCase(cnecRamData.branchStatus(), BRANCH_STATUS_OK)
-                && cnecRamData.ramValues().amr() > MIN_AMR_VALUE;
+        return FRENCH_TSO.equalsIgnoreCase(cnecRamData.tso())
+               && BRANCH_STATUS_OK.equalsIgnoreCase(cnecRamData.branchStatus())
+               && !StringUtils.startsWithIgnoreCase(cnecRamData.neName(), EXCLUDE_NE_NAME)
+               && !StringUtils.endsWithAny(cnecRamData.necId(), EXCLUDE_SUFFIX_NEC_ID_BEFORE, EXCLUDE_SUFFIX_NEC_ID_AFTER)
+               && cnecRamData.ramValues().amr() > MIN_AMR_VALUE;
     }
 }
