@@ -12,16 +12,13 @@ import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.VerticesImporter;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.resource.CoreValidD2ConservativeFileResource;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamData;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * @author Amira Kahya {@literal <amira.kahya at rte-france.com>}
- * @author Antoine Limouzin {@literal <antoine.limouzin at rte-france.com>}
- */
 @Service
 public class FileImporter {
     private final List<CoreHub> coreHubs;
@@ -37,7 +34,15 @@ public class FileImporter {
         try (final InputStream verticefileInputStream = urlValidationService.openUrlStream(verticesFile.getUrl())) {
             return VerticesImporter.importVertices(verticefileInputStream, coreHubs);
         } catch (final Exception e) {
-            throw new CoreValidD2ConservativeInvalidDataException(String.format("Cannot import vertex file from URL '%s'", verticesFile.getUrl()), e);
+            throw new CoreValidD2ConservativeInvalidDataException(String.format("Cannot import vertices file from URL '%s'", verticesFile.getUrl()), e);
+        }
+    }
+
+    public List<CnecRamData> importCnecRam(final CoreValidD2ConservativeFileResource cnecRamFile) {
+        try (final InputStream cnecRamInputStream = urlValidationService.openUrlStream(cnecRamFile.getUrl())) {
+            return CnecRamImporter.importCnecRam(cnecRamInputStream, coreHubs);
+        } catch (Exception e) {
+            throw new CoreValidD2ConservativeInvalidDataException(String.format("Cannot import cnec ram file from URL '%s'", cnecRamFile.getUrl()), e);
         }
     }
 }

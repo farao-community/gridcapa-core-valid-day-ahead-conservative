@@ -9,6 +9,7 @@ package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.resource.CoreValidD2ConservativeFileResource;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamData;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -53,12 +54,12 @@ class FileImporterTest {
                 "BE", 111,
                 "BE_AL", 0,
                 "DE", 1111,
-                "DE_AL", 0
+                "DE_AL", 11
         );
         final Map<String, Integer> positions = vertex.coordinates();
         Assertions.assertThat(positions)
-                .hasSize(5)
-                .containsExactlyInAnyOrderEntriesOf(entries);
+                .hasSize(14)
+                .containsAllEntriesOf(entries);
     }
 
     @Test
@@ -70,6 +71,25 @@ class FileImporterTest {
 
         Assertions.assertThatExceptionOfType(CoreValidD2ConservativeInvalidDataException.class)
                 .isThrownBy(() -> fileImporter.importVertices(verticesFile))
-                .withMessage("Cannot import vertex file from URL 'https://example.com/vertice.csv'");
+                .withMessage("Cannot import vertices file from URL 'https://example.com/vertice.csv'");
+    }
+
+    @Test
+    void shouldImportCnecRamFromCoreHubSettings() {
+        final CoreValidD2ConservativeFileResource cnecRamFile = createFileResource("cnecRam",  getClass().getResource("/cnecRamFileOk.csv"));
+        final List<CnecRamData> cnecRams = fileImporter.importCnecRam(cnecRamFile);
+        Assertions.assertThat(cnecRams)
+                .isNotNull()
+                .hasSize(3);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenImportCnecRam() throws Exception {
+        final CoreValidD2ConservativeFileResource cnecRamFile = createFileResource("cnecRam",  new URI("https://example.com/cnecRamFile.csv").toURL());
+        when(urlValidationService.openUrlStream(anyString())).thenThrow(new CoreValidD2ConservativeInvalidDataException("Connection failed"));
+        Assertions.assertThatExceptionOfType(CoreValidD2ConservativeInvalidDataException.class)
+                .isThrownBy(() -> fileImporter.importCnecRam(cnecRamFile))
+                .withMessage("Cannot import cnec ram file from URL 'https://example.com/cnecRamFile.csv'");
+
     }
 }
