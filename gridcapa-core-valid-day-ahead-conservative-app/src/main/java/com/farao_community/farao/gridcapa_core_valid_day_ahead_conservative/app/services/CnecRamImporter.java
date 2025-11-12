@@ -31,27 +31,27 @@ import java.util.stream.Collectors;
  */
 public final class CnecRamImporter {
 
-    public static final String IS_PRESOLVED_REGION_HEADER = "PresolvedRegion";
-    public static final String IS_CNEC_HEADER = "CNEC";
-    public static final String RAM0_CORE_HEADER = "RAM_0core";
-    public static final String NEC_ID_HEADER = "NEC_ID";
-    public static final String NE_NAME_HEADER = "NE_Name";
-    public static final String TSO_HEADER = "TSO";
-    public static final String F_MAX_HEADER = "F_max";
-    public static final String FRM_HEADER = "FRM";
-    public static final String F_REF_HEADER = "F_ref";
-    public static final String RAM_HEADER = "RAM";
-    public static final String F_0CORE_HEADER = "F_0core";
-    public static final String MIN_RAM_FACTOR_HEADER = "MinRAMFactor";
-    public static final String F_UAF_HEADER = "F_uaf";
-    public static final String F_0ALL_HEADER = "F_0all";
-    public static final String AMR_HEADER = "AMR";
-    public static final String F_LTA_MAX_HEADER = "F_LTAmax";
-    public static final String LTA_MARGIN_HEADER = "LTA_margin";
-    public static final String CVA_HEADER = "CVA";
-    public static final String IVA_HEADER = "IVA";
-    public static final String CONTINGENCY_NAME_HEADER = "Contingency_Name";
-    public static final String BRANCH_STATUS_HEADER = "BranchStatus";
+    private static final String IS_PRESOLVED_REGION_HEADER = "PresolvedRegion";
+    private static final String IS_CNEC_HEADER = "CNEC";
+    private static final String RAM0_CORE_HEADER = "RAM_0core";
+    private static final String NEC_ID_HEADER = "NEC_ID";
+    private static final String NE_NAME_HEADER = "NE_Name";
+    private static final String TSO_HEADER = "TSO";
+    private static final String F_MAX_HEADER = "F_max";
+    private static final String FRM_HEADER = "FRM";
+    private static final String F_REF_HEADER = "F_ref";
+    private static final String RAM_HEADER = "RAM";
+    private static final String F_0CORE_HEADER = "F_0core";
+    private static final String MIN_RAM_FACTOR_HEADER = "MinRAMFactor";
+    private static final String F_UAF_HEADER = "F_uaf";
+    private static final String F_0ALL_HEADER = "F_0all";
+    private static final String AMR_HEADER = "AMR";
+    private static final String F_LTA_MAX_HEADER = "F_LTAmax";
+    private static final String LTA_MARGIN_HEADER = "LTA_margin";
+    private static final String CVA_HEADER = "CVA";
+    private static final String IVA_HEADER = "IVA";
+    private static final String CONTINGENCY_NAME_HEADER = "Contingency_Name";
+    private static final String BRANCH_STATUS_HEADER = "BranchStatus";
 
     private CnecRamImporter() {
         throw new IllegalStateException("Utility class");
@@ -69,38 +69,51 @@ public final class CnecRamImporter {
                     .setSkipHeaderRecord(true)
                     .build()
                     .parse(reader);
-            csvRecords.forEach(csvRecord -> {
-                final String ram0CoreString = csvRecord.get(RAM0_CORE_HEADER);
-                if (shouldImport(csvRecord, ram0CoreString)) {
-                    final Map<String, BigDecimal> ptdfValues = coreHubs.stream().collect(Collectors.toMap(
-                            CoreHub::flowbasedCode,
-                            coreHub -> getPtdfValue(csvRecord, coreHub)));
-                    cnecRams.add(new CnecRamData(csvRecord.get(NEC_ID_HEADER),
-                                                 csvRecord.get(NE_NAME_HEADER),
-                                                 csvRecord.get(TSO_HEADER),
-                                                 csvRecord.get(CONTINGENCY_NAME_HEADER),
-                                                 csvRecord.get(BRANCH_STATUS_HEADER),
-                                                 new CnecRamValuesData(get(csvRecord, RAM_HEADER),
-                                                                       Integer.parseInt(ram0CoreString),
-                                                                       new BigDecimal(csvRecord.get(MIN_RAM_FACTOR_HEADER)),
-                                                                       get(csvRecord, AMR_HEADER),
-                                                                       get(csvRecord, LTA_MARGIN_HEADER),
-                                                                       get(csvRecord, CVA_HEADER),
-                                                                       get(csvRecord, IVA_HEADER)),
-                                                 new CnecRamFValuesData(get(csvRecord, F_MAX_HEADER),
-                                                                        get(csvRecord, FRM_HEADER),
-                                                                        get(csvRecord, F_REF_HEADER),
-                                                                        get(csvRecord, F_0CORE_HEADER),
-                                                                        get(csvRecord, F_UAF_HEADER),
-                                                                        get(csvRecord, F_0ALL_HEADER),
-                                                                        get(csvRecord, F_LTA_MAX_HEADER)),
-                                                 ptdfValues));
-                }
-            });
+            csvRecords.forEach(csvRecord -> importSingleCnecRamFiltered(coreHubs, csvRecord, cnecRams));
             return cnecRams;
         } catch (final IOException | IllegalArgumentException e) {
             throw new CoreValidD2ConservativeInvalidDataException("Exception occurred during parsing Cnec Ram file", e);
         }
+    }
+
+    private static void importSingleCnecRamFiltered(final List<CoreHub> coreHubs,
+                                  final CSVRecord csvRecord,
+                                  final List<CnecRamData> cnecRams) {
+        final String ram0CoreString = csvRecord.get(RAM0_CORE_HEADER);
+        if (shouldImport(csvRecord, ram0CoreString)) {
+            final Map<String, BigDecimal> ptdfValues = coreHubs.stream().collect(Collectors.toMap(
+                    CoreHub::flowbasedCode,
+                    coreHub -> getPtdfValue(csvRecord, coreHub)));
+            cnecRams.add(new CnecRamData(csvRecord.get(NEC_ID_HEADER),
+                                         csvRecord.get(NE_NAME_HEADER),
+                                         csvRecord.get(TSO_HEADER),
+                                         csvRecord.get(CONTINGENCY_NAME_HEADER),
+                                         csvRecord.get(BRANCH_STATUS_HEADER),
+                                         getRamValues(csvRecord, ram0CoreString),
+                                         getFValues(csvRecord),
+                                         ptdfValues));
+        }
+    }
+
+    private static CnecRamFValuesData getFValues(final CSVRecord csvRecord) {
+        return new CnecRamFValuesData(get(csvRecord, F_MAX_HEADER),
+                                      get(csvRecord, FRM_HEADER),
+                                      get(csvRecord, F_REF_HEADER),
+                                      get(csvRecord, F_0CORE_HEADER),
+                                      get(csvRecord, F_UAF_HEADER),
+                                      get(csvRecord, F_0ALL_HEADER),
+                                      get(csvRecord, F_LTA_MAX_HEADER));
+    }
+
+    private static CnecRamValuesData getRamValues(final CSVRecord csvRecord,
+                                                           final String ram0CoreString) {
+        return new CnecRamValuesData(get(csvRecord, RAM_HEADER),
+                                     Integer.parseInt(ram0CoreString),
+                                     new BigDecimal(csvRecord.get(MIN_RAM_FACTOR_HEADER)),
+                                     get(csvRecord, AMR_HEADER),
+                                     get(csvRecord, LTA_MARGIN_HEADER),
+                                     get(csvRecord, CVA_HEADER),
+                                     get(csvRecord, IVA_HEADER));
     }
 
     private static boolean shouldImport(final CSVRecord csvRecord, final String ram0CoreString) {
