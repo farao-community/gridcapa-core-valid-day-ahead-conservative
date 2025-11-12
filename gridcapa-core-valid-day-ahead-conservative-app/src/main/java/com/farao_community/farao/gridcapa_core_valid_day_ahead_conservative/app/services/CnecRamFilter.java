@@ -11,9 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
-/**
- * @author Marc Schwitzguebel {@literal <marc.schwitzguebel_externe at rte-france.com>}
- */
 public final class CnecRamFilter {
 
     public static final String TSO = "FR";
@@ -22,7 +19,7 @@ public final class CnecRamFilter {
     public static final String EXCLUDE_SUFFIXE_NEC_ID_2 = "_SpannedAfter";
     public static final String BRANCH_STATUS_OK = "OK";
     public static final int MIN_AMR_VALUE = 0;
-    
+
     private CnecRamFilter() {
         throw new IllegalStateException("Utility class");
     }
@@ -40,6 +37,4 @@ public final class CnecRamFilter {
                 && StringUtils.equalsIgnoreCase(cnecRamData.branchStatus(), BRANCH_STATUS_OK)
                 && cnecRamData.ramValues().amr() > MIN_AMR_VALUE;
     }
-
-
 }
