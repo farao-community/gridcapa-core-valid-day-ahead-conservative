@@ -78,8 +78,8 @@ public final class CnecRamImporter {
     }
 
     private static void importSingleCnecRamFiltered(final List<CoreHub> coreHubs,
-                                  final CSVRecord csvRecord,
-                                  final List<CnecRamData> cnecRams) {
+                                                    final CSVRecord csvRecord,
+                                                    final List<CnecRamData> cnecRams) {
         final String ram0CoreString = csvRecord.get(RAM0_CORE_HEADER);
         if (shouldImport(csvRecord, ram0CoreString)) {
             cnecRams.add(new CnecRamData(csvRecord.get(NEC_ID_HEADER),
@@ -94,7 +94,7 @@ public final class CnecRamImporter {
     }
 
     private static @NotNull Map<String, BigDecimal> getPtdfValues(final List<CoreHub> coreHubs,
-                                                               final CSVRecord csvRecord) {
+                                                                  final CSVRecord csvRecord) {
         return coreHubs.stream().collect(Collectors.toMap(
                 CoreHub::flowbasedCode,
                 coreHub -> getPtdfValue(csvRecord, coreHub)));
