@@ -14,6 +14,7 @@ import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -81,18 +82,22 @@ public final class CnecRamImporter {
                                   final List<CnecRamData> cnecRams) {
         final String ram0CoreString = csvRecord.get(RAM0_CORE_HEADER);
         if (shouldImport(csvRecord, ram0CoreString)) {
-            final Map<String, BigDecimal> ptdfValues = coreHubs.stream().collect(Collectors.toMap(
-                    CoreHub::flowbasedCode,
-                    coreHub -> getPtdfValue(csvRecord, coreHub)));
             cnecRams.add(new CnecRamData(csvRecord.get(NEC_ID_HEADER),
                                          csvRecord.get(NE_NAME_HEADER),
                                          csvRecord.get(TSO_HEADER),
                                          csvRecord.get(CONTINGENCY_NAME_HEADER),
                                          csvRecord.get(BRANCH_STATUS_HEADER),
-                                         getRamValues(csvRecord, ram0CoreString),
+                                         getRamValues(csvRecord),
                                          getFValues(csvRecord),
-                                         ptdfValues));
+                                         getPtdfValues(coreHubs, csvRecord)));
         }
+    }
+
+    private static @NotNull Map<String, BigDecimal> getPtdfValues(final List<CoreHub> coreHubs,
+                                                               final CSVRecord csvRecord) {
+        return coreHubs.stream().collect(Collectors.toMap(
+                CoreHub::flowbasedCode,
+                coreHub -> getPtdfValue(csvRecord, coreHub)));
     }
 
     private static CnecRamFValuesData getFValues(final CSVRecord csvRecord) {
@@ -105,10 +110,9 @@ public final class CnecRamImporter {
                                       get(csvRecord, F_LTA_MAX_HEADER));
     }
 
-    private static CnecRamValuesData getRamValues(final CSVRecord csvRecord,
-                                                           final String ram0CoreString) {
+    private static CnecRamValuesData getRamValues(final CSVRecord csvRecord) {
         return new CnecRamValuesData(get(csvRecord, RAM_HEADER),
-                                     Integer.parseInt(ram0CoreString),
+                                     get(csvRecord, RAM0_CORE_HEADER),
                                      new BigDecimal(csvRecord.get(MIN_RAM_FACTOR_HEADER)),
                                      get(csvRecord, AMR_HEADER),
                                      get(csvRecord, LTA_MARGIN_HEADER),
