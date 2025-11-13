@@ -26,15 +26,13 @@ import java.util.function.Consumer;
 import static com.farao_community.farao.gridcapa.task_manager.api.TaskStatus.ERROR;
 import static com.farao_community.farao.gridcapa.task_manager.api.TaskStatus.RUNNING;
 import static com.farao_community.farao.gridcapa.task_manager.api.TaskStatus.SUCCESS;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.configuration.CoreValidD2Constants.TASK_STATUS_UPDATE;
 
-/**
- * @author Antoine Limouzin {@literal <antoine.limouzin at rte-france.com>}
- */
 @Component
 public class CoreValidD2ConservativeListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CoreValidD2ConservativeListener.class);
-    private static final String TASK_STATUS_UPDATE = "task-status-update";
+
 
     private final JsonApiConverter jsonApiConverter;
     private final CoreValidD2ConservativeHandler coreValidD2ConservativeHandler;

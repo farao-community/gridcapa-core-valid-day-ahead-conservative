@@ -8,6 +8,7 @@
 
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.resource;
 
+import com.farao_community.farao.gridcapa.task_manager.api.TaskParameterDto;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.OffsetDateTimeDeserializer;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.OffsetDateTimeSerializer;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -20,6 +21,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * @author Antoine Limouzin {@literal <antoine.limouzin at rte-france.com>}
@@ -36,6 +38,7 @@ public class CoreValidD2ConservativeRequest {
     private final CoreValidD2ConservativeFileResource cnecRam;
     private final CoreValidD2ConservativeFileResource vertice;
     private final boolean launchedAutomatically;
+    private final List<TaskParameterDto> taskParameterList;
 
     @JsonCreator
     public CoreValidD2ConservativeRequest(final @JsonProperty("id") String id,
@@ -43,21 +46,24 @@ public class CoreValidD2ConservativeRequest {
                                           final @JsonProperty("timestamp") OffsetDateTime timestamp,
                                           final @JsonProperty("cnecRam") CoreValidD2ConservativeFileResource cnecRam,
                                           final @JsonProperty("vertice") CoreValidD2ConservativeFileResource vertice,
-                                          final @JsonProperty("launchedAutomatically") boolean launchedAutomatically) {
+                                          final @JsonProperty("launchedAutomatically") boolean launchedAutomatically,
+                                          final @JsonProperty("taskParameterList") List<TaskParameterDto> taskParameterList) {
         this.id = id;
         this.currentRunId = currentRunId;
         this.timestamp = timestamp;
         this.cnecRam = cnecRam;
         this.vertice = vertice;
         this.launchedAutomatically = launchedAutomatically;
+        this.taskParameterList = taskParameterList;
     }
 
     public CoreValidD2ConservativeRequest(final String id,
                                           final String currentRunId,
                                           final OffsetDateTime timestamp,
                                           final CoreValidD2ConservativeFileResource cnecRam,
-                                          final CoreValidD2ConservativeFileResource vertice) {
-        this(id, currentRunId, timestamp, cnecRam, vertice, false);
+                                          final CoreValidD2ConservativeFileResource vertice,
+                                          final List<TaskParameterDto> taskParameterList) {
+        this(id, currentRunId, timestamp, cnecRam, vertice, false, taskParameterList);
     }
 
     public String getId() {

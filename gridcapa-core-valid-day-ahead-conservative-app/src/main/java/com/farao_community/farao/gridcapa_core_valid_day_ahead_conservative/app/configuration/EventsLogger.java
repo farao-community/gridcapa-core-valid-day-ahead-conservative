@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.configuration.CoreValidD2Constants.BUSINESS_LOGGER;
+
 /**
  * @author Antoine Limouzin {@literal <antoine.limouzin at rte-france.com>}
  */
@@ -18,6 +20,6 @@ import org.springframework.context.annotation.Configuration;
 class EventsLogger {
     @Bean
     public Logger getLogger() {
-        return LoggerFactory.getLogger("BUSINESS_LOGGER");
+        return LoggerFactory.getLogger(BUSINESS_LOGGER);
     }
 }

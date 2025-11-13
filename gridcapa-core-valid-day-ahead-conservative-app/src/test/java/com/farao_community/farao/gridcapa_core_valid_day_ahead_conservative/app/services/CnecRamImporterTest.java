@@ -41,7 +41,7 @@ class CnecRamImporterTest {
                     .hasFieldOrPropertyWithValue("necId", "testOK1")
                     .hasFieldOrPropertyWithValue("neName", "testOK1_NAME")
                     .hasFieldOrPropertyWithValue("tso", "AT");
-            Assertions.assertThat(cnecRams.getFirst().ptdfValues())
+            Assertions.assertThat(cnecRams.getFirst().getPtdfValues())
                     .isNotNull()
                     .isNotEmpty()
                     .hasSize(14)
@@ -49,8 +49,8 @@ class CnecRamImporterTest {
                     .doesNotContainValue(new BigDecimal("0.2"))
                     .doesNotContainValue(new BigDecimal("0.3"))
                     .containsValue(new BigDecimal("0.1"));
-            Assertions.assertThat(cnecRams.getFirst().ptdfValues().get("PTDF_DE_AL")).isEqualByComparingTo(BigDecimal.ZERO);
-            Assertions.assertThat(cnecRams.get(1).ptdfValues())
+            Assertions.assertThat(cnecRams.getFirst().getPtdfValues().get("PTDF_DE_AL")).isEqualByComparingTo(BigDecimal.ZERO);
+            Assertions.assertThat(cnecRams.get(1).getPtdfValues())
                     .isNotNull()
                     .isNotEmpty()
                     .hasSize(14)
@@ -58,7 +58,7 @@ class CnecRamImporterTest {
                     .doesNotContainValue(new BigDecimal("0.1"))
                     .doesNotContainValue(new BigDecimal("0.3"))
                     .containsValue(new BigDecimal("0.2"));
-            Assertions.assertThat(cnecRams.get(2).ptdfValues())
+            Assertions.assertThat(cnecRams.get(2).getPtdfValues())
                     .isNotNull()
                     .isNotEmpty()
                     .hasSize(14)
@@ -66,7 +66,7 @@ class CnecRamImporterTest {
                     .doesNotContainValue(new BigDecimal("0.1"))
                     .doesNotContainValue(new BigDecimal("0.2"))
                     .containsValue(new BigDecimal("0.3"));
-            Assertions.assertThat(cnecRams.get(2).ptdfValues().get("PTDF_BE_AL")).isEqualByComparingTo(BigDecimal.ZERO);
+            Assertions.assertThat(cnecRams.get(2).getPtdfValues().get("PTDF_BE_AL")).isEqualByComparingTo(BigDecimal.ZERO);
         }
     }
 

@@ -13,9 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
-/**
- * @author Antoine Limouzin {@literal <antoine.limouzin at rte-france.com>}
- */
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.configuration.CoreValidD2Constants.GRIDCAPA_TASK_ID;
+
 @Component
 public class CoreValidD2ConservativeHandler {
 
@@ -37,7 +36,7 @@ public class CoreValidD2ConservativeHandler {
     }
 
     private static void setUpEventLogging(final CoreValidD2ConservativeRequest request) {
-        MDC.put("gridcapa-task-id", request.getId());
+        MDC.put(GRIDCAPA_TASK_ID, request.getId());
     }
 
 }

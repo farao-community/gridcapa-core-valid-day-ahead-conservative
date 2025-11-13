@@ -34,7 +34,7 @@ class CnecRamDataTest {
                 .hasFieldOrPropertyWithValue("contingencyName", "test_Contingency_Name")
                 .hasFieldOrPropertyWithValue("ramValues", ramValues)
                 .hasFieldOrPropertyWithValue("fValues", fvalues);
-        Assertions.assertThat(testData.ptdfValues())
+        Assertions.assertThat(testData.getPtdfValues())
                 .isNotNull()
                 .isNotEmpty()
                 .containsExactlyInAnyOrderEntriesOf(ptdfs);
