@@ -42,7 +42,7 @@ class FileImporterTest {
 
     @Test
     void shouldImportVerticesFromCoreHubSettings() {
-        final CoreValidD2ConservativeFileResource verticesFile = createFileResource("vertex",  getClass().getResource("/fake-vertice.csv"));
+        final CoreValidD2ConservativeFileResource verticesFile = createFileResource("vertices",  getClass().getResource("/fake-vertice.csv"));
         final List<Vertex> vertices = fileImporter.importVertices(verticesFile);
         Assertions.assertThat(vertices)
                 .isNotNull()
@@ -65,7 +65,7 @@ class FileImporterTest {
     @Test
     void importVerticeShouldThrowCoreValidIntradayInvalidDataException() throws Exception {
 
-        final CoreValidD2ConservativeFileResource verticesFile = createFileResource("vertex", new URI("https://example.com/vertice.csv").toURL());
+        final CoreValidD2ConservativeFileResource verticesFile = createFileResource("vertices", new URI("https://example.com/vertice.csv").toURL());
 
         when(urlValidationService.openUrlStream(anyString())).thenThrow(new CoreValidD2ConservativeInvalidDataException("Connection failed"));
 
@@ -76,7 +76,7 @@ class FileImporterTest {
 
     @Test
     void shouldImportCnecRamFromCoreHubSettings() {
-        final CoreValidD2ConservativeFileResource cnecRamFile = createFileResource("cnecRam",  getClass().getResource("/cnecRamFileOk.csv"));
+        final CoreValidD2ConservativeFileResource cnecRamFile = createFileResource("cnec ram",  getClass().getResource("/cnecRamFileOk.csv"));
         final List<CnecRamData> cnecRams = fileImporter.importCnecRam(cnecRamFile);
         Assertions.assertThat(cnecRams)
                 .isNotNull()
@@ -85,7 +85,7 @@ class FileImporterTest {
 
     @Test
     void shouldThrowExceptionWhenImportCnecRam() throws Exception {
-        final CoreValidD2ConservativeFileResource cnecRamFile = createFileResource("cnecRam",  new URI("https://example.com/cnecRamFile.csv").toURL());
+        final CoreValidD2ConservativeFileResource cnecRamFile = createFileResource("cnec ram",  new URI("https://example.com/cnecRamFile.csv").toURL());
         when(urlValidationService.openUrlStream(anyString())).thenThrow(new CoreValidD2ConservativeInvalidDataException("Connection failed"));
         Assertions.assertThatExceptionOfType(CoreValidD2ConservativeInvalidDataException.class)
                 .isThrownBy(() -> fileImporter.importCnecRam(cnecRamFile))

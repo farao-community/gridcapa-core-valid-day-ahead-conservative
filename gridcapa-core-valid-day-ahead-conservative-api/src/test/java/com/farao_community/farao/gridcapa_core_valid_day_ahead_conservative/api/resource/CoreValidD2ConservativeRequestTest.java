@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -36,7 +37,7 @@ class CoreValidD2ConservativeRequestTest {
 
     @Test
     void checkManualCoreValidRequest() {
-        final CoreValidD2ConservativeRequest request = new CoreValidD2ConservativeRequest("id", "runId", dateTime, cnecRam, vertice);
+        final CoreValidD2ConservativeRequest request = new CoreValidD2ConservativeRequest("id", "runId", dateTime, cnecRam, vertice, new ArrayList<>());
         assertNotNull(request);
         assertEquals("id", request.getId());
         assertEquals("runId", request.getCurrentRunId());
@@ -48,7 +49,7 @@ class CoreValidD2ConservativeRequestTest {
 
     @Test
     void checkAutoCoreValidRequest() {
-        final CoreValidD2ConservativeRequest request = new CoreValidD2ConservativeRequest("id", "runId", dateTime, cnecRam, vertice, true);
+        final CoreValidD2ConservativeRequest request = new CoreValidD2ConservativeRequest("id", "runId", dateTime, cnecRam, vertice, true, new ArrayList<>());
         assertTrue(request.getLaunchedAutomatically());
     }
 

@@ -32,8 +32,6 @@ import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservati
 public class CoreValidD2ConservativeListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CoreValidD2ConservativeListener.class);
-
-
     private final JsonApiConverter jsonApiConverter;
     private final CoreValidD2ConservativeHandler coreValidD2ConservativeHandler;
     private final StreamBridge streamBridge;

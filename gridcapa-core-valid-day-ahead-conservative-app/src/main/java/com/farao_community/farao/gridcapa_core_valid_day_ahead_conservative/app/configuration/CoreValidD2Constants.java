@@ -6,10 +6,12 @@
  */
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.configuration;
 
-public class CoreValidD2Constants {
+public final class CoreValidD2Constants {
+
     private CoreValidD2Constants() {
         throw new IllegalStateException("Constants class");
     }
+
     public static final String TASK_STATUS_UPDATE = "task-status-update";
     public static final String GRIDCAPA_TASK_ID = "gridcapa-task-id";
     public static final String BUSINESS_LOGGER = "BUSINESS_LOGGER";
