@@ -14,6 +14,10 @@ import java.util.Map;
 
 class CnecRamFilterTest {
 
+    private static final String BASECASE = "BASECASE";
+    private static final String NE_NAME = "abbnndd";
+    private static final String ID = "1";
+
     @Test
     void filterBeforeIvaCalculusEmptyGivesEmpty() {
         List<CnecRamData> data = new ArrayList<>();
@@ -26,37 +30,37 @@ class CnecRamFilterTest {
     @Test
     void filterBeforeIvaCalculusFiltersGivesEmpty() {
         List<CnecRamData> data = new ArrayList<>();
-        data.add(new CnecRamData("1", "empty", "AT", "BASECASE", CnecRamFilter.BRANCH_STATUS_OK,
+        data.add(new CnecRamData(ID, "empty", "AT", BASECASE, CnecRamFilter.BRANCH_STATUS_OK,
                                  getDummyRamValues(),
                                  getDummyFValues(),
                                  Map.of()
                  )
         );
-        data.add(new CnecRamData("1", CnecRamFilter.EXCLUDE_NE_NAME + " abbnndd", CnecRamFilter.FRENCH_TSO, "BASECASE", CnecRamFilter.BRANCH_STATUS_OK,
+        data.add(new CnecRamData(ID, CnecRamFilter.EXCLUDE_NE_NAME + " abbnndd", CnecRamFilter.FRENCH_TSO, BASECASE, CnecRamFilter.BRANCH_STATUS_OK,
                                  getDummyRamValues(),
                                  getDummyFValues(),
                                  Map.of()
                  )
         );
-        data.add(new CnecRamData("1", "abbnndd", CnecRamFilter.FRENCH_TSO, "BASECASE", "OUT",
+        data.add(new CnecRamData(ID, NE_NAME, CnecRamFilter.FRENCH_TSO, BASECASE, "OUT",
                                  getDummyRamValues(),
                                  getDummyFValues(),
                                  Map.of()
                  )
         );
-        data.add(new CnecRamData("1" + CnecRamFilter.EXCLUDE_SUFFIX_NEC_ID_BEFORE, "abbnndd", CnecRamFilter.FRENCH_TSO, "BASECASE", CnecRamFilter.BRANCH_STATUS_OK,
+        data.add(new CnecRamData(ID + CnecRamFilter.EXCLUDE_SUFFIX_NEC_ID_BEFORE, NE_NAME, CnecRamFilter.FRENCH_TSO, BASECASE, CnecRamFilter.BRANCH_STATUS_OK,
                                  getDummyRamValues(),
                                  getDummyFValues(),
                                  Map.of()
                  )
         );
-        data.add(new CnecRamData("1" + CnecRamFilter.EXCLUDE_SUFFIX_NEC_ID_AFTER, "abbnndd", CnecRamFilter.FRENCH_TSO, "BASECASE", CnecRamFilter.BRANCH_STATUS_OK,
+        data.add(new CnecRamData(ID + CnecRamFilter.EXCLUDE_SUFFIX_NEC_ID_AFTER, NE_NAME, CnecRamFilter.FRENCH_TSO, BASECASE, CnecRamFilter.BRANCH_STATUS_OK,
                                  getDummyRamValues(),
                                  getDummyFValues(),
                                  Map.of()
                  )
         );
-        data.add(new CnecRamData("1", "abbnndd", CnecRamFilter.FRENCH_TSO, "BASECASE", CnecRamFilter.BRANCH_STATUS_OK,
+        data.add(new CnecRamData(ID, NE_NAME, CnecRamFilter.FRENCH_TSO, BASECASE, CnecRamFilter.BRANCH_STATUS_OK,
                                  new CnecRamValuesData(3, 4, BigDecimal.valueOf(5), CnecRamFilter.MIN_AMR_VALUE, 7, 8, 9),
                                  getDummyFValues(),
                                  Map.of()
@@ -79,19 +83,19 @@ class CnecRamFilterTest {
     @Test
     void filterBeforeIvaCalculusFiltersGivesAllOK() {
         List<CnecRamData> data = new ArrayList<>();
-        data.add(new CnecRamData("1", "abbnndd", CnecRamFilter.FRENCH_TSO, "BASECASE", CnecRamFilter.BRANCH_STATUS_OK,
+        data.add(new CnecRamData(ID, NE_NAME, CnecRamFilter.FRENCH_TSO, BASECASE, CnecRamFilter.BRANCH_STATUS_OK,
                                  getDummyRamValues(),
                                  getDummyFValues(),
                                  Map.of()
                  )
         );
-        data.add(new CnecRamData("2", "abbnndd", CnecRamFilter.FRENCH_TSO, "BASECASE", CnecRamFilter.BRANCH_STATUS_OK,
+        data.add(new CnecRamData("2", NE_NAME, CnecRamFilter.FRENCH_TSO, BASECASE, CnecRamFilter.BRANCH_STATUS_OK,
                                  getDummyRamValues(),
                                  getDummyFValues(),
                                  Map.of()
                  )
         );
-        data.add(new CnecRamData("3", "abbnndd", CnecRamFilter.FRENCH_TSO, "BASECASE", CnecRamFilter.BRANCH_STATUS_OK,
+        data.add(new CnecRamData("3", NE_NAME, CnecRamFilter.FRENCH_TSO, BASECASE, CnecRamFilter.BRANCH_STATUS_OK,
                                  getDummyRamValues(),
                                  getDummyFValues(),
                                  Map.of()

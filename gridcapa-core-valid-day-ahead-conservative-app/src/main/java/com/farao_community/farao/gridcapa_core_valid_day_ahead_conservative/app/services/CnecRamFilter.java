@@ -34,7 +34,8 @@ public final class CnecRamFilter {
         return FRENCH_TSO.equalsIgnoreCase(cnecRamData.tso())
                && BRANCH_STATUS_OK.equalsIgnoreCase(cnecRamData.branchStatus())
                && !StringUtils.startsWithIgnoreCase(cnecRamData.neName(), EXCLUDE_NE_NAME)
-               && !StringUtils.endsWithAny(cnecRamData.necId(), EXCLUDE_SUFFIX_NEC_ID_BEFORE, EXCLUDE_SUFFIX_NEC_ID_AFTER)
+               && !StringUtils.endsWithIgnoreCase(cnecRamData.necId(), EXCLUDE_SUFFIX_NEC_ID_BEFORE)
+               && !StringUtils.endsWithIgnoreCase(cnecRamData.necId(), EXCLUDE_SUFFIX_NEC_ID_AFTER)
                && cnecRamData.ramValues().amr() > MIN_AMR_VALUE;
     }
 }
