@@ -104,7 +104,6 @@ class BranchMaxIvaServiceTest {
         final String[] excludedBranchNames = {TEST_NAME_FILTEREDOUT};
         final int maxIva = ReflectionTestUtils.invokeMethod(branchMaxIvaService, "computeMaxIva", cnec, excludedBranchNames, 20);
         Assertions.assertThat(maxIva)
-                .isNotNull()
                 .isEqualTo(ZERO_INT);
     }
 
@@ -133,7 +132,6 @@ class BranchMaxIvaServiceTest {
         final String[] excludedBranchNames = {"test1", "test2", "test3"};
         final int maxIva = ReflectionTestUtils.invokeMethod(branchMaxIvaService, "computeMaxIva", cnec, excludedBranchNames, percent);
         Assertions.assertThat(maxIva)
-                .isNotNull()
                 .isEqualTo(expected);
     }
 
