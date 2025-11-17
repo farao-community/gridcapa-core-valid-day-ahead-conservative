@@ -24,7 +24,7 @@ public class CoreValidD2TaskParameters {
 
     public CoreValidD2TaskParameters(final List<TaskParameterDto> parameters) {
         final List<String> errors = new ArrayList<>();
-        for (final TaskParameterDto parameter : parameters) {
+        for (final TaskParameterDto parameter : Optional.ofNullable(parameters).orElse(List.of())) {
             if (USE_PROJECTION.equals(parameter.getId())) {
                 useProjection = validateIsBooleanAndGet(parameter, errors);
             } else {

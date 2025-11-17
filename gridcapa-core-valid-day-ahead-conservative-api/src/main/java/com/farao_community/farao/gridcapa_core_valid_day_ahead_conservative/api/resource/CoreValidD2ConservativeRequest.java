@@ -90,9 +90,12 @@ public class CoreValidD2ConservativeRequest {
         return launchedAutomatically;
     }
 
+    public List<TaskParameterDto> getTaskParameterList() {
+        return taskParameterList;
+    }
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
     }
-
 }
