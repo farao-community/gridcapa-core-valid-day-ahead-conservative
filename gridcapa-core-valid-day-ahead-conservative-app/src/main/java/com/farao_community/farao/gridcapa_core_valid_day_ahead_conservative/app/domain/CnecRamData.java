@@ -6,7 +6,7 @@
  */
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain;
 
-import com.farao_community.farao.gridcapa_core_valid_commons.vertex.IFlowBasedDomainBranchData;
+import com.farao_community.farao.gridcapa_core_valid_commons.vertex.FlowBasedDomainBranchData;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public record CnecRamData(String necId, String neName, String tso, String contingencyName, String branchStatus,
                           CnecRamValuesData ramValues, CnecRamFValuesData fValues,
-                          Map<String, BigDecimal> ptdfValues) implements IFlowBasedDomainBranchData {
+                          Map<String, BigDecimal> ptdfValues) implements FlowBasedDomainBranchData {
 
     @Override
     public int getRam0Core() {

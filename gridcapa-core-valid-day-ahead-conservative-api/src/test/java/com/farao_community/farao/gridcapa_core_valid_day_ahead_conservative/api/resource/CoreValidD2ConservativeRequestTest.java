@@ -43,14 +43,16 @@ class CoreValidD2ConservativeRequestTest {
         assertEquals("runId", request.getCurrentRunId());
         assertEquals("2025-10-01T00:30Z", request.getTimestamp().toString());
         assertEquals("cnecRam.txt", request.getCnecRam().getFilename());
-        assertEquals("vertice.txt", request.getVertice().getFilename());
+        assertEquals("vertice.txt", request.getVertices().getFilename());
         assertFalse(request.getLaunchedAutomatically());
+        assertTrue(request.getTaskParameterList().isEmpty());
     }
 
     @Test
     void checkAutoCoreValidRequest() {
         final CoreValidD2ConservativeRequest request = new CoreValidD2ConservativeRequest("id", "runId", dateTime, cnecRam, vertice, true, new ArrayList<>());
         assertTrue(request.getLaunchedAutomatically());
+        assertTrue(request.getTaskParameterList().isEmpty());
     }
 
 }
