@@ -5,6 +5,7 @@ import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.configuration.CoreValidD2Constants.BOOLEAN;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.configuration.CoreValidD2Constants.USE_PROJECTION;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -16,13 +17,23 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class CoreValidD2TaskParametersTest {
 
     @Test
-    void testValidBooleanParameter() {
+    void testValidBooleanParameterAsTrue() {
         final TaskParameterDto parameter = Mockito.mock(TaskParameterDto.class);
         Mockito.when(parameter.getId()).thenReturn(USE_PROJECTION);
-        Mockito.when(parameter.getParameterType()).thenReturn("BOOLEAN");
+        Mockito.when(parameter.getParameterType()).thenReturn(BOOLEAN);
         Mockito.when(parameter.getValue()).thenReturn("true");
 
         assertTrue(getParams(parameter).shouldProjectVertices());
+    }
+
+    @Test
+    void testValidBooleanParameterAsFalse() {
+        final TaskParameterDto parameter = Mockito.mock(TaskParameterDto.class);
+        Mockito.when(parameter.getId()).thenReturn(USE_PROJECTION);
+        Mockito.when(parameter.getParameterType()).thenReturn(BOOLEAN);
+        Mockito.when(parameter.getValue()).thenReturn("false");
+
+        assertFalse(getParams(parameter).shouldProjectVertices());
     }
 
     @Test
@@ -44,7 +55,7 @@ class CoreValidD2TaskParametersTest {
     void testUnknownParameter() {
         final TaskParameterDto parameter = Mockito.mock(TaskParameterDto.class);
         Mockito.when(parameter.getId()).thenReturn("UNKNOWN_PARAMETER");
-        Mockito.when(parameter.getParameterType()).thenReturn("BOOLEAN");
+        Mockito.when(parameter.getParameterType()).thenReturn(BOOLEAN);
         Mockito.when(parameter.getValue()).thenReturn("true");
         assertFalse(getParams(parameter).shouldProjectVertices());
     }
@@ -53,7 +64,7 @@ class CoreValidD2TaskParametersTest {
     void testToJsonString() {
         final TaskParameterDto parameter = Mockito.mock(TaskParameterDto.class);
         Mockito.when(parameter.getId()).thenReturn(USE_PROJECTION);
-        Mockito.when(parameter.getParameterType()).thenReturn("BOOLEAN");
+        Mockito.when(parameter.getParameterType()).thenReturn(BOOLEAN);
         Mockito.when(parameter.getValue()).thenReturn("true");
 
         assertEquals("{\n\t\"USE_PROJECTION\": true\n}",

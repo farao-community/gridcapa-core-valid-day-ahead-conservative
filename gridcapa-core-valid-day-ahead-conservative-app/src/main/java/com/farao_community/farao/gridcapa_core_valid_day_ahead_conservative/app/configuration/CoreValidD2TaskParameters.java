@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.configuration.CoreValidD2Constants.BOOLEAN;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.configuration.CoreValidD2Constants.USE_PROJECTION;
 
 public class CoreValidD2TaskParameters {
@@ -43,7 +44,7 @@ public class CoreValidD2TaskParameters {
 
     private boolean validateIsBooleanAndGet(final TaskParameterDto parameter,
                                             final List<String> errors) {
-        if ("BOOLEAN".equals(parameter.getParameterType())) {
+        if (BOOLEAN.equals(parameter.getParameterType())) {
             return Boolean.parseBoolean(Optional.ofNullable(parameter.getValue())
                                                 .orElse(parameter.getDefaultValue()));
         } else {

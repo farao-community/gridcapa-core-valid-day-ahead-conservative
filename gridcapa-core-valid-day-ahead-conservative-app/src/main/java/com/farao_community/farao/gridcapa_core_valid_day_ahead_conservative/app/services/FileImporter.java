@@ -39,7 +39,7 @@ public class FileImporter {
         return importFile(cnecRamFile, is -> CnecRamImporter.importCnecRam(is, coreHubs));
     }
 
-    public <T> T importFile(final CoreValidD2ConservativeFileResource file,
+    private <T> T importFile(final CoreValidD2ConservativeFileResource file,
                             final Function<InputStream, T> inputStreamMapper) {
         try (final InputStream fileContentStream = urlValidationService.openUrlStream(file.getUrl())) {
             return inputStreamMapper.apply(fileContentStream);
