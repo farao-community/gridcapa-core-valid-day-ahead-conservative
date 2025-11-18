@@ -80,12 +80,19 @@ class CoreValidD2TaskParametersTest {
         Mockito.when(parameter.getParameterType()).thenReturn(BOOLEAN);
         Mockito.when(parameter.getValue()).thenReturn("true");
 
-        assertEquals("{\n\t\"USE_PROJECTION\": true, "
-                     + "\n\t\"MAX_VERTICES_PER_BRANCH\": 0, "
-                     + "\n\t\"RAM_LIMIT\": 0, "
-                     + "\n\t\"MIN_RAM_MCCC\": 0, "
-                     + "\n\t\"EXCLUDED_BRANCHES\": null"
-                     + "\n}",
+        assertEquals("""
+                 {
+                 \t"USE_PROJECTION": true, \
+
+                 \t"MAX_VERTICES_PER_BRANCH": 0, \
+
+                 \t"RAM_LIMIT": 0, \
+
+                 \t"MIN_RAM_MCCC": 0, \
+
+                 \t"EXCLUDED_BRANCHES": null\
+
+                 }""",
                      getParams(parameter).toJsonString());
     }
 
