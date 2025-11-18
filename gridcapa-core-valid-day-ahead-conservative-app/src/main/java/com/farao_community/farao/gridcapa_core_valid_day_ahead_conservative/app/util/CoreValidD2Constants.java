@@ -17,4 +17,10 @@ public final class CoreValidD2Constants {
     public static final String BUSINESS_LOGGER = "BUSINESS_LOGGER";
     public static final String USE_PROJECTION = "USE_PROJECTION";
     public static final String BOOLEAN = "BOOLEAN";
+    public static final String INT = "INT";
+    public static final String STRING = "STRING";
+    public static final String MAX_VERTICES_PER_BRANCH = "MAX_VERTICES_PER_BRANCH";
+    public static final String RAM_LIMIT = "RAM_LIMIT";
+    public static final String MIN_RAM_MCCC = "MIN_RAM_MCCC";
+    public static final String EXCLUDED_BRANCHES = "EXCLUDED_BRANCHES";
 }
