@@ -122,7 +122,8 @@ class CoreValidD2TaskParametersTest {
     })
     void coreValidD2TaskParametersThrowsInvalidTest(String id, String parameterType, String value, String defaultValue) {
         TaskParameterDto parameter = new TaskParameterDto(id, parameterType, value, defaultValue);
+        List<TaskParameterDto> paramList = List.of(parameter);
         Assertions.assertThatExceptionOfType(CoreValidD2ConservativeInvalidDataException.class)
-                .isThrownBy(() -> new CoreValidD2TaskParameters(List.of(parameter)));
+                .isThrownBy(() -> new CoreValidD2TaskParameters(paramList));
     }
 }
