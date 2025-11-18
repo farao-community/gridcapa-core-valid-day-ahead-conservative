@@ -71,7 +71,7 @@ class CoreValidD2TaskParametersTest {
                      getParams(parameter).toJsonString());
     }
 
-    CoreValidD2TaskParameters getParams(final TaskParameterDto parameter){
+    CoreValidD2TaskParameters getParams(final TaskParameterDto parameter) {
         return new CoreValidD2TaskParameters(singletonList(parameter));
     }
 }
