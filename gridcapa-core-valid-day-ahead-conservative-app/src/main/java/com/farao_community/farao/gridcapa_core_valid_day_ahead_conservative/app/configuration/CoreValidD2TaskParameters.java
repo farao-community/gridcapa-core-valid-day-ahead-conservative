@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.configuration.CoreValidD2Constants.BOOLEAN;
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.configuration.CoreValidD2Constants.USE_PROJECTION;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.BOOLEAN;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.USE_PROJECTION;
 
 public class CoreValidD2TaskParameters {
     private static final Logger LOGGER = LoggerFactory.getLogger(CoreValidD2TaskParameters.class);

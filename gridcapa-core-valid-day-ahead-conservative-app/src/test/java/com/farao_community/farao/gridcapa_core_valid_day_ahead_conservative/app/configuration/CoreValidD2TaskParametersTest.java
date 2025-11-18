@@ -12,8 +12,8 @@ import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.configuration.CoreValidD2Constants.BOOLEAN;
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.configuration.CoreValidD2Constants.USE_PROJECTION;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.BOOLEAN;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.USE_PROJECTION;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -26,7 +26,7 @@ import java.util.function.Consumer;
 import static com.farao_community.farao.gridcapa.task_manager.api.TaskStatus.ERROR;
 import static com.farao_community.farao.gridcapa.task_manager.api.TaskStatus.RUNNING;
 import static com.farao_community.farao.gridcapa.task_manager.api.TaskStatus.SUCCESS;
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.configuration.CoreValidD2Constants.TASK_STATUS_UPDATE;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.TASK_STATUS_UPDATE;
 
 @Component
 public class CoreValidD2ConservativeListener {

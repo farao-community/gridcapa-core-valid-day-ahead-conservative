@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.configuration.CoreValidD2Constants.BUSINESS_LOGGER;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.BUSINESS_LOGGER;
 
 /**
  * @author Antoine Limouzin {@literal <antoine.limouzin at rte-france.com>}

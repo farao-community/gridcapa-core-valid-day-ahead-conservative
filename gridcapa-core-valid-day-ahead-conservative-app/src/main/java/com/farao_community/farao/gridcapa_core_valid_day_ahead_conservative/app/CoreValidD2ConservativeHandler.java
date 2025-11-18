@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.configuration.CoreValidD2Constants.GRIDCAPA_TASK_ID;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.GRIDCAPA_TASK_ID;
 
 @Component
 public class CoreValidD2ConservativeHandler {
