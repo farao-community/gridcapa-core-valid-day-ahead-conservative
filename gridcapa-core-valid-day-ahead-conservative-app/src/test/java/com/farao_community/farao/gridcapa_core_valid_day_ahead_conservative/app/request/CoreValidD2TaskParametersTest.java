@@ -5,13 +5,17 @@
  *  file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.configuration;
+package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.request;
 
 import com.farao_community.farao.gridcapa.task_manager.api.TaskParameterDto;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
-import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.request.CoreValidD2TaskParameters;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mockito;
+
+import java.util.List;
 
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.BOOLEAN;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.USE_PROJECTION;
@@ -75,11 +79,50 @@ class CoreValidD2TaskParametersTest {
         Mockito.when(parameter.getParameterType()).thenReturn(BOOLEAN);
         Mockito.when(parameter.getValue()).thenReturn("true");
 
-        assertEquals("{\n\t\"USE_PROJECTION\": true\n}",
+        assertEquals("{\n\t\"USE_PROJECTION\": true, "
+                     + "\n\t\"MAX_VERTICES_PER_BRANCH\": 0, "
+                     + "\n\t\"RAM_LIMIT\": 0, "
+                     + "\n\t\"MIN_RAM_MCCC\": 0, "
+                     + "\n\t\"EXCLUDED_BRANCHES\": null"
+                     + "\n}",
                      getParams(parameter).toJsonString());
     }
 
     CoreValidD2TaskParameters getParams(final TaskParameterDto parameter) {
         return new CoreValidD2TaskParameters(singletonList(parameter));
+    }
+
+    @Test
+    void coreValidD2TaskParametersEmptyTest() {
+        CoreValidD2TaskParameters parameters = new CoreValidD2TaskParameters(null);
+        Assertions.assertThat(parameters)
+                .isNotNull();
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "USE_PROJECTION,BOOLEAN,true,false",
+        "MAX_VERTICES_PER_BRANCH,INT,2,5",
+        "RAM_LIMIT,INT,-10,-100",
+        "MIN_RAM_MCCC,INT,20,15",
+        "EXCLUDED_BRANCHES,STRING,EXCLUDED,EMPTY"
+    })
+    void coreValidD2TaskParametersTest(String id, String parameterType, String value, String defaultValue) {
+        TaskParameterDto parameter = new TaskParameterDto(id, parameterType, value, defaultValue);
+        CoreValidD2TaskParameters parameters = new CoreValidD2TaskParameters(List.of(parameter));
+        Assertions.assertThat(parameters)
+                .isNotNull();
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "MAX_VERTICES_PER_BRANCH,INT,-2,-5",
+        "RAM_LIMIT,INT,tough,luck",
+        "MIN_RAM_MCCC,INT,quite,ko"
+    })
+    void coreValidD2TaskParametersThrowsInvalidTest(String id, String parameterType, String value, String defaultValue) {
+        TaskParameterDto parameter = new TaskParameterDto(id, parameterType, value, defaultValue);
+        Assertions.assertThatExceptionOfType(CoreValidD2ConservativeInvalidDataException.class)
+                .isThrownBy(() -> new CoreValidD2TaskParameters(List.of(parameter)));
     }
 }

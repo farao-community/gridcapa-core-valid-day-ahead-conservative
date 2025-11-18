@@ -13,6 +13,7 @@ import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamFValuesData;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamValuesData;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.RamVertex;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.request.CoreValidD2TaskParameters;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -24,39 +25,24 @@ import java.util.Map;
 @Service
 public class BranchMaxIvaService {
 
+    private static final String SEMICOLON = ";";
     private final CoreHubsConfiguration coreHubsConfiguration;
 
     public BranchMaxIvaService(final CoreHubsConfiguration coreHubsConfiguration) {
         this.coreHubsConfiguration = coreHubsConfiguration;
     }
 
-    public List<BranchData> computeBranchData(final List<Vertex> vertices, final List<CnecRamData> cnecs) {
+    public List<BranchData> computeBranchData(final List<Vertex> vertices,
+                                              final List<CnecRamData> cnecs,
+                                              final CoreValidD2TaskParameters parameters) {
         final List<BranchData> branchData = new ArrayList<>();
         if (cnecs.isEmpty()) {
             return branchData;
         }
-        //TODO USE APPLICATION PROPERTIES
-        final int maxVerticesPerBranch = 5;
-        final int ramLimit = -10;
-        final int minRamMccc = 20;
-        final String[] excludedBranches = {
-            "[FR-FR] Creys - Saint-Vulbas 2 [DIR]",
-            "[FR-FR] Creys - Saint-Vulbas 2 [OPP]",
-            "[FR-CH] Cornier - Riddes [DIR]",
-            "[FR-CH] Cornier - Riddes [OPP]",
-            "[FR-FR] Creys - Genissiat 1 [DIR]",
-            "[FR-FR] Creys - Genissiat 1 [OPP]",
-            "[FR-FR] Creys - Saint-Vulbas 1 [DIR]",
-            "[FR-FR] Creys - Saint-Vulbas 1 [OPP]",
-            "[FR-FR] Frasnes - Genissiat [DIR]",
-            "[FR-FR] Frasnes - Genissiat [OPP]",
-            "[FR-FR] Creys - Genissiat 2 [DIR]",
-            "[FR-FR] Creys - Genissiat 2 [OPP]",
-            "[FR-CH] Cornier - Saint-Triphon [DIR]",
-            "[FR-CH] Cornier - Saint-Triphon [OPP]"
-        };
-       //TODO end
-
+        final int maxVerticesPerBranch = parameters.getMaxVerticesPerBranch();
+        final int ramLimit = parameters.getRamLimit();
+        final int minRamMccc = parameters.getMinRamMccc();
+        final String[] excludedBranches = parameters.getExcludedBranches().split(SEMICOLON);
         cnecs.forEach(cnec -> {
             final List<RamVertex> filteredRamVertices = getFilteredSortedWorseVertices(vertices, cnec, ramLimit, maxVerticesPerBranch);
             final int maxIva = computeMaxIva(cnec, excludedBranches, minRamMccc);
@@ -69,12 +55,12 @@ public class BranchMaxIvaService {
     private List<RamVertex> getFilteredSortedWorseVertices(final List<Vertex> vertices,
                                                            final CnecRamData cnec,
                                                            final int ramLimit,
-                                                           final int maxVertexPerBranch) {
+                                                           final int maxVerticesPerBranch) {
         return vertices.stream()
                 .map(vertex -> computeReelVertexRam(vertex, cnec))
                 .filter(ramVertex -> ramVertex.reelRam() < ramLimit)
                 .sorted((rv1, rv2) -> Integer.compare(rv1.reelRam(), rv2.reelRam()))
-                .limit(maxVertexPerBranch)
+                .limit(maxVerticesPerBranch)
                 .toList();
     }
 

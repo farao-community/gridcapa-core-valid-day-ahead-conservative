@@ -13,6 +13,7 @@ import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamFValuesData;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamValuesData;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.RamVertex;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.request.CoreValidD2TaskParameters;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -48,7 +49,7 @@ class BranchMaxIvaServiceTest {
 
     @Test
     void computeBranchDataEmptyTest() {
-        Assertions.assertThat(branchMaxIvaService.computeBranchData(List.of(), List.of()))
+        Assertions.assertThat(branchMaxIvaService.computeBranchData(List.of(), List.of(), null))
                 .isNotNull()
                 .isEmpty();
     }
@@ -59,7 +60,7 @@ class BranchMaxIvaServiceTest {
         final CnecRamData cnec = getTestCnec();
         final List<CoreHub> coreHubs = getTestCoreHubs();
         Mockito.when(coreHubsConfiguration.getCoreHubs()).thenReturn(coreHubs);
-        Assertions.assertThat(branchMaxIvaService.computeBranchData(vertices, List.of(cnec)))
+        Assertions.assertThat(branchMaxIvaService.computeBranchData(vertices, List.of(cnec), getTestParameters()))
                 .isNotNull()
                 .isNotEmpty()
                 .first()
@@ -196,5 +197,19 @@ class BranchMaxIvaServiceTest {
         testNps.put("BB", i2);
         testNps.put("CC", i3);
         return testNps;
+    }
+
+    private CoreValidD2TaskParameters getTestParameters() {
+        CoreValidD2TaskParameters params = Mockito.mock(CoreValidD2TaskParameters.class);
+        Mockito.when(params.getMaxVerticesPerBranch()).thenReturn(5);
+        Mockito.when(params.getRamLimit()).thenReturn(-10);
+        Mockito.when(params.getMinRamMccc()).thenReturn(20);
+        Mockito.when(params.getExcludedBranches()).thenReturn("[FR-FR] Creys - Saint-Vulbas 2 [DIR];[FR-FR] Creys - Saint-Vulbas 2 [OPP];"
+                                                              + "[FR-CH] Cornier - Riddes [DIR];[FR-CH] Cornier - Riddes [OPP]",
+                                                              "[FR-FR] Creys - Genissiat 1 [DIR];[FR-FR] Creys - Genissiat 1 [OPP];[FR-FR] Creys - Saint-Vulbas 1 [DIR];"
+                                                              + "[FR-FR] Creys - Saint-Vulbas 1 [OPP];[FR-FR] Frasnes - Genissiat [DIR];[FR-FR] Frasnes - Genissiat [OPP];"
+                                                              + "[FR-FR] Creys - Genissiat 2 [DIR];[FR-FR] Creys - Genissiat 2 [OPP];[FR-CH] Cornier - Saint-Triphon [DIR];"
+                                                              + "[FR-CH] Cornier - Saint-Triphon [OPP]");
+        return params;
     }
 }
