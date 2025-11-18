@@ -9,7 +9,7 @@ package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHub;
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubsConfiguration;
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
-import com.farao_community.farao.gridcapa_core_valid_commons.vertex.VerticesImporter;
+import com.farao_community.farao.gridcapa_core_valid_commons.vertex.VerticesUtils;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.resource.CoreValidD2ConservativeFileResource;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamData;
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
 @Service
 public class FileImporter {
@@ -31,18 +32,19 @@ public class FileImporter {
     }
 
     public List<Vertex> importVertices(final CoreValidD2ConservativeFileResource verticesFile) {
-        try (final InputStream verticefileInputStream = urlValidationService.openUrlStream(verticesFile.getUrl())) {
-            return VerticesImporter.importVertices(verticefileInputStream, coreHubs);
-        } catch (final Exception e) {
-            throw new CoreValidD2ConservativeInvalidDataException(String.format("Cannot import vertices file from URL '%s'", verticesFile.getUrl()), e);
-        }
+        return importFile(verticesFile, is -> VerticesUtils.importVertices(is, coreHubs));
     }
 
     public List<CnecRamData> importCnecRam(final CoreValidD2ConservativeFileResource cnecRamFile) {
-        try (final InputStream cnecRamInputStream = urlValidationService.openUrlStream(cnecRamFile.getUrl())) {
-            return CnecRamImporter.importCnecRam(cnecRamInputStream, coreHubs);
-        } catch (Exception e) {
-            throw new CoreValidD2ConservativeInvalidDataException(String.format("Cannot import cnec ram file from URL '%s'", cnecRamFile.getUrl()), e);
+        return importFile(cnecRamFile, is -> CnecRamImporter.importCnecRam(is, coreHubs));
+    }
+
+    private <T> T importFile(final CoreValidD2ConservativeFileResource file,
+                            final Function<InputStream, T> inputStreamMapper) {
+        try (final InputStream fileContentStream = urlValidationService.openUrlStream(file.getUrl())) {
+            return inputStreamMapper.apply(fileContentStream);
+        } catch (final Exception e) {
+            throw new CoreValidD2ConservativeInvalidDataException(String.format("Cannot import %s file from URL '%s'", file.getFilename(), file.getUrl()), e);
         }
     }
 }

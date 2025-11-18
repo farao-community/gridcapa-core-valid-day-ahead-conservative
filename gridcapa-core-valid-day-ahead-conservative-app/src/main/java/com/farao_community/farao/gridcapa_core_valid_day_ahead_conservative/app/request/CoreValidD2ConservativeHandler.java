@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app;
+package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.request;
 
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.resource.CoreValidD2ConservativeRequest;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services.FileImporter;
@@ -13,9 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
-/**
- * @author Antoine Limouzin {@literal <antoine.limouzin at rte-france.com>}
- */
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.GRIDCAPA_TASK_ID;
+
 @Component
 public class CoreValidD2ConservativeHandler {
 
@@ -37,7 +36,7 @@ public class CoreValidD2ConservativeHandler {
     }
 
     private static void setUpEventLogging(final CoreValidD2ConservativeRequest request) {
-        MDC.put("gridcapa-task-id", request.getId());
+        MDC.put(GRIDCAPA_TASK_ID, request.getId());
     }
 
 }

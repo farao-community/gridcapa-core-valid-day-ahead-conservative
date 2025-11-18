@@ -8,6 +8,8 @@
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app;
 
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.resource.CoreValidD2ConservativeRequest;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.request.CoreValidD2ConservativeHandler;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.request.CoreValidD2ConservativeListener;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

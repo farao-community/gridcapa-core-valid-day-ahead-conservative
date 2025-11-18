@@ -65,7 +65,7 @@
         <jsonapi.converter.version>0.11</jsonapi.converter.version>
         <maven.jaxb.version>4.0.8</maven.jaxb.version>
         <opencsv.version>5.6</opencsv.version>
-        <gridcapa.core-valid-commons.version>0.2.0-beta</gridcapa.core-valid-commons.version>
+        <gridcapa.core-valid-commons.version>0.3.0-beta</gridcapa.core-valid-commons.version>
 
         <!-- BUSINESS DEPENDENCIES -->
         <farao.dependencies.version>1.44.1</farao.dependencies.version>
