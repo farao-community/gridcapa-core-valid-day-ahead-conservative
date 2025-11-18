@@ -18,6 +18,7 @@ import org.mockito.Mockito;
 import java.util.List;
 
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.BOOLEAN;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.EXCLUDED_BRANCHES;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.USE_PROJECTION;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -144,7 +145,7 @@ class CoreValidD2TaskParametersTest {
     @Test
     void coreValidD2TaskParametersCheckStringTest() {
         final String excluded = "EXCLUDED";
-        TaskParameterDto parameter = new TaskParameterDto("EXCLUDED_BRANCHES", "STRING", excluded, "EMPTY");
+        TaskParameterDto parameter = new TaskParameterDto(EXCLUDED_BRANCHES, "STRING", excluded, "EMPTY");
         CoreValidD2TaskParameters parameters = new CoreValidD2TaskParameters(List.of(parameter));
         Assertions.assertThat(parameters)
                 .isNotNull()
