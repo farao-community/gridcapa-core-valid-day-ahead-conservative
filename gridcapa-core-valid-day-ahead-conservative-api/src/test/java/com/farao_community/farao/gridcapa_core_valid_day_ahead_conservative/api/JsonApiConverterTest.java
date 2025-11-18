@@ -32,7 +32,7 @@ class JsonApiConverterTest {
         assertEquals("id", request.getId());
         assertEquals("cnecRam.txt", request.getCnecRam().getFilename());
         assertEquals("https://cnecRam/file/url", request.getCnecRam().getUrl());
-        assertEquals("vertice.txt", request.getVertices().getFilename());
+        assertEquals("vertices.txt", request.getVertices().getFilename());
         assertEquals("https://vertice/file/url", request.getVertices().getUrl());
     }
 
