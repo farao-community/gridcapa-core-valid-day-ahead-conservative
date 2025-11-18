@@ -202,9 +202,9 @@ class CoreValidD2TaskParametersTest {
 
     @ParameterizedTest
     @CsvSource({
-            "MAX_VERTICES_PER_BRANCH,INT,2,5,maxVerticesPerBranch,2",
-            "RAM_LIMIT,INT,-10,-100,ramLimit,-10",
-            "MIN_RAM_MCCC,INT,20,15,minRamMccc,20"
+        "MAX_VERTICES_PER_BRANCH,INT,2,5,maxVerticesPerBranch,2",
+        "RAM_LIMIT,INT,-10,-100,ramLimit,-10",
+        "MIN_RAM_MCCC,INT,20,15,minRamMccc,20"
     })
     void coreValidD2TaskParametersGettersTest(String id, String parameterType, String value, String defaultValue, String getterMethod, int getterValue) {
         TaskParameterDto parameter = new TaskParameterDto(id, parameterType, value, defaultValue);
@@ -240,5 +240,15 @@ class CoreValidD2TaskParametersTest {
         Assertions.assertThat(parameters)
             .isNotNull()
             .hasFieldOrPropertyWithValue("excludedBranches", excluded);
+    }
+
+    @Test
+    void coreValidD2TaskParametersCheckStringTest() {
+        final String excluded = "EXCLUDED";
+        TaskParameterDto parameter = new TaskParameterDto("EXCLUDED_BRANCHES", "STRING", excluded, "EMPTY");
+        CoreValidD2TaskParameters parameters = new CoreValidD2TaskParameters(List.of(parameter));
+        Assertions.assertThat(parameters)
+                .isNotNull()
+                .hasFieldOrPropertyWithValue("excludedBranches", excluded);
     }
 }
