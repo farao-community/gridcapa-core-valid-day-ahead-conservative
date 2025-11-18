@@ -36,7 +36,7 @@ public class BranchMaxIvaService {
             return branchData;
         }
         //TODO USE APPLICATION PROPERTIES
-        final int maxVertexPerBranch = 5;
+        final int maxVerticesPerBranch = 5;
         final int ramLimit = -10;
         final int minRamMccc = 20;
         final String[] excludedBranches = {
@@ -58,7 +58,7 @@ public class BranchMaxIvaService {
        //TODO end
 
         cnecs.forEach(cnec -> {
-            final List<RamVertex> filteredRamVertices = getFilteredSortedWorseVertices(vertices, cnec, ramLimit, maxVertexPerBranch);
+            final List<RamVertex> filteredRamVertices = getFilteredSortedWorseVertices(vertices, cnec, ramLimit, maxVerticesPerBranch);
             final int maxIva = computeMaxIva(cnec, excludedBranches, minRamMccc);
             final RamVertex worstVertice = filteredRamVertices.getFirst();
             branchData.add(new BranchData(cnec, worstVertice.reelRam(), maxIva, worstVertice.verticeId(), filteredRamVertices));
