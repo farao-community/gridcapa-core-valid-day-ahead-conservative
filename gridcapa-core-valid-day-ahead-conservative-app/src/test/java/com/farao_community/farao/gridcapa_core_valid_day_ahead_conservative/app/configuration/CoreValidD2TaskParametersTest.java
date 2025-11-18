@@ -5,11 +5,13 @@ import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.util.Collections;
-import java.util.List;
-
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.configuration.CoreValidD2Constants.USE_PROJECTION;
-import static org.junit.jupiter.api.Assertions.*;
+import static java.util.Collections.singletonList;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CoreValidD2TaskParametersTest {
 
@@ -20,8 +22,7 @@ class CoreValidD2TaskParametersTest {
         Mockito.when(parameter.getParameterType()).thenReturn("BOOLEAN");
         Mockito.when(parameter.getValue()).thenReturn("true");
 
-        final CoreValidD2TaskParameters taskParameters = new CoreValidD2TaskParameters(Collections.singletonList(parameter));
-        assertTrue(taskParameters.shouldProjectVertices());
+        assertTrue(getParams(parameter).shouldProjectVertices());
     }
 
     @Test
@@ -31,9 +32,12 @@ class CoreValidD2TaskParametersTest {
         Mockito.when(parameter.getParameterType()).thenReturn("STRING");
         Mockito.when(parameter.getValue()).thenReturn("true");
 
-        final List<TaskParameterDto> parameters = Collections.singletonList(parameter);
-        final CoreValidD2ConservativeInvalidDataException exception = assertThrows(CoreValidD2ConservativeInvalidDataException.class, () -> new CoreValidD2TaskParameters(parameters));
-        assertTrue(exception.getMessage().contains("Parameter USE_PROJECTION was expected to be of type BOOLEAN, got STRING"));
+        final CoreValidD2ConservativeInvalidDataException exception = assertThrows(
+                CoreValidD2ConservativeInvalidDataException.class,
+                () -> getParams(parameter)
+        );
+        assertThat(exception.getMessage())
+                .contains("Parameter USE_PROJECTION was expected to be of type BOOLEAN, got STRING");
     }
 
     @Test
@@ -42,9 +46,7 @@ class CoreValidD2TaskParametersTest {
         Mockito.when(parameter.getId()).thenReturn("UNKNOWN_PARAMETER");
         Mockito.when(parameter.getParameterType()).thenReturn("BOOLEAN");
         Mockito.when(parameter.getValue()).thenReturn("true");
-
-        final CoreValidD2TaskParameters taskParameters = new CoreValidD2TaskParameters(Collections.singletonList(parameter));
-        assertFalse(taskParameters.shouldProjectVertices());
+        assertFalse(getParams(parameter).shouldProjectVertices());
     }
 
     @Test
@@ -54,8 +56,11 @@ class CoreValidD2TaskParametersTest {
         Mockito.when(parameter.getParameterType()).thenReturn("BOOLEAN");
         Mockito.when(parameter.getValue()).thenReturn("true");
 
-        final CoreValidD2TaskParameters taskParameters = new CoreValidD2TaskParameters(Collections.singletonList(parameter));
-        final String jsonString = taskParameters.toJsonString();
-        assertEquals("{\n\t\"USE_PROJECTION\": true\n}", jsonString);
+        assertEquals("{\n\t\"USE_PROJECTION\": true\n}",
+                     getParams(parameter).toJsonString());
+    }
+
+    CoreValidD2TaskParameters getParams(final TaskParameterDto parameter){
+        return new CoreValidD2TaskParameters(singletonList(parameter));
     }
 }
