@@ -9,6 +9,7 @@ package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app
 
 import com.farao_community.farao.gridcapa.task_manager.api.TaskParameterDto;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.request.CoreValidD2TaskParameters;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
