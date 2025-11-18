@@ -202,6 +202,20 @@ class CoreValidD2TaskParametersTest {
 
     @ParameterizedTest
     @CsvSource({
+            "MAX_VERTICES_PER_BRANCH,INT,2,5,maxVerticesPerBranch,2",
+            "RAM_LIMIT,INT,-10,-100,ramLimit,-10",
+            "MIN_RAM_MCCC,INT,20,15,minRamMccc,20"
+    })
+    void coreValidD2TaskParametersGettersTest(String id, String parameterType, String value, String defaultValue, String getterMethod, int getterValue) {
+        TaskParameterDto parameter = new TaskParameterDto(id, parameterType, value, defaultValue);
+        CoreValidD2TaskParameters parameters = new CoreValidD2TaskParameters(List.of(parameter));
+        Assertions.assertThat(parameters)
+                .isNotNull()
+                .hasFieldOrPropertyWithValue(getterMethod, getterValue);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
         "MAX_VERTICES_PER_BRANCH,INT,-2,-5",
         "RAM_THRESHOLD,INT,tough,luck",
         "MIN_RAM_MCCC,INT,quite,ko",
