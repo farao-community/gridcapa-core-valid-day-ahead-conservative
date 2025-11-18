@@ -97,7 +97,7 @@ public class CoreValidD2TaskParameters {
         if (StringUtils.equals(STRING, parameter.getParameterType())) {
             return parameter.getValue() != null ? parameter.getValue() : parameter.getDefaultValue();
         } else {
-            errors.add(String.format("Parameter %s was expected to be of type INT, got %s", parameter.getId(), parameter.getParameterType()));
+            errors.add(String.format("Parameter %s was expected to be of type STRING, got %s", parameter.getId(), parameter.getParameterType()));
         }
         return ""; // default return value, won't be used as this return can be reached only in case of validation error
     }

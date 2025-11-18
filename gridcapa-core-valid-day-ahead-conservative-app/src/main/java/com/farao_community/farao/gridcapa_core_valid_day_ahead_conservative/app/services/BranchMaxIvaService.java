@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -42,11 +43,12 @@ public class BranchMaxIvaService {
         final int maxVerticesPerBranch = parameters.getMaxVerticesPerBranch();
         final int ramLimit = parameters.getRamLimit();
         final int minRamMccc = parameters.getMinRamMccc();
-        final String[] excludedBranches = parameters.getExcludedBranches().split(SEMICOLON);
+        final String excludedBranchesString = parameters.getExcludedBranches();
+        final String[] excludedBranches = excludedBranchesString != null ? excludedBranchesString.split(SEMICOLON) : new String[0];
         cnecs.forEach(cnec -> {
             final List<RamVertex> filteredRamVertices = getFilteredSortedWorseVertices(vertices, cnec, ramLimit, maxVerticesPerBranch);
             final int maxIva = computeMaxIva(cnec, excludedBranches, minRamMccc);
-            final RamVertex worstVertice = filteredRamVertices.getFirst();
+            final RamVertex worstVertice = filteredRamVertices.isEmpty() ? new RamVertex(0,0) : filteredRamVertices.getFirst();
             branchData.add(new BranchData(cnec, worstVertice.reelRam(), maxIva, worstVertice.verticeId(), filteredRamVertices));
         });
         return branchData;
