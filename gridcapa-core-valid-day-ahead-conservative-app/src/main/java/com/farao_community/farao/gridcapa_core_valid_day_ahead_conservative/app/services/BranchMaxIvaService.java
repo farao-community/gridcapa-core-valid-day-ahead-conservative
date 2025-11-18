@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -48,7 +47,7 @@ public class BranchMaxIvaService {
         cnecs.forEach(cnec -> {
             final List<RamVertex> filteredRamVertices = getFilteredSortedWorseVertices(vertices, cnec, ramLimit, maxVerticesPerBranch);
             final int maxIva = computeMaxIva(cnec, excludedBranches, minRamMccc);
-            final RamVertex worstVertice = filteredRamVertices.isEmpty() ? new RamVertex(0,0) : filteredRamVertices.getFirst();
+            final RamVertex worstVertice = filteredRamVertices.isEmpty() ? new RamVertex(0, 0) : filteredRamVertices.getFirst();
             branchData.add(new BranchData(cnec, worstVertice.reelRam(), maxIva, worstVertice.verticeId(), filteredRamVertices));
         });
         return branchData;
