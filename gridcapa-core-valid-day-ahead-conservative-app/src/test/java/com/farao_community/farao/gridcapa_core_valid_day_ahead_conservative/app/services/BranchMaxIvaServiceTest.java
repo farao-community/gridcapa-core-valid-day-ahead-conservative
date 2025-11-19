@@ -64,7 +64,7 @@ class BranchMaxIvaServiceTest {
                 .first()
                 .isNotNull()
                 .hasFieldOrPropertyWithValue("cnec", cnec)
-                .hasFieldOrPropertyWithValue("minReelRam", -250)
+                .hasFieldOrPropertyWithValue("minRealRam", -250)
                 .hasFieldOrPropertyWithValue("ivaMax", 360)
                 .hasFieldOrPropertyWithValue("worstVertexId", 2);
     }
@@ -75,13 +75,13 @@ class BranchMaxIvaServiceTest {
         "-10,2,2,2,-250",
         "-100,2,1,2,-250"
     })
-    void getFilteredSortedWorseVerticesTest(int ramLimit, int maxVertexPerBranch, int expectedCount, int expectedWorstId, int expectedWorstValue) {
+    void getWorstVerticesUnderRamThresholdTest(int ramLimit, int maxVertexPerBranch, int expectedCount, int expectedWorstId, int expectedWorstValue) {
         final List<Vertex> vertices = getTestVertices();
         final CnecRamData cnec = getTestCnecPtdf();
         final List<CoreHub> coreHubs = getTestCoreHubs();
         Mockito.when(coreHubsConfiguration.getCoreHubs()).thenReturn(coreHubs);
         final List<RamVertex> worstVertices = ReflectionTestUtils.invokeMethod(branchMaxIvaService,
-                                                                               "getFilteredSortedWorseVertices",
+                                                                               "getWorstVerticesUnderRamThreshold",
                                                                                vertices,
                                                                                cnec,
                                                                                ramLimit,
@@ -200,7 +200,7 @@ class BranchMaxIvaServiceTest {
     private CoreValidD2TaskParameters getTestParameters() {
         CoreValidD2TaskParameters params = Mockito.mock(CoreValidD2TaskParameters.class);
         Mockito.when(params.getMaxVerticesPerBranch()).thenReturn(5);
-        Mockito.when(params.getRamLimit()).thenReturn(-10);
+        Mockito.when(params.getRamThreshold()).thenReturn(-10);
         Mockito.when(params.getMinRamMccc()).thenReturn(20);
         Mockito.when(params.getExcludedBranches()).thenReturn("[FR-FR] Creys - Saint-Vulbas 2 [DIR];[FR-FR] Creys - Saint-Vulbas 2 [OPP];"
                                                               + "[FR-CH] Cornier - Riddes [DIR];[FR-CH] Cornier - Riddes [OPP]"

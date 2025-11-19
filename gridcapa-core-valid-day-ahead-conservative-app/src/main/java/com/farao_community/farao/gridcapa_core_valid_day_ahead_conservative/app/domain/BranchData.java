@@ -8,5 +8,5 @@ package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app
 
 import java.util.List;
 
-public record BranchData(CnecRamData cnec, int minReelRam, int ivaMax, int worstVertexId, List<RamVertex> worstVertices) {
+public record BranchData(CnecRamData cnec, int minRealRam, int ivaMax, int worstVertexId, List<RamVertex> worstVertices) {
 }

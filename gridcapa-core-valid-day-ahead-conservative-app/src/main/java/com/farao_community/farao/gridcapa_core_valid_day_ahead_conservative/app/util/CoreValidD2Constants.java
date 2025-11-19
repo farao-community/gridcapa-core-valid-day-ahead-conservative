@@ -23,4 +23,5 @@ public final class CoreValidD2Constants {
     public static final String RAM_LIMIT = "RAM_LIMIT";
     public static final String MIN_RAM_MCCC = "MIN_RAM_MCCC";
     public static final String EXCLUDED_BRANCHES = "EXCLUDED_BRANCHES";
+    public static final String SEMICOLON = ";";
 }
