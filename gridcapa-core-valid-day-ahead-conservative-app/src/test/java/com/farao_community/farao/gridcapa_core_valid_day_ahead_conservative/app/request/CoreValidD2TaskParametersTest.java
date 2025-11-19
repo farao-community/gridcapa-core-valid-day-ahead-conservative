@@ -86,7 +86,7 @@ class CoreValidD2TaskParametersTest {
 
                  \t"MAX_VERTICES_PER_BRANCH": 0, \
 
-                 \t"RAM_LIMIT": 0, \
+                 \t"RAM_THRESHOLD": 0, \
 
                  \t"MIN_RAM_MCCC": 0, \
 
@@ -125,7 +125,7 @@ class CoreValidD2TaskParametersTest {
     @ParameterizedTest
     @CsvSource({
         "MAX_VERTICES_PER_BRANCH,INT,2,5,maxVerticesPerBranch,2",
-        "RAM_LIMIT,INT,-10,-100,ramLimit,-10",
+        "RAM_THRESHOLD,INT,-10,-100,ramThreshold,-10",
         "MIN_RAM_MCCC,INT,20,15,minRamMccc,20"
     })
     void coreValidD2TaskParametersGettersTest(String id, String parameterType, String value, String defaultValue, String getterMethod, int getterValue) {
@@ -139,7 +139,7 @@ class CoreValidD2TaskParametersTest {
     @ParameterizedTest
     @CsvSource({
         "MAX_VERTICES_PER_BRANCH,INT,-2,-5",
-        "RAM_LIMIT,INT,tough,luck",
+        "RAM_THRESHOLD,INT,tough,luck",
         "MIN_RAM_MCCC,INT,quite,ko"
     })
     void coreValidD2TaskParametersThrowsInvalidTest(String id, String parameterType, String value, String defaultValue) {
