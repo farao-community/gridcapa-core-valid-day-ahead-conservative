@@ -111,7 +111,7 @@ class CoreValidD2TaskParametersTest {
     @CsvSource({
         "USE_PROJECTION,BOOLEAN,true,false",
         "MAX_VERTICES_PER_BRANCH,INT,2,5",
-        "RAM_LIMIT,INT,-10,-100",
+        "RAM_THRESHOLD,INT,-10,-100",
         "MIN_RAM_MCCC,INT,20,15",
         "EXCLUDED_BRANCHES,STRING,EXCLUDED,EMPTY"
     })
