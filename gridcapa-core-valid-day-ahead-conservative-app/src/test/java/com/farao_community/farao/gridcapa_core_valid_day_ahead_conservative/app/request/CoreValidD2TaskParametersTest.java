@@ -102,7 +102,7 @@ class CoreValidD2TaskParametersTest {
 
     @Test
     void coreValidD2TaskParametersEmptyTest() {
-        CoreValidD2TaskParameters parameters = new CoreValidD2TaskParameters(null);
+        final CoreValidD2TaskParameters parameters = new CoreValidD2TaskParameters(null);
         Assertions.assertThat(parameters)
                 .isNotNull();
     }

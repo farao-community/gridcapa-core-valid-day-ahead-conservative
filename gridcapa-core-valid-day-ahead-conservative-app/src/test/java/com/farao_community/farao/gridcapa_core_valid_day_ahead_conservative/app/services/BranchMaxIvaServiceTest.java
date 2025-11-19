@@ -44,7 +44,6 @@ class BranchMaxIvaServiceTest {
     CoreHubsConfiguration coreHubsConfiguration;
 
     @Autowired
-    @InjectMocks
     BranchMaxIvaService branchMaxIvaService;
 
     @Test
