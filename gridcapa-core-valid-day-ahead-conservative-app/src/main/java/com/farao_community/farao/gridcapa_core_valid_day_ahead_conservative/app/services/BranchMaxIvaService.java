@@ -22,10 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.SEMICOLON;
+
 @Service
 public class BranchMaxIvaService {
 
-    private static final String SEMICOLON = ";";
     private final CoreHubsConfiguration coreHubsConfiguration;
 
     public BranchMaxIvaService(final CoreHubsConfiguration coreHubsConfiguration) {
@@ -40,12 +41,12 @@ public class BranchMaxIvaService {
             return branchData;
         }
         final int maxVerticesPerBranch = parameters.getMaxVerticesPerBranch();
-        final int ramLimit = parameters.getRamLimit();
+        final int ramThreshold = parameters.getRamThreshold();
         final int minRamMccc = parameters.getMinRamMccc();
         final String excludedBranchesString = parameters.getExcludedBranches();
-        final String[] excludedBranches = excludedBranchesString != null ? excludedBranchesString.split(SEMICOLON) : new String[0];
+        final String[] excludedBranches = parameters.getExcludedBranches() != null ? excludedBranchesString.split(SEMICOLON) : new String[0];
         cnecs.forEach(cnec -> {
-            final List<RamVertex> filteredRamVertices = getFilteredSortedWorseVertices(vertices, cnec, ramLimit, maxVerticesPerBranch);
+            final List<RamVertex> filteredRamVertices = getWorstVerticesUnderRamThreshold(vertices, cnec, ramThreshold, maxVerticesPerBranch);
             final int maxIva = computeMaxIva(cnec, excludedBranches, minRamMccc);
             final RamVertex worstVertice = filteredRamVertices.isEmpty() ? new RamVertex(0, 0) : filteredRamVertices.getFirst();
             branchData.add(new BranchData(cnec, worstVertice.reelRam(), maxIva, worstVertice.verticeId(), filteredRamVertices));
@@ -53,13 +54,13 @@ public class BranchMaxIvaService {
         return branchData;
     }
 
-    private List<RamVertex> getFilteredSortedWorseVertices(final List<Vertex> vertices,
-                                                           final CnecRamData cnec,
-                                                           final int ramLimit,
-                                                           final int maxVerticesPerBranch) {
+    private List<RamVertex> getWorstVerticesUnderRamThreshold(final List<Vertex> vertices,
+                                                              final CnecRamData cnec,
+                                                              final int ramThreshold,
+                                                              final int maxVerticesPerBranch) {
         return vertices.stream()
                 .map(vertex -> computeReelVertexRam(vertex, cnec))
-                .filter(ramVertex -> ramVertex.reelRam() < ramLimit)
+                .filter(ramVertex -> ramVertex.reelRam() < ramThreshold)
                 .sorted((rv1, rv2) -> Integer.compare(rv1.reelRam(), rv2.reelRam()))
                 .limit(maxVerticesPerBranch)
                 .toList();

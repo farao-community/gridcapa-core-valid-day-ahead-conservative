@@ -110,7 +110,7 @@ public class CoreValidD2TaskParameters {
         return maxVerticesPerBranch;
     }
 
-    public int getRamLimit() {
+    public int getRamThreshold() {
         return ramLimit;
     }
 
