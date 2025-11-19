@@ -116,8 +116,8 @@ class CoreValidD2TaskParametersTest {
         "EXCLUDED_BRANCHES,STRING,EXCLUDED,EMPTY"
     })
     void coreValidD2TaskParametersTest(String id, String parameterType, String value, String defaultValue) {
-        TaskParameterDto parameter = new TaskParameterDto(id, parameterType, value, defaultValue);
-        CoreValidD2TaskParameters parameters = new CoreValidD2TaskParameters(List.of(parameter));
+        final TaskParameterDto parameter = new TaskParameterDto(id, parameterType, value, defaultValue);
+        final CoreValidD2TaskParameters parameters = new CoreValidD2TaskParameters(List.of(parameter));
         Assertions.assertThat(parameters)
                 .isNotNull();
     }
@@ -129,8 +129,8 @@ class CoreValidD2TaskParametersTest {
         "MIN_RAM_MCCC,INT,20,15,minRamMccc,20"
     })
     void coreValidD2TaskParametersGettersTest(String id, String parameterType, String value, String defaultValue, String getterMethod, int getterValue) {
-        TaskParameterDto parameter = new TaskParameterDto(id, parameterType, value, defaultValue);
-        CoreValidD2TaskParameters parameters = new CoreValidD2TaskParameters(List.of(parameter));
+        final TaskParameterDto parameter = new TaskParameterDto(id, parameterType, value, defaultValue);
+        final CoreValidD2TaskParameters parameters = new CoreValidD2TaskParameters(List.of(parameter));
         Assertions.assertThat(parameters)
                 .isNotNull()
                 .hasFieldOrPropertyWithValue(getterMethod, getterValue);
@@ -143,8 +143,8 @@ class CoreValidD2TaskParametersTest {
         "MIN_RAM_MCCC,INT,quite,ko"
     })
     void coreValidD2TaskParametersThrowsInvalidTest(String id, String parameterType, String value, String defaultValue) {
-        TaskParameterDto parameter = new TaskParameterDto(id, parameterType, value, defaultValue);
-        List<TaskParameterDto> paramList = List.of(parameter);
+        final TaskParameterDto parameter = new TaskParameterDto(id, parameterType, value, defaultValue);
+        final List<TaskParameterDto> paramList = List.of(parameter);
         Assertions.assertThatExceptionOfType(CoreValidD2ConservativeInvalidDataException.class)
                 .isThrownBy(() -> new CoreValidD2TaskParameters(paramList));
     }
@@ -152,8 +152,8 @@ class CoreValidD2TaskParametersTest {
     @Test
     void coreValidD2TaskParametersCheckStringTest() {
         final String excluded = "EXCLUDED";
-        TaskParameterDto parameter = new TaskParameterDto(EXCLUDED_BRANCHES, "STRING", excluded, "EMPTY");
-        CoreValidD2TaskParameters parameters = new CoreValidD2TaskParameters(List.of(parameter));
+        final TaskParameterDto parameter = new TaskParameterDto(EXCLUDED_BRANCHES, "STRING", excluded, "EMPTY");
+        final CoreValidD2TaskParameters parameters = new CoreValidD2TaskParameters(List.of(parameter));
         Assertions.assertThat(parameters)
                 .isNotNull()
                 .hasFieldOrPropertyWithValue("excludedBranches", excluded);
