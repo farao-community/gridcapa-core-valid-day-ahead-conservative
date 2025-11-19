@@ -92,8 +92,8 @@ class BranchMaxIvaServiceTest {
                 .hasSize(expectedCount)
                 .first()
                 .isNotNull()
-                .hasFieldOrPropertyWithValue("verticeId", expectedWorstId)
-                .hasFieldOrPropertyWithValue("reelRam", expectedWorstValue);
+                .hasFieldOrPropertyWithValue("vertexId", expectedWorstId)
+                .hasFieldOrPropertyWithValue("realRam", expectedWorstValue);
     }
 
     @Test

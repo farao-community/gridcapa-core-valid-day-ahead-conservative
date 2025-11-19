@@ -46,10 +46,10 @@ public class BranchMaxIvaService {
         final String excludedBranchesString = parameters.getExcludedBranches();
         final String[] excludedBranches = parameters.getExcludedBranches() != null ? excludedBranchesString.split(SEMICOLON) : new String[0];
         cnecs.forEach(cnec -> {
-            final List<RamVertex> filteredRamVertices = getWorstVerticesUnderRamThreshold(vertices, cnec, ramThreshold, maxVerticesPerBranch);
+            final List<RamVertex> worstVertices = getWorstVerticesUnderRamThreshold(vertices, cnec, ramThreshold, maxVerticesPerBranch);
             final int maxIva = computeMaxIva(cnec, excludedBranches, minRamMccc);
-            final RamVertex worstVertice = filteredRamVertices.isEmpty() ? new RamVertex(0, 0) : filteredRamVertices.getFirst();
-            branchData.add(new BranchData(cnec, worstVertice.reelRam(), maxIva, worstVertice.verticeId(), filteredRamVertices));
+            final RamVertex worstVertex = worstVertices.isEmpty() ? new RamVertex(0, 0) : worstVertices.getFirst();
+            branchData.add(new BranchData(cnec, worstVertex.realRam(), maxIva, worstVertex.vertexId(), worstVertices));
         });
         return branchData;
     }
@@ -60,18 +60,18 @@ public class BranchMaxIvaService {
                                                               final int maxVerticesPerBranch) {
         return vertices.stream()
                 .map(vertex -> computeReelVertexRam(vertex, cnec))
-                .filter(ramVertex -> ramVertex.reelRam() < ramThreshold)
-                .sorted((rv1, rv2) -> Integer.compare(rv1.reelRam(), rv2.reelRam()))
+                .filter(ramVertex -> ramVertex.realRam() < ramThreshold)
+                .sorted((rv1, rv2) -> Integer.compare(rv1.realRam(), rv2.realRam()))
                 .limit(maxVerticesPerBranch)
                 .toList();
     }
 
     private RamVertex computeReelVertexRam(final Vertex vertex, final CnecRamData cnec) {
-        final int reelVertexRam = cnec.ramValues().ram0Core() - sumVertexBranches(vertex.coordinates(), cnec.ptdfValues());
-        return new RamVertex(reelVertexRam, vertex.vertexId());
+        final int realVertexRam = cnec.ramValues().ram0Core() - sumNetPositions(vertex.coordinates(), cnec.ptdfValues());
+        return new RamVertex(realVertexRam, vertex.vertexId());
     }
 
-    private int sumVertexBranches(final Map<String, Integer> verticesNPs, final Map<String, BigDecimal> cnecPtdfs) {
+    private int sumNetPositions(final Map<String, Integer> verticesNPs, final Map<String, BigDecimal> cnecPtdfs) {
         return coreHubsConfiguration.getCoreHubs().stream()
                 .map(coreHub -> cnecPtdfs.get(coreHub.flowbasedCode()).multiply(new BigDecimal(verticesNPs.get(coreHub.clusterVerticeCode()))))
                 .reduce(BigDecimal::add)

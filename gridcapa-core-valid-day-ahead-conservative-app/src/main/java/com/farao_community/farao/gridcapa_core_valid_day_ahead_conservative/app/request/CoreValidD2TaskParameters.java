@@ -22,16 +22,16 @@ import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservati
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.INT;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.MAX_VERTICES_PER_BRANCH;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.MIN_RAM_MCCC;
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.RAM_LIMIT;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.RAM_THRESHOLD;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.STRING;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.USE_PROJECTION;
 
 public class CoreValidD2TaskParameters {
     private static final Logger LOGGER = LoggerFactory.getLogger(CoreValidD2TaskParameters.class);
-    private static final String KEY_VALUE_FORMAT = "%n\t\"%s\": %s";
+    private static final String KEY_VALUE_JSON_FORMAT = "%n\t\"%s\": %s";
     private boolean useProjection;
     private int maxVerticesPerBranch;
-    private int ramLimit;
+    private int ramThreshold;
     private int minRamMccc;
     private String excludedBranches;
 
@@ -41,7 +41,7 @@ public class CoreValidD2TaskParameters {
             switch (parameter.getId()) {
                 case USE_PROJECTION -> useProjection = validateIsBooleanAndGet(parameter, errors);
                 case MAX_VERTICES_PER_BRANCH -> maxVerticesPerBranch = validateIsPositiveIntegerAndGet(parameter, errors);
-                case RAM_LIMIT -> ramLimit = validateIsIntegerAndGet(parameter, errors);
+                case RAM_THRESHOLD -> ramThreshold = validateIsIntegerAndGet(parameter, errors);
                 case MIN_RAM_MCCC -> minRamMccc = validateIsPositiveIntegerAndGet(parameter, errors);
                 case EXCLUDED_BRANCHES -> excludedBranches = validateIsStringAndGet(parameter, errors);
                 default -> LOGGER.warn("Unknown parameter {} (value: {}) will be ignored",
@@ -111,7 +111,7 @@ public class CoreValidD2TaskParameters {
     }
 
     public int getRamThreshold() {
-        return ramLimit;
+        return ramThreshold;
     }
 
     public int getMinRamMccc() {
@@ -124,11 +124,11 @@ public class CoreValidD2TaskParameters {
 
     public String toJsonString() {
         final List<String> appender = new ArrayList<>();
-        appender.add(String.format(KEY_VALUE_FORMAT, USE_PROJECTION, useProjection));
-        appender.add(String.format(KEY_VALUE_FORMAT, MAX_VERTICES_PER_BRANCH, maxVerticesPerBranch));
-        appender.add(String.format(KEY_VALUE_FORMAT, RAM_LIMIT, ramLimit));
-        appender.add(String.format(KEY_VALUE_FORMAT, MIN_RAM_MCCC, minRamMccc));
-        appender.add(String.format(KEY_VALUE_FORMAT, EXCLUDED_BRANCHES, excludedBranches));
+        appender.add(String.format(KEY_VALUE_JSON_FORMAT, USE_PROJECTION, useProjection));
+        appender.add(String.format(KEY_VALUE_JSON_FORMAT, MAX_VERTICES_PER_BRANCH, maxVerticesPerBranch));
+        appender.add(String.format(KEY_VALUE_JSON_FORMAT, RAM_THRESHOLD, ramThreshold));
+        appender.add(String.format(KEY_VALUE_JSON_FORMAT, MIN_RAM_MCCC, minRamMccc));
+        appender.add(String.format(KEY_VALUE_JSON_FORMAT, EXCLUDED_BRANCHES, excludedBranches));
         return String.format("{%s%n}", String.join(", ", appender));
     }
 }
