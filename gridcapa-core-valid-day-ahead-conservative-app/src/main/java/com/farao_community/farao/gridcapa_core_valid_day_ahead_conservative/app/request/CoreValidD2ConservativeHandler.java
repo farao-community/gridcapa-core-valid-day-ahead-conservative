@@ -42,9 +42,9 @@ public class CoreValidD2ConservativeHandler {
 
     public String handleCoreValidD2ConservativeRequest(final CoreValidD2ConservativeRequest request) {
         setUpEventLogging(request);
+        final CoreValidD2TaskParameters iniParameters = new CoreValidD2TaskParameters(request.getTaskParameterList());
         final List<Vertex> vertices = fileImporter.importVertices(request.getVertices());
         final List<CnecRamData> cnecRams = fileImporter.importCnecRam(request.getCnecRam());
-        final CoreValidD2TaskParameters iniParameters = new CoreValidD2TaskParameters(request.getTaskParameterList());
         final List<CnecRamData> filteredCnecRams = CnecRamFilter.filterBeforeIvaCalculus(cnecRams);
         if (iniParameters.shouldProjectVertices()) {
             final List<Vertex> projectedVertices = VerticesUtils.getVerticesProjectedOnDomain(vertices, cnecRams, coreHubsConfiguration.getCoreHubs());
