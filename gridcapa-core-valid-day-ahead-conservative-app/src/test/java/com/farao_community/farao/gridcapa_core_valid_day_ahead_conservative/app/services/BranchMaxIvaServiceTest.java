@@ -203,8 +203,8 @@ class BranchMaxIvaServiceTest {
         Mockito.when(params.getRamLimit()).thenReturn(-10);
         Mockito.when(params.getMinRamMccc()).thenReturn(20);
         Mockito.when(params.getExcludedBranches()).thenReturn("[FR-FR] Creys - Saint-Vulbas 2 [DIR];[FR-FR] Creys - Saint-Vulbas 2 [OPP];"
-                                                              + "[FR-CH] Cornier - Riddes [DIR];[FR-CH] Cornier - Riddes [OPP]",
-                                                              "[FR-FR] Creys - Genissiat 1 [DIR];[FR-FR] Creys - Genissiat 1 [OPP];[FR-FR] Creys - Saint-Vulbas 1 [DIR];"
+                                                              + "[FR-CH] Cornier - Riddes [DIR];[FR-CH] Cornier - Riddes [OPP]"
+                                                              + "[FR-FR] Creys - Genissiat 1 [DIR];[FR-FR] Creys - Genissiat 1 [OPP];[FR-FR] Creys - Saint-Vulbas 1 [DIR];"
                                                               + "[FR-FR] Creys - Saint-Vulbas 1 [OPP];[FR-FR] Frasnes - Genissiat [DIR];[FR-FR] Frasnes - Genissiat [OPP];"
                                                               + "[FR-FR] Creys - Genissiat 2 [DIR];[FR-FR] Creys - Genissiat 2 [OPP];[FR-CH] Cornier - Saint-Triphon [DIR];"
                                                               + "[FR-CH] Cornier - Saint-Triphon [OPP]");
