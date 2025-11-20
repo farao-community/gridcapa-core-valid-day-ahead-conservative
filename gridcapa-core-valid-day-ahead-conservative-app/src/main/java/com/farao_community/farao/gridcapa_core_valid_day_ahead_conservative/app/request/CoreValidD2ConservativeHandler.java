@@ -10,7 +10,9 @@ import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubsCo
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.VerticesUtils;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.resource.CoreValidD2ConservativeRequest;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.BranchData;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamData;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services.BranchMaxIvaService;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services.CnecRamFilter;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services.FileImporter;
 import com.farao_community.farao.minio_adapter.starter.MinioAdapter;
@@ -28,15 +30,18 @@ public class CoreValidD2ConservativeHandler {
     private final Logger eventsLogger;
     private final FileImporter fileImporter;
     private final MinioAdapter minioAdapter;
+    private final BranchMaxIvaService branchMaxIvaService;
     private final CoreHubsConfiguration coreHubsConfiguration;
 
     public CoreValidD2ConservativeHandler(final FileImporter fileImporter,
                                           final MinioAdapter minioAdapter,
                                           final Logger eventsLogger,
+                                          final BranchMaxIvaService branchMaxIvaService,
                                           final CoreHubsConfiguration coreHubsConfiguration) {
         this.fileImporter = fileImporter;
         this.minioAdapter = minioAdapter;
         this.eventsLogger = eventsLogger;
+        this.branchMaxIvaService = branchMaxIvaService;
         this.coreHubsConfiguration = coreHubsConfiguration;
     }
 
@@ -47,8 +52,10 @@ public class CoreValidD2ConservativeHandler {
         final List<CnecRamData> cnecRams = fileImporter.importCnecRam(request.getCnecRam());
         final List<CnecRamData> filteredCnecRams = CnecRamFilter.filterBeforeIvaCalculus(cnecRams);
         if (iniParameters.shouldProjectVertices()) {
-            final List<Vertex> projectedVertices = VerticesUtils.getVerticesProjectedOnDomain(vertices, cnecRams, coreHubsConfiguration.getCoreHubs());
-
+            final List<Vertex> projectedVertices = VerticesUtils.getVerticesProjectedOnDomain(vertices, filteredCnecRams, coreHubsConfiguration.getCoreHubs());
+            final List<BranchData> branches = branchMaxIvaService.computeBranchData(projectedVertices, filteredCnecRams, iniParameters);
+        } else {
+            final List<BranchData> branches = branchMaxIvaService.computeBranchData(vertices, filteredCnecRams, iniParameters);
         }
 
 
