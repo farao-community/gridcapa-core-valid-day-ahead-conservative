@@ -12,10 +12,11 @@ import java.util.List;
 
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CnecRamUtils.hasCurrentLimit;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CnecRamUtils.isAdjustable;
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CnecRamUtils.isNotSpanned;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CnecRamUtils.hadSpanningApplied;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CnecRamUtils.isRteElement;
 
 public final class CnecRamFilter {
+
     private CnecRamFilter() {
         throw new IllegalStateException("Utility class");
     }
@@ -27,7 +28,7 @@ public final class CnecRamFilter {
     }
 
     private static boolean shouldImport(final CnecRamData cnec) {
-        return isRteElement(cnec) && isAdjustable(cnec) && hasCurrentLimit(cnec) && isNotSpanned(cnec);
+        return isRteElement(cnec) && isAdjustable(cnec) && hasCurrentLimit(cnec) && hadSpanningApplied(cnec);
     }
 
 }

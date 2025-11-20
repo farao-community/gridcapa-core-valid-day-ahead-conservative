@@ -55,13 +55,13 @@ class CnecRamFilterTest {
                                  Map.of()
                  )
         );
-        data.add(new CnecRamData(ID + CnecRamUtils.EXCLUDE_SUFFIX_NEC_ID_BEFORE, NE_NAME, CnecRamUtils.FRENCH_TSO, BASECASE, CnecRamUtils.BRANCH_STATUS_OK,
+        data.add(new CnecRamData(ID + CnecRamUtils.SUFFIX_NEC_ID_BEFORE, NE_NAME, CnecRamUtils.FRENCH_TSO, BASECASE, CnecRamUtils.BRANCH_STATUS_OK,
                                  getDummyRamValues(),
                                  getDummyFValues(),
                                  Map.of()
                  )
         );
-        data.add(new CnecRamData(ID + CnecRamUtils.EXCLUDE_SUFFIX_NEC_ID_AFTER, NE_NAME, CnecRamUtils.FRENCH_TSO, BASECASE, CnecRamUtils.BRANCH_STATUS_OK,
+        data.add(new CnecRamData(ID + CnecRamUtils.SUFFIX_NEC_ID_AFTER, NE_NAME, CnecRamUtils.FRENCH_TSO, BASECASE, CnecRamUtils.BRANCH_STATUS_OK,
                                  getDummyRamValues(),
                                  getDummyFValues(),
                                  Map.of()

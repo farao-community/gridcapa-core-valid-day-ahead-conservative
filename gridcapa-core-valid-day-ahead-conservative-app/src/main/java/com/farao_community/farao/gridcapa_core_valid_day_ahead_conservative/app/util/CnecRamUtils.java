@@ -11,13 +11,13 @@ public final class CnecRamUtils {
 
     public static final String FRENCH_TSO = "FR";
     public static final String PREFIX_NO_CURRENT_LIMIT = "[NCL]";
-    public static final String EXCLUDE_SUFFIX_NEC_ID_BEFORE = "_SpannedBefore";
-    public static final String EXCLUDE_SUFFIX_NEC_ID_AFTER = "_SpannedAfter";
+    public static final String SUFFIX_NEC_ID_BEFORE = "_SpannedBefore";
+    public static final String SUFFIX_NEC_ID_AFTER = "_SpannedAfter";
     public static final String BRANCH_STATUS_OK = "OK";
     public static final int MIN_AMR_VALUE = 0;
     public static final String BASE_CASE = "BASECASE";
-    public static final String ATL = "ATL";
-    
+    public static final String SUFFIX_ADMISSIBLE_TRANSMISSION_LIMIT = "ATL";
+
     public static boolean isRteElement(final CnecRamData cnec) {
         return FRENCH_TSO.equalsIgnoreCase(cnec.tso());
     }
@@ -31,16 +31,16 @@ public final class CnecRamUtils {
         return !StringUtils.startsWithIgnoreCase(cnec.neName(), PREFIX_NO_CURRENT_LIMIT);
     }
 
-    public static boolean isNotSpanned(final CnecRamData cnec) {
-        return !StringUtils.endsWithIgnoreCase(cnec.necId(), EXCLUDE_SUFFIX_NEC_ID_BEFORE)
-               && !StringUtils.endsWithIgnoreCase(cnec.necId(), EXCLUDE_SUFFIX_NEC_ID_AFTER);
+    public static boolean hadSpanningApplied(final CnecRamData cnec) {
+        return !StringUtils.endsWithIgnoreCase(cnec.necId(), SUFFIX_NEC_ID_BEFORE)
+               && !StringUtils.endsWithIgnoreCase(cnec.necId(), SUFFIX_NEC_ID_AFTER);
     }
 
     public static boolean hasNoContingency(final CnecRamData cnec) {
         return BASE_CASE.equals(cnec.contingencyName());
     }
 
-    public static boolean isAdmissibleTransmissionLoading(final CnecRamData cnec) {
-        return cnec.necId().toUpperCase().endsWith(ATL);
+    public static boolean hasTransmissionThreshold(final CnecRamData cnec) {
+        return cnec.necId().toUpperCase().endsWith(SUFFIX_ADMISSIBLE_TRANSMISSION_LIMIT);
     }
 }

@@ -7,7 +7,7 @@ import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.
 import java.util.List;
 
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CnecRamUtils.hasNoContingency;
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CnecRamUtils.isAdmissibleTransmissionLoading;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CnecRamUtils.hasTransmissionThreshold;
 
 public class ConservativeIvaCalculationUtils {
 
@@ -30,9 +30,9 @@ public class ConservativeIvaCalculationUtils {
     }
 
     private static Integer computeConservativeIva(final BranchData branchData,
-                                           final int ramThreshold,
-                                           final int curativeMargin,
-                                           final int preventiveMargin) {
+                                                  final int ramThreshold,
+                                                  final int curativeMargin,
+                                                  final int preventiveMargin) {
         final CnecRamData cnec = branchData.cnec();
         final int minRealRam = branchData.minRealRam();
 
@@ -41,22 +41,23 @@ public class ConservativeIvaCalculationUtils {
         }
 
         final int conservativeIva;
-        final int amr = cnec.getAmr();
+        final int virtualMargin = cnec.getAmr();
         final int ivaMax = branchData.ivaMax();
 
-        if (isAdmissibleTransmissionLoading(cnec)) {
-            conservativeIva = Math.min(amr, ivaMax);
+        if (hasTransmissionThreshold(cnec)) {
+            conservativeIva = Math.min(virtualMargin, ivaMax);
         } else {
             final int margin = hasNoContingency(cnec) ? preventiveMargin : curativeMargin;
-            conservativeIva = Math.clamp(ivaMax, 0, amr - margin);
+            conservativeIva = Math.clamp(ivaMax, 0, virtualMargin - margin);
         }
 
-        return conservativeIva < amr + minRealRam ? 0 : conservativeIva;
+        return conservativeIva < virtualMargin + minRealRam ? 0 : conservativeIva;
     }
 
     public record BranchData(CnecRamData cnec, int minRealRam,
                              int ivaMax, List<RamVertex> worstVertices) {
-        void setConservativeIva(final Integer conservativeIva){}
+        void setConservativeIva(final Integer conservativeIva) {
+        }
     }
 
     public record RamVertex(int realRam, Vertex vertex) {
