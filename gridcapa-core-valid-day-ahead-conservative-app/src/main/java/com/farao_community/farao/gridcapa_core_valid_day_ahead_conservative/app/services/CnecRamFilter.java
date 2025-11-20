@@ -7,19 +7,15 @@
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services;
 
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamData;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CnecRamUtils.hasCurrentLimit;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CnecRamUtils.isAdjustable;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CnecRamUtils.isNotSpanned;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CnecRamUtils.isRteElement;
+
 public final class CnecRamFilter {
-
-    public static final String FRENCH_TSO = "FR";
-    public static final String EXCLUDE_NE_NAME = "[NCL]";
-    public static final String EXCLUDE_SUFFIX_NEC_ID_BEFORE = "_SpannedBefore";
-    public static final String EXCLUDE_SUFFIX_NEC_ID_AFTER = "_SpannedAfter";
-    public static final String BRANCH_STATUS_OK = "OK";
-    public static final int MIN_AMR_VALUE = 0;
-
     private CnecRamFilter() {
         throw new IllegalStateException("Utility class");
     }
@@ -31,24 +27,7 @@ public final class CnecRamFilter {
     }
 
     private static boolean shouldImport(final CnecRamData cnec) {
-        return isRteElement(cnec) && canBeAdjusted(cnec) && hasCurrentLimit(cnec) && isNotSpanned(cnec);
+        return isRteElement(cnec) && isAdjustable(cnec) && hasCurrentLimit(cnec) && isNotSpanned(cnec);
     }
 
-    private static boolean isRteElement(final CnecRamData cnec) {
-        return FRENCH_TSO.equalsIgnoreCase(cnec.tso());
-    }
-
-    private static boolean canBeAdjusted(final CnecRamData cnec) {
-        return BRANCH_STATUS_OK.equalsIgnoreCase(cnec.branchStatus())
-               && cnec.ramValues().amr() > MIN_AMR_VALUE;
-    }
-
-    private static boolean hasCurrentLimit(final CnecRamData cnec) {
-        return !StringUtils.startsWithIgnoreCase(cnec.neName(), EXCLUDE_NE_NAME);
-    }
-
-    private static boolean isNotSpanned(final CnecRamData cnec) {
-        return !StringUtils.endsWithIgnoreCase(cnec.necId(), EXCLUDE_SUFFIX_NEC_ID_BEFORE)
-               && !StringUtils.endsWithIgnoreCase(cnec.necId(), EXCLUDE_SUFFIX_NEC_ID_AFTER);
-    }
 }
