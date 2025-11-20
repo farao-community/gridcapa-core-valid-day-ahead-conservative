@@ -15,10 +15,16 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mockito;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.BOOLEAN;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.EXCLUDED_BRANCHES;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.INT;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.MAX_VERTICES_PER_BRANCH;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.MIN_RAM_MCCC;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.RAM_THRESHOLD;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.STRING;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.USE_PROJECTION;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -75,14 +81,53 @@ class CoreValidD2TaskParametersTest {
 
     @Test
     void testToJsonString() {
-        final TaskParameterDto parameter = Mockito.mock(TaskParameterDto.class);
-        Mockito.when(parameter.getId()).thenReturn(USE_PROJECTION);
-        Mockito.when(parameter.getParameterType()).thenReturn(BOOLEAN);
-        Mockito.when(parameter.getValue()).thenReturn("true");
-
+        List<TaskParameterDto> parameters = new ArrayList<>();
+        final TaskParameterDto parameter1 = Mockito.mock(TaskParameterDto.class);
+        Mockito.when(parameter1.getId()).thenReturn(USE_PROJECTION);
+        Mockito.when(parameter1.getParameterType()).thenReturn(BOOLEAN);
+        Mockito.when(parameter1.getValue()).thenReturn("true");
+        parameters.add(parameter1);
+        final TaskParameterDto parameter2 = Mockito.mock(TaskParameterDto.class);
+        Mockito.when(parameter2.getId()).thenReturn(MAX_VERTICES_PER_BRANCH);
+        Mockito.when(parameter2.getParameterType()).thenReturn(INT);
+        Mockito.when(parameter2.getValue()).thenReturn("5");
+        parameters.add(parameter2);
+        final TaskParameterDto parameter3 = Mockito.mock(TaskParameterDto.class);
+        Mockito.when(parameter3.getId()).thenReturn(RAM_THRESHOLD);
+        Mockito.when(parameter3.getParameterType()).thenReturn(INT);
+        Mockito.when(parameter3.getValue()).thenReturn("-500");
+        parameters.add(parameter3);
+        final TaskParameterDto parameter4 = Mockito.mock(TaskParameterDto.class);
+        Mockito.when(parameter4.getId()).thenReturn(MIN_RAM_MCCC);
+        Mockito.when(parameter4.getParameterType()).thenReturn(INT);
+        Mockito.when(parameter4.getValue()).thenReturn("20");
+        parameters.add(parameter4);
+        final TaskParameterDto parameter5 = Mockito.mock(TaskParameterDto.class);
+        Mockito.when(parameter5.getId()).thenReturn(EXCLUDED_BRANCHES);
+        Mockito.when(parameter5.getParameterType()).thenReturn(STRING);
+        Mockito.when(parameter5.getValue()).thenReturn("A List;of;Strings");
+        parameters.add(parameter5);
         assertEquals("""
                  {
                  \t"USE_PROJECTION": true, \
+
+                 \t"MAX_VERTICES_PER_BRANCH": 5, \
+
+                 \t"RAM_THRESHOLD": -500, \
+
+                 \t"MIN_RAM_MCCC": 20, \
+
+                 \t"EXCLUDED_BRANCHES": "A List;of;Strings"\
+
+                 }""",
+                     new CoreValidD2TaskParameters(parameters).toJsonString());
+    }
+
+    @Test
+    void testEmptyParametersToJsonString() {
+        assertEquals("""
+                 {
+                 \t"USE_PROJECTION": false, \
 
                  \t"MAX_VERTICES_PER_BRANCH": 0, \
 
@@ -93,7 +138,7 @@ class CoreValidD2TaskParametersTest {
                  \t"EXCLUDED_BRANCHES": null\
 
                  }""",
-                     getParams(parameter).toJsonString());
+                     new CoreValidD2TaskParameters(null).toJsonString());
     }
 
     CoreValidD2TaskParameters getParams(final TaskParameterDto parameter) {

@@ -70,7 +70,7 @@ public class CoreValidD2TaskParameters {
         }
     }
 
-    private int validateIsIntegerAndGet(TaskParameterDto parameter, List<String> errors) {
+    private int validateIsIntegerAndGet(final TaskParameterDto parameter, final List<String> errors) {
         if (StringUtils.equals(INT, parameter.getParameterType())) {
             String value = parameter.getValue() != null ? parameter.getValue() : parameter.getDefaultValue();
             try {
@@ -84,7 +84,7 @@ public class CoreValidD2TaskParameters {
         return 0; // default return value, won't be used as this return can be reached only in case of validation error
     }
 
-    private int validateIsPositiveIntegerAndGet(TaskParameterDto parameter, List<String> errors) {
+    private int validateIsPositiveIntegerAndGet(final TaskParameterDto parameter, final List<String> errors) {
         int value = validateIsIntegerAndGet(parameter, errors);
         if (value < 0) {
             errors.add(String.format("Parameter %s should be positive (value: %s)", parameter.getId(), parameter.getValue()));
@@ -93,7 +93,7 @@ public class CoreValidD2TaskParameters {
         return value;
     }
 
-    private String validateIsStringAndGet(TaskParameterDto parameter, List<String> errors) {
+    private String validateIsStringAndGet(final TaskParameterDto parameter, final List<String> errors) {
         if (StringUtils.equals(STRING, parameter.getParameterType())) {
             return parameter.getValue() != null ? parameter.getValue() : parameter.getDefaultValue();
         } else {
@@ -128,7 +128,8 @@ public class CoreValidD2TaskParameters {
         appender.add(String.format(KEY_VALUE_JSON_FORMAT, MAX_VERTICES_PER_BRANCH, maxVerticesPerBranch));
         appender.add(String.format(KEY_VALUE_JSON_FORMAT, RAM_THRESHOLD, ramThreshold));
         appender.add(String.format(KEY_VALUE_JSON_FORMAT, MIN_RAM_MCCC, minRamMccc));
-        appender.add(String.format(KEY_VALUE_JSON_FORMAT, EXCLUDED_BRANCHES, excludedBranches));
+        final String excludedValue = excludedBranches == null ? "null" : "\"" + excludedBranches + "\"";
+        appender.add(String.format(KEY_VALUE_JSON_FORMAT, EXCLUDED_BRANCHES, excludedValue));
         return String.format("{%s%n}", String.join(", ", appender));
     }
 }
