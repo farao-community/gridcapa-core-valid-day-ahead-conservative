@@ -6,10 +6,10 @@ import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.
 
 import java.util.List;
 
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CnecRamUtils.hasNoContingency;
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CnecRamUtils.hasTransmissionThreshold;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.BASE_CASE;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.SUFFIX_ADMISSIBLE_TRANSMISSION_LIMIT;
 
-public class ConservativeIvaCalculationUtils {
+public final class ConservativeIvaCalculationUtils {
 
     private ConservativeIvaCalculationUtils() {
         throw new IllegalStateException("Utility class");
@@ -22,17 +22,17 @@ public class ConservativeIvaCalculationUtils {
         final int curativeMargin = parameters.getCurativeIvaMargin();
         final int preventiveMargin = parameters.getPreventiveIvaMargin();
 
-        domainData.forEach(branch -> branch.setConservativeIva(computeConservativeIva(branch,
-                                                                                      ramThreshold,
-                                                                                      curativeMargin,
-                                                                                      preventiveMargin)));
+        domainData.forEach(branch -> branch.setConservativeIva(computeConservativeAdjustment(branch,
+                                                                                             ramThreshold,
+                                                                                             curativeMargin,
+                                                                                             preventiveMargin)));
 
     }
 
-    private static Integer computeConservativeIva(final BranchData branchData,
-                                                  final int ramThreshold,
-                                                  final int curativeMargin,
-                                                  final int preventiveMargin) {
+    private static Integer computeConservativeAdjustment(final BranchData branchData,
+                                                         final int ramThreshold,
+                                                         final int curativeMargin,
+                                                         final int preventiveMargin) {
         final CnecRamData cnec = branchData.cnec();
         final int minRealRam = branchData.minRealRam();
 
@@ -40,18 +40,26 @@ public class ConservativeIvaCalculationUtils {
             return null;//??? 0 ?
         }
 
-        final int conservativeIva;
+        final int conservativeAdjustment;
         final int virtualMargin = cnec.getAmr();
-        final int ivaMax = branchData.ivaMax();
+        final int maxAdjustment = branchData.ivaMax();
 
         if (hasTransmissionThreshold(cnec)) {
-            conservativeIva = Math.min(virtualMargin, ivaMax);
+            conservativeAdjustment = Math.min(virtualMargin, maxAdjustment);
         } else {
-            final int margin = hasNoContingency(cnec) ? preventiveMargin : curativeMargin;
-            conservativeIva = Math.clamp(ivaMax, 0, virtualMargin - margin);
+            final int inputMargin = hasNoContingency(cnec) ? preventiveMargin : curativeMargin;
+            conservativeAdjustment = Math.clamp(maxAdjustment, 0, virtualMargin - inputMargin);
         }
 
-        return conservativeIva < virtualMargin + minRealRam ? 0 : conservativeIva;
+        return conservativeAdjustment < virtualMargin + minRealRam ? 0 : conservativeAdjustment;
+    }
+
+    public static boolean hasNoContingency(final CnecRamData cnec) {
+        return BASE_CASE.equals(cnec.contingencyName());
+    }
+
+    public static boolean hasTransmissionThreshold(final CnecRamData cnec) {
+        return cnec.necId().toUpperCase().endsWith(SUFFIX_ADMISSIBLE_TRANSMISSION_LIMIT);
     }
 
     public record BranchData(CnecRamData cnec, int minRealRam,
