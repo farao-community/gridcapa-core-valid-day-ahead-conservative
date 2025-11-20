@@ -6,5 +6,7 @@
  */
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain;
 
-public record RamVertex(int realRam, int vertexId) {
+import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
+
+public record RamVertex(int realRam, Vertex vertex) {
 }

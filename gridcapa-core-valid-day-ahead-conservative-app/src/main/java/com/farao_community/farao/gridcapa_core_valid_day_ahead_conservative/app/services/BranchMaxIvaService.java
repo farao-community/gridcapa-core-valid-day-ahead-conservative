@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -48,8 +49,9 @@ public class BranchMaxIvaService {
         cnecs.forEach(cnec -> {
             final List<RamVertex> worstVertices = getWorstVerticesUnderRamThreshold(vertices, cnec, ramThreshold, maxVerticesPerBranch);
             final int maxIva = computeMaxIva(cnec, excludedBranches, minRamMccc);
-            final RamVertex worstVertex = worstVertices.isEmpty() ? new RamVertex(0, 0) : worstVertices.getFirst();
-            branchData.add(new BranchData(cnec, worstVertex.realRam(), maxIva, worstVertex.vertexId(), worstVertices));
+            //TODO default if no worst vertex ?
+            final RamVertex worstVertex = worstVertices.isEmpty() ? new RamVertex(0, null) : worstVertices.getFirst();
+            branchData.add(new BranchData(cnec, worstVertex.realRam(), maxIva, worstVertex.vertex().vertexId(), worstVertices));
         });
         return branchData;
     }
@@ -61,14 +63,14 @@ public class BranchMaxIvaService {
         return vertices.stream()
                 .map(vertex -> computeReelVertexRam(vertex, cnec))
                 .filter(ramVertex -> ramVertex.realRam() < ramThreshold)
-                .sorted((rv1, rv2) -> Integer.compare(rv1.realRam(), rv2.realRam()))
+                .sorted(Comparator.comparingInt(RamVertex::realRam))
                 .limit(maxVerticesPerBranch)
                 .toList();
     }
 
     private RamVertex computeReelVertexRam(final Vertex vertex, final CnecRamData cnec) {
         final int realVertexRam = cnec.ramValues().ram0Core() - sumNetPositions(vertex.coordinates(), cnec.ptdfValues());
-        return new RamVertex(realVertexRam, vertex.vertexId());
+        return new RamVertex(realVertexRam, vertex);
     }
 
     private int sumNetPositions(final Map<String, Integer> verticesNPs, final Map<String, BigDecimal> cnecPtdfs) {
