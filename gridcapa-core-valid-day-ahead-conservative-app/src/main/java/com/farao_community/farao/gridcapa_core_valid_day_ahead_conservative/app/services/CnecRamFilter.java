@@ -30,12 +30,25 @@ public final class CnecRamFilter {
                 .toList();
     }
 
-    private static boolean shouldImport(final CnecRamData cnecRamData) {
-        return FRENCH_TSO.equalsIgnoreCase(cnecRamData.tso())
-               && BRANCH_STATUS_OK.equalsIgnoreCase(cnecRamData.branchStatus())
-               && !StringUtils.startsWithIgnoreCase(cnecRamData.neName(), EXCLUDE_NE_NAME)
-               && !StringUtils.endsWithIgnoreCase(cnecRamData.necId(), EXCLUDE_SUFFIX_NEC_ID_BEFORE)
-               && !StringUtils.endsWithIgnoreCase(cnecRamData.necId(), EXCLUDE_SUFFIX_NEC_ID_AFTER)
-               && cnecRamData.ramValues().amr() > MIN_AMR_VALUE;
+    private static boolean shouldImport(final CnecRamData cnec) {
+        return isRteElement(cnec) && canBeAdjusted(cnec) && hasCurrentLimit(cnec) && isNotSpanned(cnec);
+    }
+
+    private static boolean isRteElement(final CnecRamData cnec) {
+        return FRENCH_TSO.equalsIgnoreCase(cnec.tso());
+    }
+
+    private static boolean canBeAdjusted(final CnecRamData cnec) {
+        return BRANCH_STATUS_OK.equalsIgnoreCase(cnec.branchStatus())
+               && cnec.ramValues().amr() > MIN_AMR_VALUE;
+    }
+
+    private static boolean hasCurrentLimit(final CnecRamData cnec) {
+        return !StringUtils.startsWithIgnoreCase(cnec.neName(), EXCLUDE_NE_NAME);
+    }
+
+    private static boolean isNotSpanned(final CnecRamData cnec) {
+        return !StringUtils.endsWithIgnoreCase(cnec.necId(), EXCLUDE_SUFFIX_NEC_ID_BEFORE)
+               && !StringUtils.endsWithIgnoreCase(cnec.necId(), EXCLUDE_SUFFIX_NEC_ID_AFTER);
     }
 }

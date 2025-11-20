@@ -20,7 +20,7 @@ import java.util.Map;
 
 class CnecRamFilterTest {
 
-    private static final String BASECASE = "BASECASE";
+    private static final String BASECASE = "BASE_CASE";
     private static final String NE_NAME = "abbnndd";
     private static final String ID = "1";
 
