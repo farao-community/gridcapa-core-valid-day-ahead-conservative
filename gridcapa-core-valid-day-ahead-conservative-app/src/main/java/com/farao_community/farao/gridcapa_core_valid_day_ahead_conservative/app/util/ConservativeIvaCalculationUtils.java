@@ -30,9 +30,9 @@ public final class ConservativeIvaCalculationUtils {
     }
 
     static Integer computeConservativeAdjustment(final IvaBranchData branchData,
-                                                         final int ramThreshold,
-                                                         final int curativeMargin,
-                                                         final int preventiveMargin) {
+                                                 final int ramThreshold,
+                                                 final int curativeMargin,
+                                                 final int preventiveMargin) {
         final CnecRamData cnec = branchData.cnec();
         final int minRealRam = branchData.minRealRam();
 
