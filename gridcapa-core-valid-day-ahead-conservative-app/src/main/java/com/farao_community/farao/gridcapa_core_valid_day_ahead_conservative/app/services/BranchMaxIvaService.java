@@ -6,6 +6,7 @@
  */
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services;
 
+import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHub;
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubsConfiguration;
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.IvaBranchData;
@@ -61,25 +62,31 @@ public class BranchMaxIvaService {
                                                               final int ramThreshold,
                                                               final int maxVerticesPerBranch) {
         return vertices.stream()
-                .map(vertex -> computeReelVertexRam(vertex, cnec))
+                .map(vertex -> computeRealVertexRam(vertex, cnec))
                 .filter(ramVertex -> ramVertex.realRam() < ramThreshold)
                 .sorted(Comparator.comparingInt(RamVertex::realRam))
                 .limit(maxVerticesPerBranch)
                 .toList();
     }
 
-    private RamVertex computeReelVertexRam(final Vertex vertex, final CnecRamData cnec) {
+    private RamVertex computeRealVertexRam(final Vertex vertex, final CnecRamData cnec) {
         final int realVertexRam = cnec.ramValues().ram0Core() - sumNetPositions(vertex.coordinates(), cnec.ptdfValues());
         return new RamVertex(realVertexRam, vertex);
     }
 
     private int sumNetPositions(final Map<String, Integer> verticesNPs, final Map<String, BigDecimal> cnecPtdfs) {
         return coreHubsConfiguration.getCoreHubs().stream()
-                .map(coreHub -> cnecPtdfs.get(coreHub.flowbasedCode()).multiply(new BigDecimal(verticesNPs.get(coreHub.clusterVerticeCode()))))
+                .map(coreHub -> computeNetPosition(verticesNPs, cnecPtdfs, coreHub))
                 .reduce(BigDecimal::add)
                 .map(BigDecimal::intValue)
                 .orElse(0);
 
+    }
+
+    private static BigDecimal computeNetPosition(final Map<String, Integer> verticesNPs,
+                                                 final Map<String, BigDecimal> cnecPtdfs,
+                                                 final CoreHub coreHub) {
+        return cnecPtdfs.get(coreHub.flowbasedCode()).multiply(new BigDecimal(verticesNPs.get(coreHub.clusterVerticeCode())));
     }
 
     private int computeMaxIva(final CnecRamData cnec, final String[] excludedBranches, final int minRamMccc) {

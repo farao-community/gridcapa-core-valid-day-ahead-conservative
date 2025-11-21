@@ -57,7 +57,6 @@ class IvaBranchDataTest {
         final ObjectMapper objectMapper = new ObjectMapper();
         final ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
         final String json = ow.writeValueAsString(branch);
-        System.out.println(json);
         final IvaBranchData jsonBranch = objectMapper.reader().readValue(new StringReader(json), IvaBranchData.class);
         Assertions.assertThat(jsonBranch)
                 .isNotNull()
@@ -76,7 +75,7 @@ class IvaBranchDataTest {
         return  new CnecRamData("testId",
                                 "testName",
                                 "testTSO",
-                                "testContignency",
+                                "testContingency",
                                 "testBS",
                                 ram,
                                 fValues,
