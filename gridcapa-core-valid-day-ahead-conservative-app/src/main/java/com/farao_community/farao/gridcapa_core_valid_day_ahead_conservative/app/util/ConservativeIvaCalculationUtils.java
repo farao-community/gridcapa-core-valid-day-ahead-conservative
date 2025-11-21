@@ -53,6 +53,7 @@ public final class ConservativeIvaCalculationUtils {
         if (hasTransmissionThreshold(cnec)) {
             conservativeAdjustment = Math.min(virtualMargin, maxAdjustment);
         } else {
+            // if cnec has no transmission threshold, we use user input for margin
             final int inputMargin = hasNoContingency(cnec) ? preventiveMargin : curativeMargin;
             // clamp(a,b,c)=max(min(a,c), b)
             conservativeAdjustment = Math.clamp(maxAdjustment, 0, virtualMargin - inputMargin);
@@ -62,7 +63,6 @@ public final class ConservativeIvaCalculationUtils {
     }
 
     /**
-     * Used to know which margin to use for calculation (curative if there is a contigency, else preventive)
      * BASECASE being the name of the contigencies-free scenario
      *
      * @param cnec a network element
@@ -74,8 +74,7 @@ public final class ConservativeIvaCalculationUtils {
 
     /**
      * NecID could end with PATL/TATL (Permanent/Temporary Admissible Transmission Limit),
-     * indicating whether the CNEC has this limit or not
-     * -> whether we should use user input for margin or not
+     * indicating whether the CNEC has one of these limits or not
      *
      * @param cnec a network element
      * @return whether it has a transmission threshold or not
