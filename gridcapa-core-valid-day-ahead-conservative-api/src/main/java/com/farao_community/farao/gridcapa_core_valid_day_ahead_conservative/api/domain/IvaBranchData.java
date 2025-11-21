@@ -16,9 +16,9 @@ import java.util.Objects;
 public final class IvaBranchData {
     private final CnecRamData cnec;
     private final int minRealRam;
-    private int conservativeIva;
     private final int ivaMax;
     private final List<RamVertex> worstVertices;
+    private int conservativeIva;
 
     @JsonCreator
     public IvaBranchData(final @JsonProperty("cnec") CnecRamData cnec,
@@ -78,14 +78,13 @@ public final class IvaBranchData {
         var that = (IvaBranchData) obj;
         return Objects.equals(this.cnec, that.cnec) &&
                this.minRealRam == that.minRealRam &&
-               this.conservativeIva == that.conservativeIva &&
                this.ivaMax == that.ivaMax &&
                Objects.equals(this.worstVertices, that.worstVertices);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(cnec, minRealRam, conservativeIva, ivaMax, worstVertices);
+        return Objects.hash(cnec, minRealRam, ivaMax, worstVertices);
     }
 
     @Override
