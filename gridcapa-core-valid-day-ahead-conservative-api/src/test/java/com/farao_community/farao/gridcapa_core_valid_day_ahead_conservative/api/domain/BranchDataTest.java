@@ -30,7 +30,7 @@ class BranchDataTest {
 
     @Test
     void testCreateBranchData() {
-        BranchData branch = getTestBranch();
+        final BranchData branch = getTestBranch();
         branch.setConservativeIva(CONSERVATIVE_IVA);
         Assertions.assertThat(branch)
                 .isNotNull()
@@ -39,17 +39,24 @@ class BranchDataTest {
                 .hasFieldOrPropertyWithValue("minRealRam", MIN_REAL_RAM);
     }
 
-    private @NotNull BranchData getTestBranch() {
-        return new BranchData(getTestCnec(), MIN_REAL_RAM, IVA_MAX, getTestRamVertices());
+    @Test
+    void testCnecRamDataApi() {
+        final CnecRamData cnec =  getTestCnec();
+        Assertions.assertThat(cnec)
+                .isNotNull();
+        Assertions.assertThat(cnec.getRam0Core())
+                .isEqualTo(cnec.ramValues().ram0Core());
+        Assertions.assertThat(cnec.getAmr())
+                .isEqualTo(cnec.ramValues().amr());
     }
 
     @Test
     void testJson() throws IOException {
-        BranchData branch = getTestBranch();
+        final BranchData branch = getTestBranch();
         branch.setConservativeIva(CONSERVATIVE_IVA);
         final ObjectMapper objectMapper = new ObjectMapper();
-        ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
-        String json = ow.writeValueAsString(branch);
+        final ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
+        final String json = ow.writeValueAsString(branch);
         System.out.println(json);
         final BranchData  jsonBranch = objectMapper.reader().readValue(new StringReader(json), BranchData.class);
         Assertions.assertThat(jsonBranch)
@@ -58,9 +65,13 @@ class BranchDataTest {
                 .isEqualTo(branch);
     }
 
+    private @NotNull BranchData getTestBranch() {
+        return new BranchData(getTestCnec(), MIN_REAL_RAM, IVA_MAX, getTestRamVertices());
+    }
+
     private CnecRamData getTestCnec() {
-        CnecRamValuesData ram = new CnecRamValuesData(ZERO_INT, 227, BigDecimal.ZERO, 1000, ZERO_INT, 500, ZERO_INT);
-        CnecRamFValuesData fValues = new CnecRamFValuesData(1200, 300, ZERO_INT, 800, ZERO_INT, ZERO_INT, ZERO_INT);
+        final CnecRamValuesData ram = new CnecRamValuesData(ZERO_INT, 227, BigDecimal.ZERO, 1000, ZERO_INT, 500, ZERO_INT);
+        final CnecRamFValuesData fValues = new CnecRamFValuesData(1200, 300, ZERO_INT, 800, ZERO_INT, ZERO_INT, ZERO_INT);
         final Map<String, BigDecimal> ptdfs = getCnecTestPtdfs();
         return  new CnecRamData("testId",
                                 "testName",
@@ -85,7 +96,7 @@ class BranchDataTest {
     private Map<String, Integer> getNpTestMap(final int i1,
                                               final int i2,
                                               final int i3) {
-        Map<String, Integer> testNps = new HashMap<>();
+        final Map<String, Integer> testNps = new HashMap<>();
         testNps.put("AA", i1);
         testNps.put("BB", i2);
         testNps.put("CC", i3);
