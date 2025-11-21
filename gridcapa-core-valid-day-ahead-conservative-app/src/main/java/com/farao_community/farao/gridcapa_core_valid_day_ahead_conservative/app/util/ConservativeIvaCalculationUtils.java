@@ -28,38 +28,51 @@ public final class ConservativeIvaCalculationUtils {
         final int curativeMargin = parameters.getCurativeIvaMargin();
         final int preventiveMargin = parameters.getPreventiveIvaMargin();
 
-        domainData.forEach(branch -> branch.setConservativeIva(computeConservativeAdjustment(branch,
-                                                                                             ramThreshold,
-                                                                                             curativeMargin,
-                                                                                             preventiveMargin)));
+        domainData.forEach(branch -> branch.setConservativeIva(computeConservativeIVA(branch,
+                                                                                      ramThreshold,
+                                                                                      curativeMargin,
+                                                                                      preventiveMargin)));
 
     }
 
-    static Integer computeConservativeAdjustment(final IvaBranchData branchData,
-                                                 final int ramThreshold,
-                                                 final int curativeMargin,
-                                                 final int preventiveMargin) {
+    /**
+     * IVA => a value that can be added to our available margin while still being secure
+     * conservative => without RAO use
+     * @param branchData the branch for which we compute the conservative IVA
+     * @param ramThreshold from parametersDto
+     * @param curativeIvaMargin from parametersDto
+     * @param preventiveIvaMargin from parametersDto
+     * @return the conservative IVA
+     */
+    static Integer computeConservativeIVA(final IvaBranchData branchData,
+                                          final int ramThreshold,
+                                          final int curativeIvaMargin,
+                                          final int preventiveIvaMargin) {
+
         final CnecRamData cnec = branchData.cnec();
         final int minRealRam = branchData.minRealRam();
 
         if (minRealRam >= ramThreshold) {
-            return null; //TODO ??? 0 ?
+            // no need for adjustment if we are already over the threshold
+            return 0;
         }
 
-        final int conservativeAdjustment;
+        final int conservativeIva;
         final int virtualMargin = cnec.getAmr();
-        final int maxAdjustment = branchData.ivaMax();
+        final int ivaMax = branchData.ivaMax();
 
         if (hasTransmissionThreshold(cnec)) {
-            conservativeAdjustment = Math.min(virtualMargin, maxAdjustment);
+            conservativeIva = Math.min(virtualMargin, ivaMax);
         } else {
-            // if cnec has no transmission threshold, we use user input for margin
-            final int inputMargin = hasNoContingency(cnec) ? preventiveMargin : curativeMargin;
-            // clamp(a,b,c)=max(min(a,c), b)
-            conservativeAdjustment = Math.clamp(maxAdjustment, 0, virtualMargin - inputMargin);
+            // we adjust our virtual margin by a quantity defined in task/process parameters
+            final int adjustedMargin = virtualMargin - (hasNoContingency(cnec) ? preventiveIvaMargin : curativeIvaMargin);
+            // we do clamp(a,0,b) = max(min(a,b), 0) because adjusted margin can be < 0 given the substraction
+            conservativeIva = Math.clamp(ivaMax, 0, adjustedMargin);
         }
 
-        return conservativeAdjustment < virtualMargin + minRealRam ? 0 : conservativeAdjustment;
+        // if we gain something over minRealRam with our calculation,
+        // we return it, else we return 0 (no adjustment)
+        return conservativeIva - virtualMargin < minRealRam ? 0 : conservativeIva;
     }
 
     /**
