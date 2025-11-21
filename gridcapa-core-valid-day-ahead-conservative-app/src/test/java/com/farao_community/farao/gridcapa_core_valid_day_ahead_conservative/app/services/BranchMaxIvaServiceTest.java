@@ -133,8 +133,8 @@ class BranchMaxIvaServiceTest {
     }
 
     private CnecRamData getTestCnec() {
-        CnecRamValuesData ram = new CnecRamValuesData(ZERO_INT, 227, BigDecimal.ZERO, 1000, ZERO_INT, 500, ZERO_INT);
-        CnecRamFValuesData fValues = new CnecRamFValuesData(1200, 300, ZERO_INT, 800, ZERO_INT, ZERO_INT, ZERO_INT);
+        final CnecRamValuesData ram = new CnecRamValuesData(ZERO_INT, 227, BigDecimal.ZERO, 1000, ZERO_INT, 500, ZERO_INT);
+        final CnecRamFValuesData fValues = new CnecRamFValuesData(1200, 300, ZERO_INT, 800, ZERO_INT, ZERO_INT, ZERO_INT);
         final Map<String, BigDecimal> ptdfs = getCnecTestPtdfs();
         return  new CnecRamData("testId",
                                            "testName",
@@ -147,8 +147,8 @@ class BranchMaxIvaServiceTest {
     }
 
     private CnecRamData getTestCnecPtdf() {
-        CnecRamData cnec = Mockito.mock(CnecRamData.class);
-        CnecRamValuesData ram = Mockito.mock(CnecRamValuesData.class);
+        final CnecRamData cnec = Mockito.mock(CnecRamData.class);
+        final CnecRamValuesData ram = Mockito.mock(CnecRamValuesData.class);
         Mockito.when(ram.ram0Core()).thenReturn(227);
         Mockito.when(cnec.ramValues()).thenReturn(ram);
         final Map<String, BigDecimal> ptdfs = getCnecTestPtdfs();
@@ -165,7 +165,7 @@ class BranchMaxIvaServiceTest {
     }
 
     private List<CoreHub> getTestCoreHubs() {
-        List<CoreHub> corehubs = new ArrayList<>();
+        final List<CoreHub> corehubs = new ArrayList<>();
         corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_AAA", EMPTY_STRING, "AA", IS_HVDC_HUB, COEFFICIENT));
         corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_BBB", EMPTY_STRING, "BB", IS_HVDC_HUB, COEFFICIENT));
         corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_CCC", EMPTY_STRING, "CC", IS_HVDC_HUB, COEFFICIENT));
@@ -191,7 +191,7 @@ class BranchMaxIvaServiceTest {
     private Map<String, Integer> getNpTestMap(final int i1,
                                               final int i2,
                                               final int i3) {
-        Map<String, Integer> testNps = new HashMap<>();
+        final Map<String, Integer> testNps = new HashMap<>();
         testNps.put("AA", i1);
         testNps.put("BB", i2);
         testNps.put("CC", i3);
@@ -199,7 +199,7 @@ class BranchMaxIvaServiceTest {
     }
 
     private CoreValidD2TaskParameters getTestParameters() {
-        CoreValidD2TaskParameters params = Mockito.mock(CoreValidD2TaskParameters.class);
+        final CoreValidD2TaskParameters params = Mockito.mock(CoreValidD2TaskParameters.class);
         Mockito.when(params.getMaxVerticesPerBranch()).thenReturn(5);
         Mockito.when(params.getRamThreshold()).thenReturn(-10);
         Mockito.when(params.getMinRamMccc()).thenReturn(20);
