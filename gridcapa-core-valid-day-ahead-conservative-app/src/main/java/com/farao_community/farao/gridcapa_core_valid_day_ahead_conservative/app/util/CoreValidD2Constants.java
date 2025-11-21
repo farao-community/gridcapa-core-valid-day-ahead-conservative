@@ -41,7 +41,7 @@ public final class CoreValidD2Constants {
     public static final String CONTINGENCY_NAME_HEADER = "Contingency_Name";
     public static final String BRANCH_STATUS_HEADER = "BranchStatus";
     //CNEC FILTERING
-    public static final String BASE_CASE = "BASECASE";
+    public static final String BASECASE = "BASECASE";
     public static final String SUFFIX_ADMISSIBLE_TRANSMISSION_LIMIT = "ATL";
     public static final String FRENCH_TSO = "FR";
     public static final String PREFIX_NO_CURRENT_LIMIT = "[NCL]";

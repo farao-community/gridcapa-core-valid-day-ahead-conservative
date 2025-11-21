@@ -6,7 +6,7 @@ import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.
 
 import java.util.List;
 
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.BASE_CASE;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.BASECASE;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.SUFFIX_ADMISSIBLE_TRANSMISSION_LIMIT;
 
 public final class ConservativeIvaCalculationUtils {
@@ -37,7 +37,7 @@ public final class ConservativeIvaCalculationUtils {
         final int minRealRam = branchData.minRealRam();
 
         if (minRealRam >= ramThreshold) {
-            return null; //??? 0 ?
+            return null; //TODO ??? 0 ?
         }
 
         final int conservativeAdjustment;
@@ -56,26 +56,29 @@ public final class ConservativeIvaCalculationUtils {
 
     /**
      * Used to know which margin to use for calculation (curative if there is a contigency, else preventive)
-     * BASECASE being the scenario without any contigencies
+     * BASECASE being the name of the contigencies-free scenario
      *
-     * @param cnec
-     * @return whether cnec has a contigency or not
+     * @param cnec a network element
+     * @return whether it has a contigency or not
      */
     public static boolean hasNoContingency(final CnecRamData cnec) {
-        return BASE_CASE.equals(cnec.contingencyName());
+        return BASECASE.equals(cnec.contingencyName());
     }
 
     /**
-     * NecID could end with PATL/TATL (Permanent/Temporary Admissible Transmission Limit).
-     * Our calculation changes depending on whether it has this limit or not
+     * NecID could end with PATL/TATL (Permanent/Temporary Admissible Transmission Limit),
+     * indicating whether the CNEC has this limit or not
+     *      -> whether we should use user input for margin or not
      *
-     * @param cnec
-     * @return whether cnec has a transmission threshold or not
+     * @param cnec a network element
+     * @return whether it has a transmission threshold or not
      */
     public static boolean hasTransmissionThreshold(final CnecRamData cnec) {
         return cnec.necId().toUpperCase().endsWith(SUFFIX_ADMISSIBLE_TRANSMISSION_LIMIT);
     }
 
+
+    //TODO TO BE DELETED
     public record BranchData(CnecRamData cnec, int minRealRam,
                              int ivaMax, List<RamVertex> worstVertices) {
         void setConservativeIva(final Integer conservativeIva) {
