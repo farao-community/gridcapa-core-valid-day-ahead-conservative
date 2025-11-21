@@ -37,7 +37,7 @@ public final class ConservativeIvaCalculationUtils {
         final int minRealRam = branchData.minRealRam();
 
         if (minRealRam >= ramThreshold) {
-            return null;//??? 0 ?
+            return null; //??? 0 ?
         }
 
         final int conservativeAdjustment;
@@ -54,10 +54,24 @@ public final class ConservativeIvaCalculationUtils {
         return conservativeAdjustment < virtualMargin + minRealRam ? 0 : conservativeAdjustment;
     }
 
+    /**
+     * Used to know which margin to use for calculation (curative if there is a contigency, else preventive)
+     * BASECASE being the scenario without any contigencies
+     *
+     * @param cnec
+     * @return whether cnec has a contigency or not
+     */
     public static boolean hasNoContingency(final CnecRamData cnec) {
         return BASE_CASE.equals(cnec.contingencyName());
     }
 
+    /**
+     * NecID could end with PATL/TATL (Permanent/Temporary Admissible Transmission Limit).
+     * Our calculation changes depending on whether it has this limit or not
+     *
+     * @param cnec
+     * @return whether cnec has a transmission threshold or not
+     */
     public static boolean hasTransmissionThreshold(final CnecRamData cnec) {
         return cnec.necId().toUpperCase().endsWith(SUFFIX_ADMISSIBLE_TRANSMISSION_LIMIT);
     }

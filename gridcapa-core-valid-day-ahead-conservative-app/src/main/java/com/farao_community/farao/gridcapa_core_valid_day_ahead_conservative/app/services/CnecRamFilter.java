@@ -27,24 +27,48 @@ public final class CnecRamFilter {
 
     public static List<CnecRamData> filterBeforeIvaCalculus(final List<CnecRamData> unfiltered) {
         return unfiltered.stream()
-                .filter(isRteElement().and(hasCurrentLimit()).and(isAdjustable()).and(hadNoSpanningApplied()))
+                .filter(belongsToRTE().and(hasCurrentLimit()).and(isAdjustable()).and(hadNoSpanningApplied()))
                 .toList();
     }
 
-    public static Predicate<CnecRamData> isRteElement() {
+    /**
+     * We only want to work on French lines, RTE being the French TSO
+     * 
+     * @return a predicate to test this on a CnecRamData object
+     */
+    private static Predicate<CnecRamData> belongsToRTE() {
         return cnec -> FRENCH_TSO.equalsIgnoreCase(cnec.tso());
     }
 
-    public static Predicate<CnecRamData> isAdjustable() {
+    /**
+     * The lines for which we want to do calculations must have a positive virtual margin (AMR), and an OK status
+     * 
+     * @return a predicate to test this on a CnecRamData object
+     */
+    private static Predicate<CnecRamData> isAdjustable() {
         return cnec -> BRANCH_STATUS_OK.equalsIgnoreCase(cnec.branchStatus())
                        && cnec.ramValues().amr() > MIN_AMR_VALUE;
     }
 
-    public static Predicate<CnecRamData> hasCurrentLimit() {
+    /**
+     * Some elements are modelled has having no current limit, thus default values are present for several fields.
+     * We don't want to use them because these would lead to a false result
+     * 
+     * @return a predicate to test this on a CnecRamData object
+     */
+    private static Predicate<CnecRamData> hasCurrentLimit() {
         return cnec -> !StringUtils.startsWithIgnoreCase(cnec.neName(), PREFIX_NO_CURRENT_LIMIT);
     }
 
-    public static Predicate<CnecRamData> hadNoSpanningApplied() {
+    /**
+     * From ACER : "‘spanning’ means the pre-coupling backup solution in situations when the day-ahead capacity
+     * calculation fails to provide the flow-based parameters for strictly less than three consecutive hours.
+     * This calculation is based on the intersection of previous and subsequent available flow-based parameters"
+     * We don't want to work on lines that have been subject to these calculations
+     *
+     * @return a predicate to test this on a CnecRamData object
+     */
+    private static Predicate<CnecRamData> hadNoSpanningApplied() {
         return cnec -> !StringUtils.endsWithIgnoreCase(cnec.necId(), SUFFIX_NEC_ID_BEFORE)
                        && !StringUtils.endsWithIgnoreCase(cnec.necId(), SUFFIX_NEC_ID_AFTER);
     }
