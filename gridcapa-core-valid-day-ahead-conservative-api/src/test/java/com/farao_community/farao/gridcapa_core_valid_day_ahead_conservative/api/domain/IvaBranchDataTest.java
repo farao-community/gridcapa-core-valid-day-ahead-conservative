@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class BranchDataTest {
+class IvaBranchDataTest {
 
     private static final int ZERO_INT = 0;
     private static final int MIN_REAL_RAM = 350;
@@ -30,7 +30,7 @@ class BranchDataTest {
 
     @Test
     void testCreateBranchData() {
-        final BranchData branch = getTestBranch();
+        final IvaBranchData branch = getTestBranch();
         branch.setConservativeIva(CONSERVATIVE_IVA);
         Assertions.assertThat(branch)
                 .isNotNull()
@@ -52,21 +52,21 @@ class BranchDataTest {
 
     @Test
     void testJson() throws IOException {
-        final BranchData branch = getTestBranch();
+        final IvaBranchData branch = getTestBranch();
         branch.setConservativeIva(CONSERVATIVE_IVA);
         final ObjectMapper objectMapper = new ObjectMapper();
         final ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
         final String json = ow.writeValueAsString(branch);
         System.out.println(json);
-        final BranchData  jsonBranch = objectMapper.reader().readValue(new StringReader(json), BranchData.class);
+        final IvaBranchData jsonBranch = objectMapper.reader().readValue(new StringReader(json), IvaBranchData.class);
         Assertions.assertThat(jsonBranch)
                 .isNotNull()
-                .isExactlyInstanceOf(BranchData.class)
+                .isExactlyInstanceOf(IvaBranchData.class)
                 .isEqualTo(branch);
     }
 
-    private @NotNull BranchData getTestBranch() {
-        return new BranchData(getTestCnec(), MIN_REAL_RAM, IVA_MAX, getTestRamVertices());
+    private @NotNull IvaBranchData getTestBranch() {
+        return new IvaBranchData(getTestCnec(), MIN_REAL_RAM, IVA_MAX, getTestRamVertices());
     }
 
     private CnecRamData getTestCnec() {

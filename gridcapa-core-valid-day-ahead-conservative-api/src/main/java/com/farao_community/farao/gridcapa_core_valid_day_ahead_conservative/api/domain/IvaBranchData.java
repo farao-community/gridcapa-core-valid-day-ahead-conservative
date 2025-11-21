@@ -13,7 +13,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.List;
 import java.util.Objects;
 
-public final class BranchData {
+public final class IvaBranchData {
     private final CnecRamData cnec;
     private final int minRealRam;
     private int conservativeIva;
@@ -21,11 +21,11 @@ public final class BranchData {
     private final List<RamVertex> worstVertices;
 
     @JsonCreator
-    public BranchData(final @JsonProperty("cnec") CnecRamData cnec,
-                      final @JsonProperty("minRealRam") int minRealRam,
-                      final @JsonProperty("conservativeIva") int conservativeIva,
-                      final @JsonProperty("ivaMax") int ivaMax,
-                      final @JsonProperty("worstVertices") List<RamVertex> worstVertices) {
+    public IvaBranchData(final @JsonProperty("cnec") CnecRamData cnec,
+                         final @JsonProperty("minRealRam") int minRealRam,
+                         final @JsonProperty("conservativeIva") int conservativeIva,
+                         final @JsonProperty("ivaMax") int ivaMax,
+                         final @JsonProperty("worstVertices") List<RamVertex> worstVertices) {
         this.cnec = cnec;
         this.minRealRam = minRealRam;
         this.conservativeIva = conservativeIva;
@@ -33,10 +33,10 @@ public final class BranchData {
         this.worstVertices = worstVertices;
     }
 
-    public BranchData(CnecRamData cnec,
-                      int minRealRam,
-                      int ivaMax,
-                      List<RamVertex> worstVertices) {
+    public IvaBranchData(CnecRamData cnec,
+                         int minRealRam,
+                         int ivaMax,
+                         List<RamVertex> worstVertices) {
         this.cnec = cnec;
         this.minRealRam = minRealRam;
         this.ivaMax = ivaMax;
@@ -75,7 +75,7 @@ public final class BranchData {
         if (obj == null || obj.getClass() != this.getClass()) {
             return false;
         }
-        var that = (BranchData) obj;
+        var that = (IvaBranchData) obj;
         return Objects.equals(this.cnec, that.cnec) &&
                this.minRealRam == that.minRealRam &&
                this.conservativeIva == that.conservativeIva &&
