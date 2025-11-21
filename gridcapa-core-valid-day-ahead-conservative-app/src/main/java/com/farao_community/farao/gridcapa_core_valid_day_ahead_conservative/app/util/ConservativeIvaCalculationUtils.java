@@ -15,7 +15,7 @@ public final class ConservativeIvaCalculationUtils {
         throw new IllegalStateException("Utility class");
     }
 
-    public static void feedConservativeIVAs(final List<BranchData> domainData,
+    public static void feedConservativeIVAs(final List<IvaBranchData> domainData,
                                             final CoreValidD2TaskParameters parameters) {
 
         final int ramThreshold = parameters.getRamThreshold();
@@ -29,7 +29,7 @@ public final class ConservativeIvaCalculationUtils {
 
     }
 
-    private static Integer computeConservativeAdjustment(final BranchData branchData,
+    static Integer computeConservativeAdjustment(final IvaBranchData branchData,
                                                          final int ramThreshold,
                                                          final int curativeMargin,
                                                          final int preventiveMargin) {
@@ -48,6 +48,7 @@ public final class ConservativeIvaCalculationUtils {
             conservativeAdjustment = Math.min(virtualMargin, maxAdjustment);
         } else {
             final int inputMargin = hasNoContingency(cnec) ? preventiveMargin : curativeMargin;
+            // clamp(a,b,c)=max(min(a,c), b)
             conservativeAdjustment = Math.clamp(maxAdjustment, 0, virtualMargin - inputMargin);
         }
 
@@ -61,26 +62,26 @@ public final class ConservativeIvaCalculationUtils {
      * @param cnec a network element
      * @return whether it has a contigency or not
      */
-    public static boolean hasNoContingency(final CnecRamData cnec) {
+    private static boolean hasNoContingency(final CnecRamData cnec) {
         return BASECASE.equals(cnec.contingencyName());
     }
 
     /**
      * NecID could end with PATL/TATL (Permanent/Temporary Admissible Transmission Limit),
      * indicating whether the CNEC has this limit or not
-     *      -> whether we should use user input for margin or not
+     * -> whether we should use user input for margin or not
      *
      * @param cnec a network element
      * @return whether it has a transmission threshold or not
      */
-    public static boolean hasTransmissionThreshold(final CnecRamData cnec) {
+    private static boolean hasTransmissionThreshold(final CnecRamData cnec) {
         return cnec.necId().toUpperCase().endsWith(SUFFIX_ADMISSIBLE_TRANSMISSION_LIMIT);
     }
 
 
     //TODO TO BE DELETED
-    public record BranchData(CnecRamData cnec, int minRealRam,
-                             int ivaMax, List<RamVertex> worstVertices) {
+    public record IvaBranchData(CnecRamData cnec, int minRealRam,
+                                int ivaMax, List<RamVertex> worstVertices) {
         void setConservativeIva(final Integer conservativeIva) {
         }
     }
