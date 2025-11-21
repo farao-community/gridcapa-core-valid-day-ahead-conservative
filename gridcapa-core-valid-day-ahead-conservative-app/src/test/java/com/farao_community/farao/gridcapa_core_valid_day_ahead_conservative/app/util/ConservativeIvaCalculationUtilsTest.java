@@ -4,7 +4,6 @@ import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamFValuesData;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamValuesData;
 import org.assertj.core.api.Assertions;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -13,17 +12,16 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.ConservativeIvaCalculationUtils.computeConservativeAdjustment;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.BRANCH_STATUS_OK;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.FRENCH_TSO;
+
 class ConservativeIvaCalculationUtilsTest {
     @Test
     void shouldReturnNullIfBelowThreshold() {
-        final ConservativeIvaCalculationUtils.IvaBranchData branchData = new ConservativeIvaCalculationUtils.IvaBranchData(
-                null, 0, 0, new ArrayList<>()
-        );
-        final Integer result = ConservativeIvaCalculationUtils.computeConservativeAdjustment(
-                branchData, 0, 0, 0
-        );
-        Assertions.assertThat(result)
-                .isNull();
+        final ConservativeIvaCalculationUtils.IvaBranchData branchData = new ConservativeIvaCalculationUtils.IvaBranchData(null, 0, 0, new ArrayList<>());
+        final Integer result = computeConservativeAdjustment(branchData, 0, 0, 0);
+        Assertions.assertThat(result).isNull();
     }
 
     @ParameterizedTest
@@ -45,35 +43,34 @@ class ConservativeIvaCalculationUtilsTest {
                             final int curativeMargin,
                             final int expected) {
 
-        final CnecRamValuesData ramValues = new CnecRamValuesData(
-                0, 0, BigDecimal.ZERO, amr, 0, 0, 0
-        );
+        final CnecRamValuesData ramValues = new CnecRamValuesData(0, 0, BigDecimal.ZERO,
+                                                                  amr,
+                                                                  0, 0, 0);
 
         final CnecRamData cnecRamData = getCnecRamData(contingencyName, cnecId, ramValues);
 
-        final ConservativeIvaCalculationUtils.IvaBranchData branchData = new ConservativeIvaCalculationUtils.IvaBranchData(
-                cnecRamData, minRealRam, ivaMax, new ArrayList<>()
-        );
-        final Integer result = ConservativeIvaCalculationUtils.computeConservativeAdjustment(
-                branchData, ramThreshold, curativeMargin, preventiveMargin
-        );
+        final ConservativeIvaCalculationUtils.IvaBranchData branchData = new ConservativeIvaCalculationUtils.IvaBranchData(cnecRamData,
+                                                                                                                           minRealRam,
+                                                                                                                           ivaMax,
+                                                                                                                           new ArrayList<>());
+        final Integer result = computeConservativeAdjustment(branchData,
+                                                             ramThreshold,
+                                                             curativeMargin,
+                                                             preventiveMargin);
 
-        Assertions.assertThat(result)
-                .isEqualTo(expected);
+        Assertions.assertThat(result).isEqualTo(expected);
     }
 
-    private static @NotNull CnecRamData getCnecRamData(final String contingencyName,
-                                                       final String cnecId,
-                                                       final CnecRamValuesData ramValues) {
-        final CnecRamFValuesData fValues = new CnecRamFValuesData(
-                0, 0, 0, 0, 0, 0, 0
-        );
+    private static CnecRamData getCnecRamData(final String contingencyName,
+                                              final String cnecId,
+                                              final CnecRamValuesData ramValues) {
+        final CnecRamFValuesData fValues = new CnecRamFValuesData(0, 0, 0, 0, 0, 0, 0);
 
         return new CnecRamData(cnecId,
-                               "branch",
-                               "FR",
+                               "test_branch",
+                               FRENCH_TSO,
                                contingencyName,
-                               "OK",
+                               BRANCH_STATUS_OK,
                                ramValues,
                                fValues,
                                new HashMap<>());
