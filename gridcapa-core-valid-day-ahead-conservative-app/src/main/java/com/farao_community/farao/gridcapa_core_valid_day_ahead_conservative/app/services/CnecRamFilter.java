@@ -6,7 +6,7 @@
  */
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services;
 
-import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamData;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamData;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
