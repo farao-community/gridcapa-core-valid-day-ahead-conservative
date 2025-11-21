@@ -22,6 +22,28 @@ import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservati
 public class CoreValidD2TaskParameters {
     private static final Logger LOGGER = LoggerFactory.getLogger(CoreValidD2TaskParameters.class);
     private boolean useProjection;
+    private int maxVerticesPerBranch;
+    private int ramThreshold;
+    private int minRamMccc;
+    private String excludedBranches;
+    private int curativeIvaMargin;
+    private int preventiveIvaMargin;
+
+    public int getMaxVerticesPerBranch() {
+        return maxVerticesPerBranch;
+    }
+
+    public int getRamThreshold() {
+        return ramThreshold;
+    }
+
+    public int getMinRamMccc() {
+        return minRamMccc;
+    }
+
+    public String getExcludedBranches() {
+        return excludedBranches;
+    }
 
     public CoreValidD2TaskParameters(final List<TaskParameterDto> parameters) {
         final List<String> errors = new ArrayList<>();
@@ -63,5 +85,13 @@ public class CoreValidD2TaskParameters {
         final List<String> appender = new ArrayList<>();
         appender.add(String.format("%n\t\"%s\": %s", USE_PROJECTION, useProjection));
         return String.format("{%s%n}", String.join(", ", appender));
+    }
+
+    public int getCurativeIvaMargin() {
+        return curativeIvaMargin;
+    }
+
+    public int getPreventiveIvaMargin() {
+        return preventiveIvaMargin;
     }
 }
