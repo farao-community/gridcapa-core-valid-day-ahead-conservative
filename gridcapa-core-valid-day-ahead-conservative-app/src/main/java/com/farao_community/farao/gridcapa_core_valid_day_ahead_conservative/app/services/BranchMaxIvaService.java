@@ -8,7 +8,7 @@ package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app
 
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubsConfiguration;
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
-import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.BranchData;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.IvaBranchData;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamData;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamFValuesData;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamValuesData;
@@ -34,12 +34,12 @@ public class BranchMaxIvaService {
         this.coreHubsConfiguration = coreHubsConfiguration;
     }
 
-    public List<BranchData> computeBranchData(final List<Vertex> vertices,
-                                              final List<CnecRamData> cnecs,
-                                              final CoreValidD2TaskParameters parameters) {
-        final List<BranchData> branchData = new ArrayList<>();
+    public List<IvaBranchData> computeBranchData(final List<Vertex> vertices,
+                                                 final List<CnecRamData> cnecs,
+                                                 final CoreValidD2TaskParameters parameters) {
+        final List<IvaBranchData> ivaBranchData = new ArrayList<>();
         if (cnecs.isEmpty()) {
-            return branchData;
+            return ivaBranchData;
         }
         final int maxVerticesPerBranch = parameters.getMaxVerticesPerBranch();
         final int ramThreshold = parameters.getRamThreshold();
@@ -51,9 +51,9 @@ public class BranchMaxIvaService {
             final int maxIva = computeMaxIva(cnec, excludedBranches, minRamMccc);
             //TODO default if no worst vertex ?
             final RamVertex worstVertex = worstVertices.isEmpty() ? new RamVertex(0, null) : worstVertices.getFirst();
-            branchData.add(new BranchData(cnec, worstVertex.realRam(), maxIva, worstVertices));
+            ivaBranchData.add(new IvaBranchData(cnec, worstVertex.realRam(), maxIva, worstVertices));
         });
-        return branchData;
+        return ivaBranchData;
     }
 
     private List<RamVertex> getWorstVerticesUnderRamThreshold(final List<Vertex> vertices,
