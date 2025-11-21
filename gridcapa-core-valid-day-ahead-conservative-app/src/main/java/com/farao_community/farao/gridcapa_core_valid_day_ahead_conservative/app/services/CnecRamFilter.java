@@ -33,7 +33,7 @@ public final class CnecRamFilter {
 
     /**
      * We only want to work on French lines, RTE being the French TSO
-     * 
+     *
      * @return a predicate to test this on a CnecRamData object
      */
     private static Predicate<CnecRamData> belongsToRTE() {
@@ -42,7 +42,7 @@ public final class CnecRamFilter {
 
     /**
      * The lines for which we want to do calculations must have a positive virtual margin (AMR), and an OK status
-     * 
+     *
      * @return a predicate to test this on a CnecRamData object
      */
     private static Predicate<CnecRamData> isAdjustable() {
@@ -53,7 +53,7 @@ public final class CnecRamFilter {
     /**
      * Some elements are modelled has having no current limit, thus default values are present for several fields.
      * We don't want to use them because these would lead to a false result
-     * 
+     *
      * @return a predicate to test this on a CnecRamData object
      */
     private static Predicate<CnecRamData> hasCurrentLimit() {
