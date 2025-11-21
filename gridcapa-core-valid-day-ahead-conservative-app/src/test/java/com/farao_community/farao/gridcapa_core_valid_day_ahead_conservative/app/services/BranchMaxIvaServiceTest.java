@@ -9,10 +9,10 @@ package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHub;
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubsConfiguration;
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
-import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamData;
-import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamFValuesData;
-import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamValuesData;
-import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.RamVertex;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamData;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamFValuesData;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamValuesData;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.RamVertex;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.request.CoreValidD2TaskParameters;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -65,17 +65,16 @@ class BranchMaxIvaServiceTest {
                 .isNotNull()
                 .hasFieldOrPropertyWithValue("cnec", cnec)
                 .hasFieldOrPropertyWithValue("minRealRam", -250)
-                .hasFieldOrPropertyWithValue("ivaMax", 360)
-                .hasFieldOrPropertyWithValue("worstVertexId", 2);
+                .hasFieldOrPropertyWithValue("ivaMax", 360);
     }
 
     @ParameterizedTest
     @CsvSource({
-        "-10,10,4,2,-250",
-        "-10,2,2,2,-250",
-        "-100,2,1,2,-250"
+        "-10,10,4,-250",
+        "-10,2,2,-250",
+        "-100,2,1,-250"
     })
-    void getWorstVerticesUnderRamThresholdTest(int ramLimit, int maxVertexPerBranch, int expectedCount, int expectedWorstId, int expectedWorstValue) {
+    void getWorstVerticesUnderRamThresholdTest(int ramLimit, int maxVertexPerBranch, int expectedCount, int expectedWorstValue) {
         final List<Vertex> vertices = getTestVertices();
         final CnecRamData cnec = getTestCnecPtdf();
         final List<CoreHub> coreHubs = getTestCoreHubs();
@@ -92,7 +91,6 @@ class BranchMaxIvaServiceTest {
                 .hasSize(expectedCount)
                 .first()
                 .isNotNull()
-                .hasFieldOrPropertyWithValue("vertexId", expectedWorstId)
                 .hasFieldOrPropertyWithValue("realRam", expectedWorstValue);
     }
 
@@ -135,14 +133,17 @@ class BranchMaxIvaServiceTest {
     }
 
     private CnecRamData getTestCnec() {
-        CnecRamData cnec = Mockito.mock(CnecRamData.class);
         CnecRamValuesData ram = new CnecRamValuesData(ZERO_INT, 227, BigDecimal.ZERO, 1000, ZERO_INT, 500, ZERO_INT);
         CnecRamFValuesData fValues = new CnecRamFValuesData(1200, 300, ZERO_INT, 800, ZERO_INT, ZERO_INT, ZERO_INT);
-        Mockito.when(cnec.ramValues()).thenReturn(ram);
-        Mockito.when(cnec.fValues()).thenReturn(fValues);
         final Map<String, BigDecimal> ptdfs = getCnecTestPtdfs();
-        Mockito.when(cnec.ptdfValues()).thenReturn(ptdfs);
-        return cnec;
+        return  new CnecRamData("testId",
+                                           "testName",
+                                           "testTSO",
+                                           "testContignency",
+                                           "testBS",
+                                           ram,
+                                           fValues,
+                                           ptdfs);
     }
 
     private CnecRamData getTestCnecPtdf() {

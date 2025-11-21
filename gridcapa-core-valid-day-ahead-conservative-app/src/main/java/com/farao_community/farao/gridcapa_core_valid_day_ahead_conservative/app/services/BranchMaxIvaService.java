@@ -8,11 +8,11 @@ package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app
 
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubsConfiguration;
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
-import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.BranchData;
-import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamData;
-import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamFValuesData;
-import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamValuesData;
-import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.RamVertex;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.BranchData;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamData;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamFValuesData;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamValuesData;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.RamVertex;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.request.CoreValidD2TaskParameters;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -51,7 +51,7 @@ public class BranchMaxIvaService {
             final int maxIva = computeMaxIva(cnec, excludedBranches, minRamMccc);
             //TODO default if no worst vertex ?
             final RamVertex worstVertex = worstVertices.isEmpty() ? new RamVertex(0, null) : worstVertices.getFirst();
-            branchData.add(new BranchData(cnec, worstVertex.realRam(), maxIva, worstVertex.vertex().vertexId(), worstVertices));
+            branchData.add(new BranchData(cnec, worstVertex.realRam(), maxIva, worstVertices));
         });
         return branchData;
     }

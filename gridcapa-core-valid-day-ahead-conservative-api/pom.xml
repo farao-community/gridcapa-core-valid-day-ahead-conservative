@@ -22,6 +22,10 @@
             <artifactId>gridcapa-task-manager-api</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.farao-community.farao</groupId>
+            <artifactId>gridcapa-core-valid-commons</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.github.jasminb</groupId>
             <artifactId>jsonapi-converter</artifactId>
         </dependency>
@@ -44,8 +48,8 @@
 
         <!-- TEST DEPENDENCIES -->
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
