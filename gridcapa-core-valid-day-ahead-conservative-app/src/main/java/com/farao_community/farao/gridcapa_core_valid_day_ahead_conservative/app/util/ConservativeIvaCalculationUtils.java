@@ -28,10 +28,12 @@ public final class ConservativeIvaCalculationUtils {
         final int curativeMargin = parameters.getCurativeIvaMargin();
         final int preventiveMargin = parameters.getPreventiveIvaMargin();
 
-        domainData.forEach(branch -> branch.setConservativeIva(computeConservativeIVA(branch,
-                                                                                      ramThreshold,
-                                                                                      curativeMargin,
-                                                                                      preventiveMargin)));
+        for (final IvaBranchData branch : domainData) {
+            branch.setConservativeIva(computeConservativeIVA(branch,
+                                                             ramThreshold,
+                                                             curativeMargin,
+                                                             preventiveMargin));
+        }
 
     }
 
@@ -39,9 +41,9 @@ public final class ConservativeIvaCalculationUtils {
      * IVA => a value that can be added to our available margin while still being secure
      * conservative => without RAO use
      * @param branchData the branch for which we compute the conservative IVA
-     * @param ramThreshold from parametersDto
-     * @param curativeIvaMargin from parametersDto
-     * @param preventiveIvaMargin from parametersDto
+     * @param ramThreshold lower boundary of RAM
+     * @param curativeIvaMargin IVA margin if the branch has contingencies
+     * @param preventiveIvaMargin IVA margin if the branch has no contingencies
      * @return the conservative IVA
      */
     static Integer computeConservativeIVA(final IvaBranchData branchData,
@@ -61,7 +63,7 @@ public final class ConservativeIvaCalculationUtils {
         final int virtualMargin = cnec.getAmr();
         final int ivaMax = branchData.ivaMax();
 
-        if (hasTransmissionThreshold(cnec)) {
+        if (hasTransmissionLimit(cnec)) {
             conservativeIva = Math.min(virtualMargin, ivaMax);
         } else {
             // we adjust our virtual margin by a quantity defined in task/process parameters
@@ -92,7 +94,7 @@ public final class ConservativeIvaCalculationUtils {
      * @param cnec a network element
      * @return whether it has a transmission threshold or not
      */
-    private static boolean hasTransmissionThreshold(final CnecRamData cnec) {
+    private static boolean hasTransmissionLimit(final CnecRamData cnec) {
         return cnec.necId().toUpperCase().endsWith(SUFFIX_ADMISSIBLE_TRANSMISSION_LIMIT);
     }
 

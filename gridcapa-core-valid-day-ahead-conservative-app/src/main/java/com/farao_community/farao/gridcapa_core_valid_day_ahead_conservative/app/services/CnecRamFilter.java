@@ -27,7 +27,10 @@ public final class CnecRamFilter {
 
     public static List<CnecRamData> filterBeforeIvaCalculus(final List<CnecRamData> unfiltered) {
         return unfiltered.stream()
-                .filter(belongsToRTE().and(hasCurrentLimit()).and(isAdjustable()).and(doesNotComeFromSpanning()))
+                .filter(belongsToRTE()
+                                .and(hasCurrentLimit())
+                                .and(isAdjustable())
+                                .and(doesNotComeFromSpanning()))
                 .toList();
     }
 

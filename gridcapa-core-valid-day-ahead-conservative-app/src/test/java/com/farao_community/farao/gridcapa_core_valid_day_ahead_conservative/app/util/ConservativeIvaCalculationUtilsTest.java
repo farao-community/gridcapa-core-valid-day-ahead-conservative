@@ -22,15 +22,16 @@ import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservati
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.FRENCH_TSO;
 
 class ConservativeIvaCalculationUtilsTest {
+
     @ParameterizedTest
     @CsvSource({
         "CNAME,TEST_PATL,2,0,3,1,0,0,2", // case min
-        "CNAME,TEST_TATL,3,0,2,1,0,0,0", // same but with ivac < amr + minRealRam
+        "CNAME,TEST_TATL,3,0,2,1,0,0,0", // same but with IVAc < AMR + minRealRam
         "BASECASE,TEST,4,0,5,1,0,1,4",   // case clamp with curative
-        "BASECASE,TEST,4,2,5,3,0,1,0",   // same but with ivac < amr + minRealRam
+        "BASECASE,TEST,4,2,5,3,0,1,0",   // same but with IVAc < AMR + minRealRam
         "CNAME,TEST,4,0,5,1,1,0,4",      // case clamp with preventive
-        "CNAME,TEST,4,2,5,3,1,0,0",      // same but with ivac < amr + minRealRam
-        "CNAME,TEST,4,4,5,3,1,0,0"       // minReal > threshold
+        "CNAME,TEST,4,2,5,3,1,0,0",      // same but with IVAc < AMR + minRealRam
+        "CNAME,TEST,4,4,5,3,1,0,0"       // case minRealRam > RamThreshold
     })
     void shouldReturnValues(final String contingencyName,
                             final String cnecId,
