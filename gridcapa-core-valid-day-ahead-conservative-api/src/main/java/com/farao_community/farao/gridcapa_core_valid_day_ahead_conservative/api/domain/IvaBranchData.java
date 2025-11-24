@@ -33,10 +33,10 @@ public final class IvaBranchData {
         this.worstVertices = worstVertices;
     }
 
-    public IvaBranchData(CnecRamData cnec,
-                         int minRealRam,
-                         int ivaMax,
-                         List<RamVertex> worstVertices) {
+    public IvaBranchData(final CnecRamData cnec,
+                         final int minRealRam,
+                         final int ivaMax,
+                         final List<RamVertex> worstVertices) {
         this.cnec = cnec;
         this.minRealRam = minRealRam;
         this.ivaMax = ivaMax;
