@@ -72,22 +72,22 @@ public class BranchMaxIvaService {
     }
 
     private RamVertex computeRealVertexRam(final Vertex vertex, final CnecRamData cnec) {
-        final int realVertexRam = cnec.ramValues().ram0Core() - sumNetPositions(vertex.coordinates(), cnec.ptdfValues());
+        final int realVertexRam = cnec.ramValues().ram0Core() - sumFlowOnHubs(vertex.coordinates(), cnec.ptdfValues());
         return new RamVertex(realVertexRam, vertex);
     }
 
-    private int sumNetPositions(final Map<String, Integer> verticesNPs, final Map<String, BigDecimal> cnecPtdfs) {
+    private int sumFlowOnHubs(final Map<String, Integer> verticesNPs, final Map<String, BigDecimal> cnecPtdfs) {
         return coreHubsConfiguration.getCoreHubs().stream()
-                .map(coreHub -> computeNetPosition(verticesNPs, cnecPtdfs, coreHub))
+                .map(coreHub -> getFlowOnHub(verticesNPs, cnecPtdfs, coreHub))
                 .reduce(BigDecimal::add)
                 .map(BigDecimal::intValue)
                 .orElse(0);
 
     }
 
-    private static BigDecimal computeNetPosition(final Map<String, Integer> verticesNPs,
-                                                 final Map<String, BigDecimal> cnecPtdfs,
-                                                 final CoreHub coreHub) {
+    private static BigDecimal getFlowOnHub(final Map<String, Integer> verticesNPs,
+                                           final Map<String, BigDecimal> cnecPtdfs,
+                                           final CoreHub coreHub) {
         return cnecPtdfs.get(coreHub.flowbasedCode()).multiply(new BigDecimal(verticesNPs.get(coreHub.clusterVerticeCode())));
     }
 
