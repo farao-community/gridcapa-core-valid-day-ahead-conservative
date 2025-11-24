@@ -44,7 +44,7 @@ public final class CnecRamFilter {
     }
 
     /**
-     * The lines used for calculations must have a positive virtual margin (AMR), and an OK status
+     * The lines used for calculations must have a positive AMR and an OK status
      *
      * @return a predicate to test this on a CnecRamData object
      */

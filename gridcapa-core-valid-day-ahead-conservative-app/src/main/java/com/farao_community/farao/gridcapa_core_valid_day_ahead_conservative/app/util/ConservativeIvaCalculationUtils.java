@@ -14,6 +14,8 @@ import java.util.List;
 
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.BASECASE;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.SUFFIX_ADMISSIBLE_TRANSMISSION_LIMIT;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 public final class ConservativeIvaCalculationUtils {
 
@@ -40,9 +42,10 @@ public final class ConservativeIvaCalculationUtils {
     /**
      * IVA => a value that can be added to our available margin while still being secure
      * conservative => without RAO use
-     * @param branchData the branch for which we compute the conservative IVA
-     * @param ramThreshold lower boundary of RAM
-     * @param curativeIvaMargin IVA margin if the branch has contingencies
+     *
+     * @param branchData          the branch for which we compute the conservative IVA
+     * @param ramThreshold        lower boundary of RAM
+     * @param curativeIvaMargin   IVA margin if the branch has contingencies
      * @param preventiveIvaMargin IVA margin if the branch has no contingencies
      * @return the conservative IVA
      */
@@ -59,22 +62,38 @@ public final class ConservativeIvaCalculationUtils {
             return 0;
         }
 
-        final int conservativeIva;
-        final int virtualMargin = cnec.getAmr();
-        final int ivaMax = branchData.ivaMax();
+        final int conservativeIva = min(branchData.ivaMax(),
+                                        getVirtualMargin(cnec,
+                                                         curativeIvaMargin,
+                                                         preventiveIvaMargin));
 
-        if (hasTransmissionLimit(cnec)) {
-            conservativeIva = Math.min(virtualMargin, ivaMax);
-        } else {
+        // if we gain something over minRealRam after having removed the branch's virtual margin,
+        // we return it, else we return 0 (no adjustment)
+        return conservativeIva - cnec.getAmr() < minRealRam ? 0 : conservativeIva;
+    }
+
+    /**
+     * Depending on the line, the calculation uses a different 'virtual' margin for the adjustment
+     * (virtual because it's used for calculation but has no physical meaning)
+     *
+     * @param cnec                the considered network element
+     * @param curativeIvaMargin   user input margin with contingencies
+     * @param preventiveIvaMargin user input margin without contingency
+     * @return the virtual margin used for the conservative IVA calculation
+     */
+    private static int getVirtualMargin(final CnecRamData cnec,
+                                        final int curativeIvaMargin,
+                                        final int preventiveIvaMargin) {
+        int virtualMargin = cnec.getAmr();
+
+        if (hasNoTransmissionLimit(cnec)) {
             // we adjust our virtual margin by a quantity defined in task/process parameters
-            final int adjustedMargin = virtualMargin - (hasNoContingency(cnec) ? preventiveIvaMargin : curativeIvaMargin);
-            // we do clamp(a,0,b) = max(min(a,b), 0) because adjusted margin can be < 0 given the substraction
-            conservativeIva = Math.clamp(ivaMax, 0, adjustedMargin);
+            virtualMargin -= (hasNoContingency(cnec) ? preventiveIvaMargin : curativeIvaMargin);
+            // adjusted margin can be < 0 given the substraction
+            virtualMargin = max(virtualMargin, 0);
         }
 
-        // if we gain something over minRealRam with our calculation,
-        // we return it, else we return 0 (no adjustment)
-        return conservativeIva - virtualMargin < minRealRam ? 0 : conservativeIva;
+        return virtualMargin;
     }
 
     /**
@@ -94,7 +113,7 @@ public final class ConservativeIvaCalculationUtils {
      * @param cnec a network element
      * @return whether it has a transmission threshold or not
      */
-    private static boolean hasTransmissionLimit(final CnecRamData cnec) {
+    private static boolean hasNoTransmissionLimit(final CnecRamData cnec) {
         return cnec.necId().toUpperCase().endsWith(SUFFIX_ADMISSIBLE_TRANSMISSION_LIMIT);
     }
 
@@ -103,6 +122,7 @@ public final class ConservativeIvaCalculationUtils {
     public record IvaBranchData(CnecRamData cnec, int minRealRam,
                                 int ivaMax, List<RamVertex> worstVertices) {
         void setConservativeIva(final Integer conservativeIva) {
+            //WILL BE DELETED
         }
     }
 
