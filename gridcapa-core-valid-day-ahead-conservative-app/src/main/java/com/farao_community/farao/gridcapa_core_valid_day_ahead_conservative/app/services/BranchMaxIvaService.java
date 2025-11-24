@@ -49,10 +49,11 @@ public class BranchMaxIvaService {
         final String[] excludedBranches = parameters.getExcludedBranches() != null ? excludedBranchesString.split(SEMICOLON) : new String[0];
         cnecs.forEach(cnec -> {
             final List<RamVertex> worstVertices = getWorstVerticesUnderRamThreshold(vertices, cnec, ramThreshold, maxVerticesPerBranch);
-            final int maxIva = computeMaxIva(cnec, excludedBranches, minRamMccc);
-            //TODO default if no worst vertex ?
-            final RamVertex worstVertex = worstVertices.isEmpty() ? new RamVertex(0, null) : worstVertices.getFirst();
-            ivaBranchData.add(new IvaBranchData(cnec, worstVertex.realRam(), maxIva, worstVertices));
+            if (!worstVertices.isEmpty()) {
+                final int maxIva = computeMaxIva(cnec, excludedBranches, minRamMccc);
+                final RamVertex worstVertex = worstVertices.getFirst();
+                ivaBranchData.add(new IvaBranchData(cnec, worstVertex.realRam(), maxIva, worstVertices));
+            }
         });
         return ivaBranchData;
     }
