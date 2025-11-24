@@ -99,10 +99,10 @@ public final class ConservativeIvaCalculationUtils {
     }
 
     /**
-     * BASECASE being the name of the contigencies-free scenario
+     * BASECASE being the name of the contingencies-free scenario
      *
      * @param cnec a network element
-     * @return whether it has a contigency or not
+     * @return whether it has a contingency or not
      */
     private static boolean hasNoContingency(final CnecRamData cnec) {
         return BASECASE.equals(cnec.contingencyName());

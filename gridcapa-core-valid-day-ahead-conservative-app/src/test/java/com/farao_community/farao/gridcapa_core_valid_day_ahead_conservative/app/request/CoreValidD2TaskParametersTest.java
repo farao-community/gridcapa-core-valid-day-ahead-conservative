@@ -119,30 +119,32 @@ class CoreValidD2TaskParametersTest {
         Mockito.when(parameter7.getParameterType()).thenReturn(INT);
         Mockito.when(parameter7.getValue()).thenReturn("50");
         parameters.add(parameter7);
-        assertEquals("{\n" +
-                     "\t\"USE_PROJECTION\": true, \n" +
-                     "\t\"MAX_VERTICES_PER_BRANCH\": 5, \n" +
-                     "\t\"RAM_THRESHOLD\": -500, \n" +
-                     "\t\"MIN_RAM_MCCC\": 20, \n" +
-                     "\t\"EXCLUDED_BRANCHES\": \"A List;of;Strings\", \n" +
-                     "\t\"CURATIVE_IVA_MARGIN\": 100, \n" +
-                     "\t\"PREVENTIVE_IVA_MARGIN\": 50\n" +
-                     "}",
+        assertEquals("""
+                         {
+                         \t"USE_PROJECTION": true,\s
+                         \t"MAX_VERTICES_PER_BRANCH": 5,\s
+                         \t"RAM_THRESHOLD": -500,\s
+                         \t"MIN_RAM_MCCC": 20,\s
+                         \t"EXCLUDED_BRANCHES": "A List;of;Strings",\s
+                         \t"CURATIVE_IVA_MARGIN": 100,\s
+                         \t"PREVENTIVE_IVA_MARGIN": 50
+                         }""",
                      new CoreValidD2TaskParameters(parameters).toJsonString());
     }
 
     @Test
     void testEmptyParametersToJsonString() {
         assertEquals(
-            "{\n" +
-            "\t\"USE_PROJECTION\": false, \n" +
-            "\t\"MAX_VERTICES_PER_BRANCH\": 0, \n" +
-            "\t\"RAM_THRESHOLD\": 0, \n" +
-            "\t\"MIN_RAM_MCCC\": 0, \n" +
-            "\t\"EXCLUDED_BRANCHES\": null, \n" +
-            "\t\"CURATIVE_IVA_MARGIN\": 0, \n" +
-            "\t\"PREVENTIVE_IVA_MARGIN\": 0\n" +
-            "}",
+            """
+                {
+                \t"USE_PROJECTION": false,\s
+                \t"MAX_VERTICES_PER_BRANCH": 0,\s
+                \t"RAM_THRESHOLD": 0,\s
+                \t"MIN_RAM_MCCC": 0,\s
+                \t"EXCLUDED_BRANCHES": null,\s
+                \t"CURATIVE_IVA_MARGIN": 0,\s
+                \t"PREVENTIVE_IVA_MARGIN": 0
+                }""",
             new CoreValidD2TaskParameters(null).toJsonString());
     }
 
