@@ -42,7 +42,7 @@ public final class ConservativeIvaCalculationUtils {
     }
 
     /**
-     * IVA => a value that can be added to our available margin while still being secure
+     * IVA => a value that is being subtracted to our available margin to make it secure while gaining a few MW
      * conservative => without RAO use
      *
      * @param branchData          the branch for which we compute the conservative IVA
@@ -69,8 +69,8 @@ public final class ConservativeIvaCalculationUtils {
                                                          curativeIvaMargin,
                                                          preventiveIvaMargin));
 
-        // if we gain something over minRealRam after having removed the branch's virtual margin,
-        // we return it, else we return 0 (no adjustment)
+        // Once we have the value, if it's still greater than the min RAM after having removed AMR,
+        // we gained capacity so we return the (lower than initial) IVA
         return conservativeIva - cnec.getAmr() < minRealRam ? 0 : conservativeIva;
     }
 
