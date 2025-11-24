@@ -19,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -97,7 +98,7 @@ public class BranchMaxIvaService {
         final CnecRamFValuesData fValues = cnec.fValues();
         final CnecRamValuesData ramValues = cnec.ramValues();
         final int fMax = fValues.fMax();
-        final BigDecimal fMaxPercentage = new BigDecimal(minRamMccc).multiply(new BigDecimal(fMax)).divide(new BigDecimal(100));
+        final BigDecimal fMaxPercentage = new BigDecimal(minRamMccc).multiply(new BigDecimal(fMax)).divide(new BigDecimal(100), 5, RoundingMode.FLOOR);
         final int positiveMax = Math.max(0, fMaxPercentage.subtract(new BigDecimal(fMax - fValues.frm() - fValues.f0Core())).intValue());
         return Math.max(0, ramValues.amr() - ramValues.cva() - positiveMax);
     }
