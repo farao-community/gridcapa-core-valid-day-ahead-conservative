@@ -11,6 +11,7 @@ import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.request.CoreValidD2TaskParameters;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.BASECASE;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.SUFFIX_ADMISSIBLE_TRANSMISSION_LIMIT;
@@ -31,10 +32,11 @@ public final class ConservativeIvaCalculationUtils {
         final int preventiveMargin = parameters.getPreventiveIvaMargin();
 
         for (final IvaBranchData branch : domainData) {
-            branch.setConservativeIva(computeConservativeIVA(branch,
-                                                             ramThreshold,
-                                                             curativeMargin,
-                                                             preventiveMargin));
+            Optional.ofNullable(computeConservativeIVA(branch,
+                                   ramThreshold,
+                                   curativeMargin,
+                                   preventiveMargin))
+                            .ifPresent(branch::setConservativeIva);
         }
 
     }
@@ -47,7 +49,7 @@ public final class ConservativeIvaCalculationUtils {
      * @param ramThreshold        lower boundary of RAM
      * @param curativeIvaMargin   IVA margin if the branch has contingencies
      * @param preventiveIvaMargin IVA margin if the branch has no contingencies
-     * @return the conservative IVA
+     * @return the conservative IVA / null if non-applicable
      */
     static Integer computeConservativeIVA(final IvaBranchData branchData,
                                           final int ramThreshold,
@@ -59,7 +61,7 @@ public final class ConservativeIvaCalculationUtils {
 
         if (minRealRam >= ramThreshold) {
             // no need for adjustment if we are already over the threshold
-            return 0;
+            return null;
         }
 
         final int conservativeIva = min(branchData.ivaMax(),

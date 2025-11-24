@@ -18,6 +18,15 @@ public final class CoreValidD2Constants {
     public static final String BUSINESS_LOGGER = "BUSINESS_LOGGER";
     public static final String USE_PROJECTION = "USE_PROJECTION";
     public static final String BOOLEAN = "BOOLEAN";
+    public static final String INT = "INT";
+    public static final String STRING = "STRING";
+    public static final String MAX_VERTICES_PER_BRANCH = "MAX_VERTICES_PER_BRANCH";
+    public static final String RAM_THRESHOLD = "RAM_THRESHOLD";
+    public static final String MIN_RAM_MCCC = "MIN_RAM_MCCC";
+    public static final String EXCLUDED_BRANCHES = "EXCLUDED_BRANCHES";
+    public static final String CURATIVE_IVA_MARGIN = "CURATIVE_IVA_MARGIN";
+    public static final String PREVENTIVE_IVA_MARGIN = "PREVENTIVE_IVA_MARGIN";
+    public static final String SEMICOLON = ";";
     //CSV HEADERS
     public static final String IS_PRESOLVED_REGION_HEADER = "PresolvedRegion";
     public static final String IS_CNEC_HEADER = "CNEC";
@@ -49,4 +58,5 @@ public final class CoreValidD2Constants {
     public static final String SUFFIX_NEC_ID_AFTER = "_SpannedAfter";
     public static final String BRANCH_STATUS_OK = "OK";
     public static final int MIN_AMR_VALUE = 0;
+
 }

@@ -10,6 +10,7 @@ import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamFValuesData;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamValuesData;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -23,6 +24,18 @@ import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservati
 
 class ConservativeIvaCalculationUtilsTest {
 
+    @Test
+    void shouldReturnNullIfBelowThreshold() {
+        final ConservativeIvaCalculationUtils.IvaBranchData branchData = new ConservativeIvaCalculationUtils.IvaBranchData(
+            null, 0, 0, new ArrayList<>()
+        );
+        final Integer result = ConservativeIvaCalculationUtils.computeConservativeIVA(
+            branchData, 0, 0, 0
+        );
+        Assertions.assertThat(result)
+            .isNull();
+    }
+
     @ParameterizedTest
     @CsvSource({
         "CNAME,TEST_PATL,2,0,3,1,0,0,2", // case min
@@ -31,7 +44,6 @@ class ConservativeIvaCalculationUtilsTest {
         "BASECASE,TEST,4,2,5,3,0,1,0",   // same but with IVAc < AMR + minRealRam
         "CNAME,TEST,4,0,5,1,1,0,4",      // case clamp with preventive
         "CNAME,TEST,4,2,5,3,1,0,0",      // same but with IVAc < AMR + minRealRam
-        "CNAME,TEST,4,4,5,3,1,0,0"       // case minRealRam > RamThreshold
     })
     void shouldReturnValues(final String contingencyName,
                             final String cnecId,
