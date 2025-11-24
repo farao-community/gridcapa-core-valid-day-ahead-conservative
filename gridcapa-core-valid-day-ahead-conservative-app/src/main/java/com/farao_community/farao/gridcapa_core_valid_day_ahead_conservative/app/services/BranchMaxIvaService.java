@@ -72,11 +72,11 @@ public class BranchMaxIvaService {
     }
 
     private RamVertex computeRealVertexRam(final Vertex vertex, final CnecRamData cnec) {
-        final int realVertexRam = cnec.ramValues().ram0Core() - sumFlowOnHubs(vertex.coordinates(), cnec.ptdfValues());
+        final int realVertexRam = cnec.ramValues().ram0Core() - sumFlowsOnHubs(vertex.coordinates(), cnec.ptdfValues());
         return new RamVertex(realVertexRam, vertex);
     }
 
-    private int sumFlowOnHubs(final Map<String, Integer> verticesNPs, final Map<String, BigDecimal> cnecPtdfs) {
+    private int sumFlowsOnHubs(final Map<String, Integer> verticesNPs, final Map<String, BigDecimal> cnecPtdfs) {
         return coreHubsConfiguration.getCoreHubs().stream()
                 .map(coreHub -> getFlowOnHub(verticesNPs, cnecPtdfs, coreHub))
                 .reduce(BigDecimal::add)
