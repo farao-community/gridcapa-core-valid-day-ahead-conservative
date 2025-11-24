@@ -88,7 +88,7 @@ public final class ConservativeIvaCalculationUtils {
 
         if (hasNoTransmissionLimit(cnec)) {
             // we adjust our virtual margin by a quantity defined in task/process parameters
-            virtualMargin -= (hasNoContingency(cnec) ? preventiveIvaMargin : curativeIvaMargin);
+            virtualMargin -= hasNoContingency(cnec) ? preventiveIvaMargin : curativeIvaMargin;
             // adjusted margin can be < 0 given the substraction
             virtualMargin = max(virtualMargin, 0);
         }
