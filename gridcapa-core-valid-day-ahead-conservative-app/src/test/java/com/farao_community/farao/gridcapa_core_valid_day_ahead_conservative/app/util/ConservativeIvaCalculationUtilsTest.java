@@ -38,11 +38,11 @@ class ConservativeIvaCalculationUtilsTest {
 
     @ParameterizedTest
     @CsvSource({
-        "CNAME,TEST_PATL,2,0,3,1,0,0,2", // case min
+        "CNAME,TEST_PATL,2,0,3,1,0,0,2", // case with transmission limit
         "CNAME,TEST_TATL,3,0,2,1,0,0,0", // same but with IVAc < AMR + minRealRam
-        "BASECASE,TEST,4,0,5,1,0,1,4",   // case clamp with curative
+        "BASECASE,TEST,4,0,5,1,0,1,4",   // case using curative margin input
         "BASECASE,TEST,4,2,5,3,0,1,0",   // same but with IVAc < AMR + minRealRam
-        "CNAME,TEST,4,0,5,1,1,0,4",      // case clamp with preventive
+        "CNAME,TEST,4,0,5,1,1,0,4",      // case using preventive margin input
         "CNAME,TEST,4,2,5,3,1,0,0",      // same but with IVAc < AMR + minRealRam
     })
     void shouldReturnValues(final String contingencyName,
@@ -59,7 +59,7 @@ class ConservativeIvaCalculationUtilsTest {
                                                                   amr,
                                                                   0, 0, 0);
 
-        final CnecRamData cnecRamData = getCnecRamData(contingencyName, cnecId, ramValues);
+        final CnecRamData cnecRamData = getTestCnecRamData(contingencyName, cnecId, ramValues);
 
         final ConservativeIvaCalculationUtils.IvaBranchData branchData = new ConservativeIvaCalculationUtils.IvaBranchData(cnecRamData,
                                                                                                                            minRealRam,
@@ -73,9 +73,10 @@ class ConservativeIvaCalculationUtilsTest {
         Assertions.assertThat(result).isEqualTo(expected);
     }
 
-    private static CnecRamData getCnecRamData(final String contingencyName,
-                                              final String cnecId,
-                                              final CnecRamValuesData ramValues) {
+    private static CnecRamData getTestCnecRamData(final String contingencyName,
+                                                  final String cnecId,
+                                                  final CnecRamValuesData ramValues) {
+        //not used here, any values will do
         final CnecRamFValuesData fValues = new CnecRamFValuesData(0, 0, 0, 0, 0, 0, 0);
 
         return new CnecRamData(cnecId,
