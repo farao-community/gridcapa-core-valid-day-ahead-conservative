@@ -116,7 +116,7 @@ public final class ConservativeIvaCalculationUtils {
      * @return whether it has a transmission threshold or not
      */
     private static boolean hasNoTransmissionLimit(final CnecRamData cnec) {
-        return cnec.necId().toUpperCase().endsWith(SUFFIX_ADMISSIBLE_TRANSMISSION_LIMIT);
+        return !cnec.necId().toUpperCase().endsWith(SUFFIX_ADMISSIBLE_TRANSMISSION_LIMIT);
     }
 
 
