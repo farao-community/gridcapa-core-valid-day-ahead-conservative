@@ -86,7 +86,6 @@ class IvaBranchDataTest {
         final IvaBranchData other3 =  new IvaBranchData(getTestCnec(), MIN_REAL_RAM, 120, getTestRamVertices());
         final IvaBranchData other4 =  new IvaBranchData(getTestCnec(), MIN_REAL_RAM, IVA_MAX, null);
         Assertions.assertThat(branch.hashCode())
-                .isNotNull()
                 .isEqualTo(branch.hashCode())
                 .isNotEqualTo(other1.hashCode())
                 .isNotEqualTo(other2.hashCode())
