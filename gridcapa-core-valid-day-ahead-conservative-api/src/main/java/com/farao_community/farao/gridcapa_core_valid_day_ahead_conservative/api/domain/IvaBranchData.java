@@ -8,10 +8,11 @@ package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.List;
-import java.util.Objects;
 
 public final class IvaBranchData {
     private final CnecRamData cnec;
@@ -69,22 +70,12 @@ public final class IvaBranchData {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-        if (obj == null || obj.getClass() != this.getClass()) {
-            return false;
-        }
-        var that = (IvaBranchData) obj;
-        return Objects.equals(this.cnec, that.cnec) &&
-               this.minRealRam == that.minRealRam &&
-               this.ivaMax == that.ivaMax &&
-               Objects.equals(this.worstVertices, that.worstVertices);
+        return EqualsBuilder.reflectionEquals(this, obj);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(cnec, minRealRam, ivaMax, worstVertices);
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override

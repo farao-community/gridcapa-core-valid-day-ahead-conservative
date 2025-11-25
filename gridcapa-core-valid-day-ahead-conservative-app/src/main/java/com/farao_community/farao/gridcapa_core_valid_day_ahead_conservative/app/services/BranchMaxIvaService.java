@@ -47,7 +47,7 @@ public class BranchMaxIvaService {
         final int ramThreshold = parameters.getRamThreshold();
         final int minRamMccc = parameters.getMinRamMccc();
         final String excludedBranchesString = parameters.getExcludedBranches();
-        final String[] excludedBranches = parameters.getExcludedBranches() != null ? excludedBranchesString.split(SEMICOLON) : new String[0];
+        final String[] excludedBranches = excludedBranchesString != null ? excludedBranchesString.split(SEMICOLON) : new String[0];
         cnecs.forEach(cnec -> {
             final List<RamVertex> worstVertices = getWorstVerticesUnderRamThreshold(vertices, cnec, ramThreshold, maxVerticesPerBranch);
             if (!worstVertices.isEmpty()) {

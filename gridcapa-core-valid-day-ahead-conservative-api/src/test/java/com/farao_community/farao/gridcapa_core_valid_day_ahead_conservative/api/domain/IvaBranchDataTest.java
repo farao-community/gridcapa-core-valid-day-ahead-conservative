@@ -64,6 +64,36 @@ class IvaBranchDataTest {
                 .isEqualTo(branch);
     }
 
+    @Test
+    void testEquals() {
+        final IvaBranchData branch = getTestBranch();
+        Assertions.assertThat(branch.equals(getTestBranch())).isTrue();
+        final IvaBranchData other1 =  new IvaBranchData(null, MIN_REAL_RAM, IVA_MAX, getTestRamVertices());
+        final IvaBranchData other2 =  new IvaBranchData(getTestCnec(), MIN_REAL_RAM, IVA_MAX, null);
+        final IvaBranchData other3 =  new IvaBranchData(getTestCnec(), 120, IVA_MAX, getTestRamVertices());
+        final IvaBranchData other4 =  new IvaBranchData(getTestCnec(), MIN_REAL_RAM, 120, getTestRamVertices());
+        Assertions.assertThat(branch.equals(other1)).isFalse();
+        Assertions.assertThat(branch.equals(other2)).isFalse();
+        Assertions.assertThat(branch.equals(other3)).isFalse();
+        Assertions.assertThat(branch.equals(other4)).isFalse();
+    }
+
+    @Test
+    void testHash() {
+        final IvaBranchData branch = getTestBranch();
+        final IvaBranchData other1 =  new IvaBranchData(null, MIN_REAL_RAM, IVA_MAX, getTestRamVertices());
+        final IvaBranchData other2 =  new IvaBranchData(getTestCnec(), 120, IVA_MAX, getTestRamVertices());
+        final IvaBranchData other3 =  new IvaBranchData(getTestCnec(), MIN_REAL_RAM, 120, getTestRamVertices());
+        final IvaBranchData other4 =  new IvaBranchData(getTestCnec(), MIN_REAL_RAM, IVA_MAX, null);
+        Assertions.assertThat(branch.hashCode())
+                .isNotNull()
+                .isEqualTo(branch.hashCode())
+                .isNotEqualTo(other1.hashCode())
+                .isNotEqualTo(other2.hashCode())
+                .isNotEqualTo(other3.hashCode())
+                .isNotEqualTo(other4.hashCode());
+    }
+
     private @NotNull IvaBranchData getTestBranch() {
         return new IvaBranchData(getTestCnec(), MIN_REAL_RAM, IVA_MAX, getTestRamVertices());
     }

@@ -72,7 +72,7 @@ public class CoreValidD2TaskParameters {
 
     private int validateIsIntegerAndGet(final TaskParameterDto parameter, final List<String> errors) {
         if (StringUtils.equals(INT, parameter.getParameterType())) {
-            String value = parameter.getValue() != null ? parameter.getValue() : parameter.getDefaultValue();
+            final String value = parameter.getValue() != null ? parameter.getValue() : parameter.getDefaultValue();
             try {
                 return Integer.parseInt(value);
             } catch (NumberFormatException e) {
@@ -85,7 +85,7 @@ public class CoreValidD2TaskParameters {
     }
 
     private int validateIsPositiveIntegerAndGet(final TaskParameterDto parameter, final List<String> errors) {
-        int value = validateIsIntegerAndGet(parameter, errors);
+        final int value = validateIsIntegerAndGet(parameter, errors);
         if (value < 0) {
             errors.add(String.format("Parameter %s should be positive (value: %s)", parameter.getId(), parameter.getValue()));
             return 0; // default return value, won't be used as this return can be reached only in case of validation error
