@@ -32,11 +32,8 @@ public final class ConservativeIvaCalculationUtils {
         final int preventiveMargin = parameters.getPreventiveIvaMargin();
 
         for (final IvaBranchData branch : domainData) {
-            Optional.ofNullable(computeConservativeIVA(branch,
-                                   ramThreshold,
-                                   curativeMargin,
-                                   preventiveMargin))
-                            .ifPresent(branch::setConservativeIva);
+            Optional.ofNullable(computeConservativeIVA(branch, ramThreshold, curativeMargin, preventiveMargin))
+                .ifPresent(branch::setConservativeIva);
         }
 
     }
