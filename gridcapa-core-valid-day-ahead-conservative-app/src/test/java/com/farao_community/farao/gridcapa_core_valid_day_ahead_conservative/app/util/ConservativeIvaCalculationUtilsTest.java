@@ -29,7 +29,7 @@ class ConservativeIvaCalculationUtilsTest {
         final ConservativeIvaCalculationUtils.IvaBranchData branchData = new ConservativeIvaCalculationUtils.IvaBranchData(
             null, 0, 0, new ArrayList<>()
         );
-        final Integer result = ConservativeIvaCalculationUtils.computeConservativeIVA(
+        final BigDecimal result = ConservativeIvaCalculationUtils.computeConservativeIVA(
             branchData, 0, 0, 0
         );
         Assertions.assertThat(result)
@@ -65,12 +65,12 @@ class ConservativeIvaCalculationUtilsTest {
                                                                                                                            minRealRam,
                                                                                                                            ivaMax,
                                                                                                                            new ArrayList<>());
-        final Integer result = computeConservativeIVA(branchData,
+        final BigDecimal result = computeConservativeIVA(branchData,
                                                       ramThreshold,
                                                       curativeMargin,
                                                       preventiveMargin);
 
-        Assertions.assertThat(result).isEqualTo(expected);
+        Assertions.assertThat(result).isEqualTo(BigDecimal.valueOf(expected));
     }
 
     private static CnecRamData getTestCnecRamData(final String contingencyName,

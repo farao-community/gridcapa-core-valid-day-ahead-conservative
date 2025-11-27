@@ -10,13 +10,13 @@ import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamData;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.request.CoreValidD2TaskParameters;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.BASECASE;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.SUFFIX_ADMISSIBLE_TRANSMISSION_LIMIT;
-import static java.lang.Math.max;
-import static java.lang.Math.min;
+import static java.math.BigDecimal.ZERO;
 
 public final class ConservativeIvaCalculationUtils {
 
@@ -48,10 +48,10 @@ public final class ConservativeIvaCalculationUtils {
      * @param preventiveIvaMargin IVA margin if the branch has no contingencies
      * @return the conservative IVA / null if non-applicable
      */
-    static Integer computeConservativeIVA(final IvaBranchData branchData,
-                                          final int ramThreshold,
-                                          final int curativeIvaMargin,
-                                          final int preventiveIvaMargin) {
+    static BigDecimal computeConservativeIVA(final IvaBranchData branchData,
+                                             final int ramThreshold,
+                                             final int curativeIvaMargin,
+                                             final int preventiveIvaMargin) {
 
         final CnecRamData cnec = branchData.cnec();
         final int minRealRam = branchData.minRealRam();
@@ -61,14 +61,14 @@ public final class ConservativeIvaCalculationUtils {
             return null;
         }
 
-        final int conservativeIva = min(branchData.ivaMax(),
-                                        getVirtualMargin(cnec,
-                                                         curativeIvaMargin,
-                                                         preventiveIvaMargin));
+        final BigDecimal conservativeIva = BigDecimal.valueOf(branchData.ivaMax())
+            .min(getVirtualMargin(cnec,
+                                  curativeIvaMargin,
+                                  preventiveIvaMargin));
 
         // Once we have the value, if it's still greater than the min RAM after having removed AMR,
         // we gained capacity so we return the (lower than initial) IVA
-        return conservativeIva - cnec.getAmr() < minRealRam ? 0 : conservativeIva;
+        return conservativeIva.intValue() - cnec.getAmr() < minRealRam ? ZERO : conservativeIva;
     }
 
     /**
@@ -80,16 +80,18 @@ public final class ConservativeIvaCalculationUtils {
      * @param preventiveIvaMargin user input margin without contingency
      * @return the virtual margin used for the conservative IVA calculation
      */
-    private static int getVirtualMargin(final CnecRamData cnec,
-                                        final int curativeIvaMargin,
-                                        final int preventiveIvaMargin) {
-        int virtualMargin = cnec.getAmr();
+    private static BigDecimal getVirtualMargin(final CnecRamData cnec,
+                                               final int curativeIvaMargin,
+                                               final int preventiveIvaMargin) {
+        BigDecimal virtualMargin = BigDecimal.valueOf(cnec.getAmr());
 
         if (hasNoTransmissionLimit(cnec)) {
             // we adjust our virtual margin by a quantity defined in task/process parameters
-            virtualMargin -= hasNoContingency(cnec) ? preventiveIvaMargin : curativeIvaMargin;
+            final BigDecimal inputMargin = BigDecimal.valueOf(hasNoContingency(cnec) ?
+                                                                  preventiveIvaMargin
+                                                                  : curativeIvaMargin);
             // adjusted margin can be < 0 given the subtraction
-            virtualMargin = max(virtualMargin, 0);
+            virtualMargin = virtualMargin.subtract(inputMargin).max(ZERO);
         }
 
         return virtualMargin;
@@ -120,7 +122,7 @@ public final class ConservativeIvaCalculationUtils {
     //TODO TO BE DELETED
     public record IvaBranchData(CnecRamData cnec, int minRealRam,
                                 int ivaMax, List<RamVertex> worstVertices) {
-        void setConservativeIva(final Integer conservativeIva) {
+        void setConservativeIva(final BigDecimal conservativeIva) {
             //WILL BE DELETED
         }
     }
