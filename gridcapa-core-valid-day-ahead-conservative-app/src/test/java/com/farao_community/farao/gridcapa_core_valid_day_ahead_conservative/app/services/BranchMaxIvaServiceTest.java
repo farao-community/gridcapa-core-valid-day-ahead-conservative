@@ -87,7 +87,6 @@ class BranchMaxIvaServiceTest {
                                                                                maxVertexPerBranch);
         Assertions.assertThat(worstVertices)
                 .isNotNull()
-                .isNotEmpty()
                 .hasSize(expectedCount)
                 .first()
                 .isNotNull()
@@ -137,13 +136,13 @@ class BranchMaxIvaServiceTest {
         final CnecRamFValuesData fValues = new CnecRamFValuesData(1200, 300, ZERO_INT, 800, ZERO_INT, ZERO_INT, ZERO_INT);
         final Map<String, BigDecimal> ptdfs = getCnecTestPtdfs();
         return  new CnecRamData("testId",
-                                           "testName",
-                                           "testTSO",
-                                           "testContignency",
-                                           "testBS",
-                                           ram,
-                                           fValues,
-                                           ptdfs);
+                                "testName",
+                                "testTSO",
+                                "testContignency",
+                                "testBS",
+                                ram,
+                                fValues,
+                                ptdfs);
     }
 
     private CnecRamData getTestCnecPtdf() {
