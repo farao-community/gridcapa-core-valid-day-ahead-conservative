@@ -6,9 +6,10 @@
  */
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util;
 
-import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamData;
-import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamFValuesData;
-import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamValuesData;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamData;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamFValuesData;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamValuesData;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.IvaBranchData;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,7 +27,7 @@ class ConservativeIvaCalculationUtilsTest {
 
     @Test
     void shouldReturnNullIfBelowThreshold() {
-        final ConservativeIvaCalculationUtils.IvaBranchData branchData = new ConservativeIvaCalculationUtils.IvaBranchData(
+        final IvaBranchData branchData = new IvaBranchData(
             null, 0, 0, new ArrayList<>()
         );
         final BigDecimal result = ConservativeIvaCalculationUtils.computeConservativeIVA(
@@ -61,10 +62,11 @@ class ConservativeIvaCalculationUtilsTest {
 
         final CnecRamData cnecRamData = getTestCnecRamData(contingencyName, cnecId, ramValues);
 
-        final ConservativeIvaCalculationUtils.IvaBranchData branchData = new ConservativeIvaCalculationUtils.IvaBranchData(cnecRamData,
-                                                                                                                           minRealRam,
-                                                                                                                           ivaMax,
-                                                                                                                           new ArrayList<>());
+        final IvaBranchData branchData = new IvaBranchData(cnecRamData,
+                                                           minRealRam,
+                                                           ivaMax,
+                                                           new ArrayList<>());
+
         final BigDecimal result = computeConservativeIVA(branchData,
                                                       ramThreshold,
                                                       curativeMargin,

@@ -6,8 +6,8 @@
  */
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util;
 
-import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
-import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain.CnecRamData;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamData;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.IvaBranchData;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.request.CoreValidD2TaskParameters;
 
 import java.math.BigDecimal;
@@ -53,15 +53,15 @@ public final class ConservativeIvaCalculationUtils {
                                              final int curativeIvaMargin,
                                              final int preventiveIvaMargin) {
 
-        final CnecRamData cnec = branchData.cnec();
-        final int minRealRam = branchData.minRealRam();
+        final CnecRamData cnec = branchData.getCnec();
+        final int minRealRam = branchData.getMinRealRam();
 
         if (minRealRam >= ramThreshold) {
             // no need for adjustment if we are already over the threshold
             return null;
         }
 
-        final BigDecimal conservativeIva = BigDecimal.valueOf(branchData.ivaMax())
+        final BigDecimal conservativeIva = BigDecimal.valueOf(branchData.getIvaMax())
             .min(getVirtualMargin(cnec,
                                   curativeIvaMargin,
                                   preventiveIvaMargin));
@@ -116,18 +116,6 @@ public final class ConservativeIvaCalculationUtils {
      */
     private static boolean hasNoTransmissionLimit(final CnecRamData cnec) {
         return !cnec.necId().toUpperCase().endsWith(SUFFIX_ADMISSIBLE_TRANSMISSION_LIMIT);
-    }
-
-
-    //TODO TO BE DELETED
-    public record IvaBranchData(CnecRamData cnec, int minRealRam,
-                                int ivaMax, List<RamVertex> worstVertices) {
-        void setConservativeIva(final BigDecimal conservativeIva) {
-            //WILL BE DELETED
-        }
-    }
-
-    public record RamVertex(int realRam, Vertex vertex) {
     }
 
 }

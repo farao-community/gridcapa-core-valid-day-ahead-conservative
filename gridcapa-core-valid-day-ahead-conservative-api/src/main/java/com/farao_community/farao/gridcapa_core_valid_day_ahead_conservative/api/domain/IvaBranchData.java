@@ -12,6 +12,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public final class IvaBranchData {
@@ -19,12 +20,12 @@ public final class IvaBranchData {
     private final int minRealRam;
     private final int ivaMax;
     private final List<RamVertex> worstVertices;
-    private int conservativeIva;
+    private BigDecimal conservativeIva;
 
     @JsonCreator
     public IvaBranchData(final @JsonProperty("cnec") CnecRamData cnec,
                          final @JsonProperty("minRealRam") int minRealRam,
-                         final @JsonProperty("conservativeIva") int conservativeIva,
+                         final @JsonProperty("conservativeIva") BigDecimal conservativeIva,
                          final @JsonProperty("ivaMax") int ivaMax,
                          final @JsonProperty("worstVertices") List<RamVertex> worstVertices) {
         this.cnec = cnec;
@@ -44,11 +45,11 @@ public final class IvaBranchData {
         this.worstVertices = worstVertices;
     }
 
-    public void setConservativeIva(final int conservativeIva) {
+    public void setConservativeIva(final BigDecimal conservativeIva) {
         this.conservativeIva = conservativeIva;
     }
 
-    public int getConservativeIva() {
+    public BigDecimal getConservativeIva() {
         return conservativeIva;
     }
 

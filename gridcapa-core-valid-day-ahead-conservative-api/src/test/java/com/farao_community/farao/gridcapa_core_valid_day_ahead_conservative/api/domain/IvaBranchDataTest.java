@@ -26,7 +26,7 @@ class IvaBranchDataTest {
     private static final int ZERO_INT = 0;
     private static final int MIN_REAL_RAM = 350;
     private static final int IVA_MAX = 200;
-    private static final int CONSERVATIVE_IVA = 60;
+    private static final BigDecimal CONSERVATIVE_IVA = BigDecimal.valueOf(60);
 
     @Test
     void testCreateBranchData() {
