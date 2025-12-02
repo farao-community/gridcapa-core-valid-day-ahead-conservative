@@ -87,7 +87,7 @@ public class CoreValidD2TaskParameters {
 
     private String validateIsStringAndGet(final TaskParameterDto parameter,
                                           final List<String> errors) {
-        return validateIsTypeAndGet(parameter, STRING, String::toString, errors, "");
+        return validateIsTypeAndGet(parameter, STRING, Function.identity(), errors, "");
     }
 
     private <T> T validateIsTypeAndGet(final TaskParameterDto parameter,
@@ -102,7 +102,7 @@ public class CoreValidD2TaskParameters {
             } catch (final Exception e) {
                 errors.add(String.format("Parameter %s could not be parsed as %s (value: %s)",
                                          parameter.getId(),
-                                         defaultValue.getClass().getSimpleName(),
+                                         paramType,
                                          parameter.getValue()));
             }
         } else {

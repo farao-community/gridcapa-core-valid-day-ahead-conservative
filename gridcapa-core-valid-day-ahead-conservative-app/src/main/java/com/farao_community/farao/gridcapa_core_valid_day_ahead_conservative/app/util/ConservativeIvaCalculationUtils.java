@@ -66,9 +66,12 @@ public final class ConservativeIvaCalculationUtils {
                                   curativeIvaMargin,
                                   preventiveIvaMargin));
 
+        final BigDecimal amr = BigDecimal.valueOf(cnec.getAmr());
+        final BigDecimal minRam = BigDecimal.valueOf(minRealRam);
+
         // Once we have the value, if it's still greater than the min RAM after having removed AMR,
         // we gained capacity so we return the (lower than initial) IVA
-        return conservativeIva.intValue() - cnec.getAmr() < minRealRam ? ZERO : conservativeIva;
+        return conservativeIva.subtract(amr).compareTo(minRam) < 0 ? ZERO : conservativeIva;
     }
 
     /**
@@ -101,7 +104,7 @@ public final class ConservativeIvaCalculationUtils {
      * BASECASE being the name of the contingencies-free scenario
      *
      * @param cnec a network element
-     * @return whether it has a contingency or not
+     * @return true if the CNEC has no contingency (BASECASE), false otherwise
      */
     private static boolean hasNoContingency(final CnecRamData cnec) {
         return BASECASE.equals(cnec.contingencyName());
@@ -112,7 +115,7 @@ public final class ConservativeIvaCalculationUtils {
      * indicating whether the CNEC has one of these limits or not
      *
      * @param cnec a network element
-     * @return whether it has a transmission threshold or not
+     * @return true if the CNEC has no admissible transmission limit, false otherwise
      */
     private static boolean hasNoTransmissionLimit(final CnecRamData cnec) {
         return !cnec.necId().toUpperCase().endsWith(SUFFIX_ADMISSIBLE_TRANSMISSION_LIMIT);
