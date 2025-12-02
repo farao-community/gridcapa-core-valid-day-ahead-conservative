@@ -114,6 +114,38 @@ public class CoreValidD2TaskParameters {
         return defaultValue; // Won't be used as this return can be reached only in case of validation error
     }
 
+    private int validateIsIntegerAndGet(final TaskParameterDto parameter, final List<String> errors) {
+        if (StringUtils.equals(INT, parameter.getParameterType())) {
+            final String value = parameter.getValue() != null ? parameter.getValue() : parameter.getDefaultValue();
+            try {
+                return Integer.parseInt(value);
+            } catch (NumberFormatException e) {
+                errors.add(String.format("Parameter %s could not be parsed as integer (value: %s)", parameter.getId(), parameter.getValue()));
+            }
+        } else {
+            errors.add(String.format("Parameter %s was expected to be of type INT, got %s", parameter.getId(), parameter.getParameterType()));
+        }
+        return 0; // default return value, won't be used as this return can be reached only in case of validation error
+    }
+
+    private int validateIsPositiveIntegerAndGet(final TaskParameterDto parameter, final List<String> errors) {
+        final int value = validateIsIntegerAndGet(parameter, errors);
+        if (value < 0) {
+            errors.add(String.format("Parameter %s should be positive (value: %s)", parameter.getId(), parameter.getValue()));
+            return 0; // default return value, won't be used as this return can be reached only in case of validation error
+        }
+        return value;
+    }
+
+    private String validateIsStringAndGet(final TaskParameterDto parameter, final List<String> errors) {
+        if (StringUtils.equals(STRING, parameter.getParameterType())) {
+            return parameter.getValue() != null ? parameter.getValue() : parameter.getDefaultValue();
+        } else {
+            errors.add(String.format("Parameter %s was expected to be of type STRING, got %s", parameter.getId(), parameter.getParameterType()));
+        }
+        return ""; // default return value, won't be used as this return can be reached only in case of validation error
+    }
+
     public boolean shouldProjectVertices() {
         return useProjection;
     }

@@ -4,9 +4,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.domain;
+package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain;
 
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.FlowBasedDomainBranchData;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -18,11 +19,13 @@ public record CnecRamData(String necId, String neName, String tso, String contin
                           CnecRamValuesData ramValues, CnecRamFValuesData fValues,
                           Map<String, BigDecimal> ptdfValues) implements FlowBasedDomainBranchData {
 
+    @JsonIgnore
     @Override
     public int getRam0Core() {
         return ramValues.ram0Core();
     }
 
+    @JsonIgnore
     @Override
     public int getAmr() {
         return ramValues.amr();
