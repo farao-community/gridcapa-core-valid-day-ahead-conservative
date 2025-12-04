@@ -22,45 +22,45 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.AMR_HEADER;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.BRANCH_STATUS_HEADER;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.CONTINGENCY_NAME_HEADER;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.CVA_HEADER;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.FRM_HEADER;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.F_0ALL_HEADER;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.F_0CORE_HEADER;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.F_LTA_MAX_HEADER;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.F_MAX_HEADER;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.F_REF_HEADER;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.F_UAF_HEADER;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.IS_CNEC_HEADER;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.IS_PRESOLVED_REGION_HEADER;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.IVA_HEADER;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.LTA_MARGIN_HEADER;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.MIN_RAM_FACTOR_HEADER;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.NEC_ID_HEADER;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.NE_NAME_HEADER;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.RAM0_CORE_HEADER;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.RAM_HEADER;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.TSO_HEADER;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * @author Marc Schwitzguebel {@literal <marc.schwitzguebel_externe at rte-france.com>}
  */
 public final class CnecRamImporter {
 
-    private static final String IS_PRESOLVED_REGION_HEADER = "PresolvedRegion";
-    private static final String IS_CNEC_HEADER = "CNEC";
-    private static final String RAM0_CORE_HEADER = "RAM_0core";
-    private static final String NEC_ID_HEADER = "NEC_ID";
-    private static final String NE_NAME_HEADER = "NE_Name";
-    private static final String TSO_HEADER = "TSO";
-    private static final String F_MAX_HEADER = "F_max";
-    private static final String FRM_HEADER = "FRM";
-    private static final String F_REF_HEADER = "F_ref";
-    private static final String RAM_HEADER = "RAM";
-    private static final String F_0CORE_HEADER = "F_0core";
-    private static final String MIN_RAM_FACTOR_HEADER = "MinRAMFactor";
-    private static final String F_UAF_HEADER = "F_uaf";
-    private static final String F_0ALL_HEADER = "F_0all";
-    private static final String AMR_HEADER = "AMR";
-    private static final String F_LTA_MAX_HEADER = "F_LTAmax";
-    private static final String LTA_MARGIN_HEADER = "LTA_margin";
-    private static final String CVA_HEADER = "CVA";
-    private static final String IVA_HEADER = "IVA";
-    private static final String CONTINGENCY_NAME_HEADER = "Contingency_Name";
-    private static final String BRANCH_STATUS_HEADER = "BranchStatus";
-
     private CnecRamImporter() {
         throw new IllegalStateException("Utility class");
     }
 
     public static List<CnecRamData> importCnecRam(final InputStream cnecRamsStream, final List<CoreHub> coreHubs) {
-        return importCnecRam(new InputStreamReader(cnecRamsStream, StandardCharsets.UTF_8), coreHubs);
+        return importCnecRam(new InputStreamReader(cnecRamsStream, UTF_8), coreHubs);
     }
 
     private static List<CnecRamData> importCnecRam(final Reader reader, final List<CoreHub> coreHubs) {
