@@ -90,11 +90,9 @@ public final class ConservativeIvaCalculationUtils {
 
         if (hasNoTransmissionLimit(cnec)) {
             // we adjust our virtual margin by a quantity defined in task/process parameters
-            final BigDecimal inputMargin = BigDecimal.valueOf(hasNoContingency(cnec) ?
-                                                                  preventiveIvaMargin
-                                                                  : curativeIvaMargin);
+            final int inputMargin = hasNoContingency(cnec) ? preventiveIvaMargin : curativeIvaMargin;
             // adjusted margin can be < 0 given the subtraction
-            virtualMargin = virtualMargin.subtract(inputMargin).max(ZERO);
+            virtualMargin = virtualMargin.subtract(BigDecimal.valueOf(inputMargin)).max(ZERO);
         }
 
         return virtualMargin;
