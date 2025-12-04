@@ -110,11 +110,6 @@
                 <version>${apache.commons.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.opencsv</groupId>
-                <artifactId>opencsv</artifactId>
-                <version>${opencsv.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.farao-community.farao</groupId>
                 <artifactId>gridcapa-task-manager-api</artifactId>
                 <version>${task-manager.version}</version>
