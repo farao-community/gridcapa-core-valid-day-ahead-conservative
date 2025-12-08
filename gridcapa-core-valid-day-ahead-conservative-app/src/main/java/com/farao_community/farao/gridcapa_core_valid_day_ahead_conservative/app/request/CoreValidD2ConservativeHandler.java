@@ -49,7 +49,7 @@ public class CoreValidD2ConservativeHandler {
     private final BranchMaxIvaService branchMaxIvaService;
     private final CoreHubsConfiguration coreHubsConfiguration;
 
-    @Value("core-valid-d2.zone-id:")
+    @Value("${core-valid-d2.zone-id}")
     private String zoneId;
 
     public CoreValidD2ConservativeHandler(final FileImporter fileImporter,
@@ -65,7 +65,7 @@ public class CoreValidD2ConservativeHandler {
     }
 
     public String handleCoreValidD2ConservativeRequest(final CoreValidD2ConservativeRequest request) {
-        setUpEventLogging(request);
+        MDC.put(GRIDCAPA_TASK_ID, request.getId());
         final CoreValidD2TaskParameters iniParameters = new CoreValidD2TaskParameters(request.getTaskParameterList());
         final List<Vertex> importedVertices = fileImporter.importVertices(request.getVertices());
         final List<CnecRamData> cnecRams = fileImporter.importCnecRam(request.getCnecRam());
@@ -73,7 +73,7 @@ public class CoreValidD2ConservativeHandler {
         final List<Vertex> verticesForCalculus = getVerticesForCalculus(importedVertices, filteredCnecRams, iniParameters.shouldProjectVertices());
         final List<IvaBranchData> branches = branchMaxIvaService.computeBranchData(verticesForCalculus, filteredCnecRams, iniParameters);
         ConservativeIvaCalculationUtils.feedConservativeIVAs(branches, iniParameters);
-        final byte[] jsonOutput = ivaBranchToJson(branches);
+        final byte[] jsonOutput = ivaBranchesToJson(branches);
         uploadOutputToMinio(jsonOutput, request);
         return request.getId();
     }
@@ -81,15 +81,9 @@ public class CoreValidD2ConservativeHandler {
     private List<Vertex> getVerticesForCalculus(final List<Vertex> importedVertices,
                                                 final List<CnecRamData> filteredCnecRams,
                                                 final boolean shouldProjectVertices) {
-        if (shouldProjectVertices) {
-            return VerticesUtils.getVerticesProjectedOnDomain(importedVertices, filteredCnecRams, coreHubsConfiguration.getCoreHubs());
-        } else {
-            return importedVertices;
-        }
-    }
-
-    private static void setUpEventLogging(final CoreValidD2ConservativeRequest request) {
-        MDC.put(GRIDCAPA_TASK_ID, request.getId());
+        return shouldProjectVertices
+                ? VerticesUtils.getVerticesProjectedOnDomain(importedVertices, filteredCnecRams, coreHubsConfiguration.getCoreHubs())
+                : importedVertices;
     }
 
     private void uploadOutputToMinio(final byte[] outputFile, final CoreValidD2ConservativeRequest request) {
@@ -102,7 +96,7 @@ public class CoreValidD2ConservativeHandler {
         }
     }
 
-    private byte[] ivaBranchToJson(final List<IvaBranchData> branches) {
+    private byte[] ivaBranchesToJson(final List<IvaBranchData> branches) {
         final ObjectMapper objectMapper = new ObjectMapper();
         final ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
         try {
