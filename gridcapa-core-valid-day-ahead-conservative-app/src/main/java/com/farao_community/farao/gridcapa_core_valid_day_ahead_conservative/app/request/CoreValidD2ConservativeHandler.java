@@ -74,7 +74,7 @@ public class CoreValidD2ConservativeHandler {
         final List<IvaBranchData> branches = branchMaxIvaService.computeBranchData(verticesForCalculus, filteredCnecRams, iniParameters);
         ConservativeIvaCalculationUtils.feedConservativeIVAs(branches, iniParameters);
         final byte[] jsonOutput = ivaBranchesToJson(branches);
-        uploadOutputToMinio(jsonOutput, request);
+        uploadOutputToMinio(jsonOutput, request.getTimestamp());
         return request.getId();
     }
 
@@ -86,12 +86,11 @@ public class CoreValidD2ConservativeHandler {
                 : importedVertices;
     }
 
-    private void uploadOutputToMinio(final byte[] outputFile, final CoreValidD2ConservativeRequest request) {
+    private void uploadOutputToMinio(final byte[] outputFile, final OffsetDateTime timestamp) {
         try (final InputStream inputStream = new ByteArrayInputStream(outputFile)) {
-            final OffsetDateTime timestamp = request.getTimestamp();
             final String minioOutputPath = makeDestinationMinioPath(timestamp);
             minioAdapter.uploadOutputForTimestamp(minioOutputPath, inputStream, PROCESS_NAME, IVA_RESULT_FILE_TYPE, timestamp);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new CoreValidD2ConservativeInternalException("Error processing upload of output file", e);
         }
     }
@@ -101,14 +100,14 @@ public class CoreValidD2ConservativeHandler {
         final ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
         try {
             return ow.writeValueAsString(branches).getBytes();
-        } catch (JsonProcessingException e) {
+        } catch (final JsonProcessingException e) {
             throw new CoreValidD2ConservativeInternalException("Error creating JSON from IVA branch data", e);
         }
     }
 
     private String makeDestinationMinioPath(final OffsetDateTime offsetDateTime) {
-        ZonedDateTime targetDateTime = offsetDateTime.atZoneSameInstant(ZoneId.of(zoneId));
-        DateTimeFormatter df = DateTimeFormatter.ofPattern(MINIO_DESTINATION_PATH_REGEX);
+        final ZonedDateTime targetDateTime = offsetDateTime.atZoneSameInstant(ZoneId.of(zoneId));
+        final DateTimeFormatter df = DateTimeFormatter.ofPattern(MINIO_DESTINATION_PATH_REGEX);
         return df.format(targetDateTime);
     }
 }
