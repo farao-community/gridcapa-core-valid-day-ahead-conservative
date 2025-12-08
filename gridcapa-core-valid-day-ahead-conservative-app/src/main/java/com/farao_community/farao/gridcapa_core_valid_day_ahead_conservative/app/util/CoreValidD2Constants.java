@@ -12,6 +12,10 @@ public final class CoreValidD2Constants {
         throw new IllegalStateException("Constants class");
     }
 
+    //PROCESS
+    public static final String PROCESS_NAME = "CORE_VALID_D2";
+    public static final String MINIO_DESTINATION_PATH_REGEX = "yyyy'/'MM'/'dd'/'HH_mm'/'";
+    public static final String IVA_RESULT_FILE_TYPE = "IVA-RESULT";
     //TASK MANAGING
     public static final String TASK_STATUS_UPDATE = "task-status-update";
     public static final String GRIDCAPA_TASK_ID = "gridcapa-task-id";

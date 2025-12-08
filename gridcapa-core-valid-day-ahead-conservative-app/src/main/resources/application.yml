@@ -3,6 +3,8 @@ spring:
     function:
       definition: request
 
+core-valid-d2:
+  zone-id: "Europe/Paris"
 core-valid-commons:
   core-hubs:
     - name: Autriche
