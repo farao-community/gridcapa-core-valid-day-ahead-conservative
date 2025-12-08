@@ -49,7 +49,7 @@ public class CoreValidD2ConservativeHandler {
     private final BranchMaxIvaService branchMaxIvaService;
     private final CoreHubsConfiguration coreHubsConfiguration;
 
-    @Value("${core-valid-d2.zone-id}")
+    @Value("${core-valid-day-ahead-conservative-runner.zone-id}")
     private String zoneId;
 
     public CoreValidD2ConservativeHandler(final FileImporter fileImporter,
