@@ -36,6 +36,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.GRIDCAPA_TASK_ID;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.IVA_BRANCH_JSON_FILE_NAME;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.IVA_RESULT_FILE_TYPE;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.MINIO_DESTINATION_PATH_REGEX;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.PROCESS_NAME;
@@ -88,7 +89,7 @@ public class CoreValidD2ConservativeHandler {
 
     private void uploadOutputToMinio(final byte[] outputFile, final OffsetDateTime timestamp) {
         try (final InputStream inputStream = new ByteArrayInputStream(outputFile)) {
-            final String minioOutputPath = makeDestinationMinioPath(timestamp);
+            final String minioOutputPath = makeDestinationMinioPath(timestamp) + IVA_BRANCH_JSON_FILE_NAME;
             minioAdapter.uploadOutputForTimestamp(minioOutputPath, inputStream, PROCESS_NAME, IVA_RESULT_FILE_TYPE, timestamp);
         } catch (final IOException e) {
             throw new CoreValidD2ConservativeInternalException("Error processing upload of output file", e);
