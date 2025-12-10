@@ -38,7 +38,7 @@ import java.util.List;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.GRIDCAPA_TASK_ID;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.IVA_BRANCH_JSON_FILE_NAME;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.IVA_RESULT_FILE_TYPE;
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.MINIO_DESTINATION_PATH_REGEX;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.MINIO_DESTINATION_PATH_FORMAT;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.PROCESS_NAME;
 
 @Component
@@ -108,7 +108,7 @@ public class CoreValidD2ConservativeHandler {
 
     private String makeDestinationMinioPath(final OffsetDateTime offsetDateTime) {
         final ZonedDateTime targetDateTime = offsetDateTime.atZoneSameInstant(ZoneId.of(zoneId));
-        final DateTimeFormatter df = DateTimeFormatter.ofPattern(MINIO_DESTINATION_PATH_REGEX);
+        final DateTimeFormatter df = DateTimeFormatter.ofPattern(MINIO_DESTINATION_PATH_FORMAT);
         return df.format(targetDateTime);
     }
 }
