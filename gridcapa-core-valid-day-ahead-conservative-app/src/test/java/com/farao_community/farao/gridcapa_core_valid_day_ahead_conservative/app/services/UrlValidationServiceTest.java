@@ -36,9 +36,9 @@ class UrlValidationServiceTest {
 
     @ParameterizedTest
     @CsvSource({
-            ",URL cannot be null or blank",
-            "  ,URL cannot be null or blank",
-            "file:/___DOESNT_EXIST,Cannot download FileResource file from URL"
+        ",URL cannot be null or blank",
+        "  ,URL cannot be null or blank",
+        "file:/___DOESNT_EXIST,Cannot download FileResource file from URL"
     })
     void checkExceptionThrownWhenUrlIsNull(String url, String expectedMessage) {
         final Exception exception = Assertions.assertThrows(CoreValidD2ConservativeInvalidDataException.class, () -> urlValidationService.openUrlStream(url));
