@@ -64,9 +64,10 @@ public class BranchMaxIvaService {
                                                               final int ramThreshold,
                                                               final int maxVerticesPerBranch) {
         return vertices.stream()
+                .sorted(Comparator.comparingInt(Vertex::vertexId))
                 .map(vertex -> computeRealVertexRam(vertex, cnec))
                 .filter(ramVertex -> ramVertex.realRam() < ramThreshold)
-                .sorted(Comparator.comparingInt(RamVertex::realRam))
+                .sorted(Comparator.comparingInt(RamVertex::realRam).thenComparingInt(ramVertex -> ramVertex.vertex().vertexId()))
                 .limit(maxVerticesPerBranch)
                 .toList();
     }
