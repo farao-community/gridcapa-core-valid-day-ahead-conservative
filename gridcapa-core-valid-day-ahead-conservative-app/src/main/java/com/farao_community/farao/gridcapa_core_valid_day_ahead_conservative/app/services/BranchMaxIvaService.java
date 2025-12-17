@@ -98,7 +98,7 @@ public class BranchMaxIvaService {
         final CnecRamFValuesData fValues = cnec.fValues();
         final CnecRamValuesData ramValues = cnec.ramValues();
         final int fMax = fValues.fMax();
-        final BigDecimal fMaxPercentage = new BigDecimal(minRamMccc).multiply(new BigDecimal(fMax)).divide(new BigDecimal(100), 5, RoundingMode.FLOOR);
+        final BigDecimal fMaxPercentage = new BigDecimal(minRamMccc).multiply(new BigDecimal(fMax)).divide(new BigDecimal(100), 0, RoundingMode.HALF_EVEN);
         final int fMaxMinusFrmMinusF0Core = fMax - fValues.frm() - fValues.f0Core();
         final int positiveMax = Math.max(0, fMaxPercentage.subtract(new BigDecimal(fMaxMinusFrmMinusF0Core)).intValue());
         return Math.max(0, ramValues.amr() - ramValues.cva() - positiveMax);
