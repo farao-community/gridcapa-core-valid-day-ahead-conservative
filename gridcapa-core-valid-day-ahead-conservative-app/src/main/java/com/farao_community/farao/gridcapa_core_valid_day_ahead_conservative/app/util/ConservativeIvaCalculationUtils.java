@@ -71,7 +71,7 @@ public final class ConservativeIvaCalculationUtils {
 
         // Once we have the value, if it's still greater than the min RAM after having removed AMR,
         // we gained capacity so we return the (lower than initial) IVA
-        return conservativeIva.subtract(amr).compareTo(minRam) <= 0 ? ZERO : conservativeIva;
+        return conservativeIva.subtract(amr).compareTo(minRam) < 0 ? ZERO : conservativeIva;
     }
 
     /**
