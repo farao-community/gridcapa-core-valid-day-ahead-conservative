@@ -34,6 +34,7 @@ public final class CoreValidD2Constants {
     public static final String SEMICOLON = ";";
     //CSV HEADERS
     public static final String IS_PRESOLVED_REGION_HEADER = "PresolvedRegion";
+    public static final String IS_PRESOLVED_TSO_HEADER = "PresolvedTSO";
     public static final String IS_CNEC_HEADER = "CNEC";
     public static final String RAM0_CORE_HEADER = "RAM_0core";
     public static final String NEC_ID_HEADER = "NEC_ID";
