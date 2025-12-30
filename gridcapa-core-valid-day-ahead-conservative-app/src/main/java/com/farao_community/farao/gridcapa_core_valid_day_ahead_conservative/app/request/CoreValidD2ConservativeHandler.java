@@ -92,7 +92,7 @@ public class CoreValidD2ConservativeHandler {
             final String minioOutputPath = makeDestinationMinioPath(timestamp) + IVA_BRANCH_JSON_FILE_NAME;
             minioAdapter.uploadOutputForTimestamp(minioOutputPath, inputStream, PROCESS_NAME, IVA_RESULT_FILE_TYPE, timestamp);
         } catch (final IOException e) {
-            throw new CoreValidD2ConservativeInternalException("Error processing upload of output file", e);
+            throw new CoreValidD2ConservativeInternalException("Error during output file upload", e);
         }
     }
 
