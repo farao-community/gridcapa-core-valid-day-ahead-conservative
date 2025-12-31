@@ -78,7 +78,9 @@ jobs:
           RELEASE_VERSION: ${{ github.event.inputs.releaseVersion }}
 
       - name: Change Maven version to next version
-        run: mvn --batch-mode versions:set -DgenerateBackupPoms=false -DnewVersion=${{ github.event.inputs.nextVersion }}-SNAPSHOT
+        run: mvn --batch-mode versions:set -DgenerateBackupPoms=false -DnewVersion=$NEXT_VERSION-SNAPSHOT
+        env:
+          NEXT_VERSION: ${{ github.event.inputs.nextVersion }}
 
       - name: Commit next version
         uses: stefanzweifel/git-auto-commit-action@master
