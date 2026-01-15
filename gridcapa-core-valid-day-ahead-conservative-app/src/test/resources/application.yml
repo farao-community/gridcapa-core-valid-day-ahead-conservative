@@ -15,6 +15,7 @@ spring:
 
 core-valid-day-ahead-conservative-runner:
   async-time-out: 600000 # 10min (10*60*1000)
+  zone-id: "Europe/Paris"
   bindings:
     request:
       destination: core-valid-day-ahead-conservative-requests
