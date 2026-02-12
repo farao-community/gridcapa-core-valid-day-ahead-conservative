@@ -61,10 +61,10 @@ public class CoreValidD2ConservativeHandler {
     }
 
     private List<Vertex> getVerticesForCalculus(final List<Vertex> importedVertices,
-                                                final List<CnecRamData> filteredCnecRams,
+                                                final List<CnecRamData> cnecRamData,
                                                 final boolean shouldProjectVertices) {
         return shouldProjectVertices
-                ? VerticesUtils.getVerticesProjectedOnDomain(importedVertices, filteredCnecRams, coreHubsConfiguration.getCoreHubs())
+                ? VerticesUtils.getVerticesProjectedOnDomain(importedVertices, cnecRamData, coreHubsConfiguration.getCoreHubs())
                 : importedVertices;
     }
 
