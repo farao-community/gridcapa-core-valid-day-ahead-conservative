@@ -21,7 +21,6 @@ import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import org.slf4j.Logger;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
@@ -32,7 +31,6 @@ import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservati
 @Component
 public class CoreValidD2ConservativeHandler {
 
-    private final Logger eventsLogger;
     private final FileImporter fileImporter;
     private final FileExporter fileExporter;
     private final BranchMaxIvaService branchMaxIvaService;
@@ -40,12 +38,10 @@ public class CoreValidD2ConservativeHandler {
 
     public CoreValidD2ConservativeHandler(final FileImporter fileImporter,
                                           final FileExporter fileExporter,
-                                          final Logger eventsLogger,
                                           final BranchMaxIvaService branchMaxIvaService,
                                           final CoreHubsConfiguration coreHubsConfiguration) {
         this.fileImporter = fileImporter;
         this.fileExporter = fileExporter;
-        this.eventsLogger = eventsLogger;
         this.branchMaxIvaService = branchMaxIvaService;
         this.coreHubsConfiguration = coreHubsConfiguration;
     }
