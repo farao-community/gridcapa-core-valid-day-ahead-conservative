@@ -3,6 +3,8 @@ spring:
     function:
       definition: request
 
+core-valid-day-ahead-conservative-runner:
+  zone-id: "Europe/Paris"
 core-valid-commons:
   core-hubs:
     - name: Autriche

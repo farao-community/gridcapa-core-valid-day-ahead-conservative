@@ -19,13 +19,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.SEMICOLON;
+import static java.math.RoundingMode.HALF_EVEN;
+import static java.math.RoundingMode.HALF_UP;
+import static java.math.RoundingMode.UP;
 
 @Service
 public class BranchMaxIvaService {
@@ -66,7 +68,7 @@ public class BranchMaxIvaService {
         return vertices.stream()
                 .map(vertex -> computeRealVertexRam(vertex, cnec))
                 .filter(ramVertex -> ramVertex.realRam() < ramThreshold)
-                .sorted(Comparator.comparingInt(RamVertex::realRam))
+                .sorted(Comparator.comparingInt(RamVertex::realRam).thenComparingInt(ramVertex -> ramVertex.vertex().vertexId()))
                 .limit(maxVerticesPerBranch)
                 .toList();
     }
@@ -80,7 +82,7 @@ public class BranchMaxIvaService {
         return coreHubsConfiguration.getCoreHubs().stream()
                 .map(coreHub -> getFlowOnHub(verticesNPs, cnecPtdfs, coreHub))
                 .reduce(BigDecimal::add)
-                .map(BigDecimal::intValue)
+                .map(f -> f.setScale(0, HALF_UP).intValue())
                 .orElse(0);
 
     }
@@ -98,9 +100,9 @@ public class BranchMaxIvaService {
         final CnecRamFValuesData fValues = cnec.fValues();
         final CnecRamValuesData ramValues = cnec.ramValues();
         final int fMax = fValues.fMax();
-        final BigDecimal fMaxPercentage = new BigDecimal(minRamMccc).multiply(new BigDecimal(fMax)).divide(new BigDecimal(100), 5, RoundingMode.FLOOR);
+        final BigDecimal fMaxPercentage = new BigDecimal(minRamMccc).multiply(new BigDecimal(fMax)).divide(new BigDecimal(100), 0, HALF_EVEN);
         final int fMaxMinusFrmMinusF0Core = fMax - fValues.frm() - fValues.f0Core();
-        final int positiveMax = Math.max(0, fMaxPercentage.subtract(new BigDecimal(fMaxMinusFrmMinusF0Core)).intValue());
+        final int positiveMax = Math.max(0, fMaxPercentage.subtract(new BigDecimal(fMaxMinusFrmMinusF0Core)).setScale(0, UP).intValue());
         return Math.max(0, ramValues.amr() - ramValues.cva() - positiveMax);
     }
 }
