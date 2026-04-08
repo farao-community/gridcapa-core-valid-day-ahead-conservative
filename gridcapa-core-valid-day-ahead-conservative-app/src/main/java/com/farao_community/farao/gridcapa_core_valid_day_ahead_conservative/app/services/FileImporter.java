@@ -13,6 +13,7 @@ import com.farao_community.farao.gridcapa_core_valid_commons.vertex.VerticesUtil
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.resource.CoreValidD2ConservativeFileResource;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamData;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.model.CoreNetPositions;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -37,6 +38,10 @@ public class FileImporter {
 
     public List<CnecRamData> importCnecRam(final CoreValidD2ConservativeFileResource cnecRamFile) {
         return importFile(cnecRamFile, is -> CnecRamImporter.importCnecRam(is, coreHubs));
+    }
+
+    public CoreNetPositions importCoreNetPositions(final CoreValidD2ConservativeFileResource npfFile) {
+        return importFile(npfFile, is -> NetPositionsFileImporter.getCoreNetPositions(is, coreHubs));
     }
 
     private <T> T importFile(final CoreValidD2ConservativeFileResource file,

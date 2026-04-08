@@ -30,6 +30,14 @@
         <developerConnection>scm:git:https://github.com/farao-community/gridcapa-core-valid-day-ahead-conservative.git</developerConnection>
         <url>https://github.com/farao-community/gridcapa-core-valid-day-ahead-conservative.git</url>
     </scm>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>6.2.15</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
     <developers>
         <developer>
@@ -81,7 +89,6 @@
                     <artifactId>jaxb-maven-plugin</artifactId>
                     <version>${maven.jaxb.version}</version>
                 </plugin>
-
             </plugins>
         </pluginManagement>
     </build>
