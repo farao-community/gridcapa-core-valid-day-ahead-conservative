@@ -65,7 +65,7 @@ class FileImporterTest {
     }
 
     @Test
-    void shouldImportCoreNetPositions() throws IOException {
+    void shouldImportCoreNetPositions() {
         final CoreValidD2ConservativeFileResource npfFile = createFileResource("netpositions", getClass().getResource("/20250921-F230-v4-17XTSO-CS------W-to-10V1001C--00085T.xml"));
         final CoreNetPositions result = fileImporter.importCoreNetPositions(npfFile);
         Assertions.assertThat(result.getFrenchNetPosition()).isNotEmpty();
