@@ -17,7 +17,6 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.util.List;
