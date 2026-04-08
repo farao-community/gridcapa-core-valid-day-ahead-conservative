@@ -2,24 +2,23 @@ package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app
 
 import _351.iec62325.tc57wg16._451_n.reportinginformationdocument._2._1.ReportingInformationMarketDocument;
 import _351.iec62325.tc57wg16._451_n.reportinginformationdocument._2._1.TimeSeries;
-/*
- * Copyright (c) 2026, RTE (http://www.rte-france.com)
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- */
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHub;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.model.CoreNetPositions;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.DateTimeUtils;
 import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.Unmarshaller;
 
-import javax.xml.transform.stream.StreamSource;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamReader;
 import java.io.InputStream;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.DateTimeUtils.errorGettingStart;
+import static javax.xml.stream.XMLInputFactory.SUPPORT_DTD;
 
 public final class NetPositionsFileImporter {
     private NetPositionsFileImporter() {
@@ -43,17 +42,18 @@ public final class NetPositionsFileImporter {
     private static OffsetDateTime getDocumentStart(final ReportingInformationMarketDocument document) {
         return Optional.ofNullable(document.getTimePeriodTimeInterval())
             .map(DateTimeUtils::getIntervalStart)
-            .orElseThrow();
+            .orElseThrow(errorGettingStart());
     }
 
     private static ReportingInformationMarketDocument importNetPositionsForecast(final InputStream inputStream) {
         try {
             final Class<ReportingInformationMarketDocument> documentClass = ReportingInformationMarketDocument.class;
-            return JAXBContext
-                .newInstance(documentClass)
-                .createUnmarshaller()
-                .unmarshal(new StreamSource(inputStream), documentClass)
-                .getValue();
+            final Unmarshaller unmarshaller = JAXBContext.newInstance(documentClass).createUnmarshaller();
+            final XMLInputFactory xif = XMLInputFactory.newFactory();
+            xif.setProperty(SUPPORT_DTD, false);
+            xif.setProperty("javax.xml.stream.isSupportingExternalEntities", false);
+            final XMLStreamReader xsr = xif.createXMLStreamReader(inputStream);
+            return unmarshaller.unmarshal(xsr, documentClass).getValue();
         } catch (final Exception e) {
             throw new CoreValidD2ConservativeInvalidDataException("Cannot unmarshal ReportingInformationMarketDocument", e);
         }

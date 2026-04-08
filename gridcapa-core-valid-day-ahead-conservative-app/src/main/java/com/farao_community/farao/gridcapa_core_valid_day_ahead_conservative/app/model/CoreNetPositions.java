@@ -10,10 +10,12 @@ import _351.iec62325.tc57wg16._451_n.reportinginformationdocument._2._1.SeriesPe
 import _351.iec62325.tc57wg16._451_n.reportinginformationdocument._2._1.TimeSeries;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.DateTimeUtils.errorGettingStart;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.DateTimeUtils.getIntervalStart;
 
 public class CoreNetPositions {
@@ -32,7 +34,7 @@ public class CoreNetPositions {
     }
 
     public List<Point> getNetPositionsOf(final String hubName) {
-        return netPositionsByHub.get(hubName);
+        return netPositionsByHub.getOrDefault(hubName, new ArrayList<>());
     }
 
     public void put(final TimeSeries timeSeries) {
@@ -41,7 +43,7 @@ public class CoreNetPositions {
             .stream()
             .filter(p -> targetDate.isEqual(getIntervalStart(p.getTimeInterval())))
             .findFirst() // there should be only one
-            .orElseThrow();
+            .orElseThrow(errorGettingStart());
 
         final List<Point> netPositions = period
             .getPoint()

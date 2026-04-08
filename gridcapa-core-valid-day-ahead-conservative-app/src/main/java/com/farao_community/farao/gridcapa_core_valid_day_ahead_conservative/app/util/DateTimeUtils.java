@@ -7,8 +7,10 @@
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util;
 
 import _351.iec62325.tc57wg16._451_n.reportinginformationdocument._2._1.ESMPDateTimeInterval;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
 
 import java.time.OffsetDateTime;
+import java.util.function.Supplier;
 
 import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 
@@ -19,5 +21,9 @@ public final class DateTimeUtils {
 
     public static OffsetDateTime getIntervalStart(final ESMPDateTimeInterval dateTimeInterval) {
         return OffsetDateTime.parse(dateTimeInterval.getStart(), ISO_DATE_TIME);
+    }
+
+    public static Supplier<CoreValidD2ConservativeInvalidDataException> errorGettingStart() {
+        return () -> new CoreValidD2ConservativeInvalidDataException("Could not get start from interval");
     }
 }
