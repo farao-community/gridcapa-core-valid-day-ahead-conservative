@@ -7,15 +7,17 @@
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services;
 
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamData;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.resource.CoreValidD2ConservativeFileResource;
-import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamData;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.model.CoreNetPositions;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.util.List;
@@ -42,24 +44,33 @@ class FileImporterTest {
 
     @Test
     void shouldImportVerticesFromCoreHubSettings() {
-        final CoreValidD2ConservativeFileResource verticesFile = createFileResource("vertices",  getClass().getResource("/fake-vertice.csv"));
+        final CoreValidD2ConservativeFileResource verticesFile = createFileResource("vertices", getClass().getResource("/fake-vertice.csv"));
         final List<Vertex> vertices = fileImporter.importVertices(verticesFile);
         Assertions.assertThat(vertices)
-                .isNotNull()
-                .hasSize(4);
+            .isNotNull()
+            .hasSize(4);
         final Vertex vertex = vertices.getFirst();
         Assertions.assertThat(vertex.vertexId()).isEqualTo(1);
         final Map<String, Integer> entries = Map.of(
-                "FR", 11,
-                "BE", 111,
-                "BE_AL", 0,
-                "DE", 1111,
-                "DE_AL", 11
+            "FR", 11,
+            "BE", 111,
+            "BE_AL", 0,
+            "DE", 1111,
+            "DE_AL", 11
         );
         final Map<String, Integer> positions = vertex.coordinates();
         Assertions.assertThat(positions)
-                .hasSize(14)
-                .containsAllEntriesOf(entries);
+            .hasSize(14)
+            .containsAllEntriesOf(entries);
+    }
+
+    @Test
+    void shouldImportCoreNetPositions() throws IOException {
+        final CoreValidD2ConservativeFileResource npfFile = createFileResource("netpositions", getClass().getResource("/20250921-F230-v4-17XTSO-CS------W-to-10V1001C--00085T.xml"));
+        final CoreNetPositions result = fileImporter.importCoreNetPositions(npfFile);
+        Assertions.assertThat(result.getFrenchNetPosition()).isNotEmpty();
+        Assertions.assertThat(result.getNetPositionsOf("DE-CORE")).isNotEmpty();
+        Assertions.assertThat(result.getNetPositionsOf("NOT-CORE")).isEmpty();
     }
 
     @Test
@@ -70,26 +81,26 @@ class FileImporterTest {
         when(urlValidationService.openUrlStream(anyString())).thenThrow(new CoreValidD2ConservativeInvalidDataException("Connection failed"));
 
         Assertions.assertThatExceptionOfType(CoreValidD2ConservativeInvalidDataException.class)
-                .isThrownBy(() -> fileImporter.importVertices(verticesFile))
-                .withMessage("Cannot import vertices file from URL 'https://example.com/vertice.csv'");
+            .isThrownBy(() -> fileImporter.importVertices(verticesFile))
+            .withMessage("Cannot import vertices file from URL 'https://example.com/vertice.csv'");
     }
 
     @Test
     void shouldImportCnecRamFromCoreHubSettings() {
-        final CoreValidD2ConservativeFileResource cnecRamFile = createFileResource("cnec ram",  getClass().getResource("/cnecRamFileOk.csv"));
+        final CoreValidD2ConservativeFileResource cnecRamFile = createFileResource("cnec ram", getClass().getResource("/cnecRamFileOk.csv"));
         final List<CnecRamData> cnecRams = fileImporter.importCnecRam(cnecRamFile);
         Assertions.assertThat(cnecRams)
-                .isNotNull()
-                .hasSize(3);
+            .isNotNull()
+            .hasSize(3);
     }
 
     @Test
     void shouldThrowExceptionWhenImportCnecRam() throws Exception {
-        final CoreValidD2ConservativeFileResource cnecRamFile = createFileResource("cnec ram",  new URI("https://example.com/cnecRamFile.csv").toURL());
+        final CoreValidD2ConservativeFileResource cnecRamFile = createFileResource("cnec ram", new URI("https://example.com/cnecRamFile.csv").toURL());
         when(urlValidationService.openUrlStream(anyString())).thenThrow(new CoreValidD2ConservativeInvalidDataException("Connection failed"));
         Assertions.assertThatExceptionOfType(CoreValidD2ConservativeInvalidDataException.class)
-                .isThrownBy(() -> fileImporter.importCnecRam(cnecRamFile))
-                .withMessage("Cannot import cnec ram file from URL 'https://example.com/cnecRamFile.csv'");
+            .isThrownBy(() -> fileImporter.importCnecRam(cnecRamFile))
+            .withMessage("Cannot import cnec ram file from URL 'https://example.com/cnecRamFile.csv'");
 
     }
 }
