@@ -41,7 +41,7 @@ public final class CnecRamFilter {
     }
 
     /**
-     * We only work on presolved region vertices
+     * We only work on French lines, RTE being the French TSO
      *
      * @return a predicate to test this on a CnecRamData object
      */
