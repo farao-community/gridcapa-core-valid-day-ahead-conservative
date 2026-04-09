@@ -39,6 +39,7 @@ import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservati
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.F_REF_HEADER;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.F_UAF_HEADER;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.IS_CNEC_HEADER;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.IS_PRESOLVED_REGION_HEADER;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.IVA_HEADER;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.LTA_MARGIN_HEADER;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.MIN_RAM_FACTOR_HEADER;
@@ -89,7 +90,8 @@ public final class CnecRamImporter {
                                          csvRecord.get(BRANCH_STATUS_HEADER),
                                          getRamValues(csvRecord),
                                          getFValues(csvRecord),
-                                         getPtdfValues(coreHubs, csvRecord)));
+                                         getPtdfValues(coreHubs, csvRecord),
+                                         Boolean.parseBoolean(csvRecord.get(IS_PRESOLVED_REGION_HEADER))));
         }
     }
 

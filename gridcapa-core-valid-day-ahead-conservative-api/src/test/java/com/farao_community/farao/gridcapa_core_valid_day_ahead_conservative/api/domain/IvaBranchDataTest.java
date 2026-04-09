@@ -108,7 +108,8 @@ class IvaBranchDataTest {
                                 "testBS",
                                 ram,
                                 fValues,
-                                ptdfs);
+                                ptdfs,
+                                true);
     }
 
     private List<RamVertex> getTestRamVertices() {

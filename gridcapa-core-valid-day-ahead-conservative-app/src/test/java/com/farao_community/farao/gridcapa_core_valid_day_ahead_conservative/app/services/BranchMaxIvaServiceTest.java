@@ -142,7 +142,8 @@ class BranchMaxIvaServiceTest {
                                 "testBS",
                                 ram,
                                 fValues,
-                                ptdfs);
+                                ptdfs,
+                                true);
     }
 
     private CnecRamData getTestCnecPtdf() {

@@ -46,37 +46,43 @@ class CnecRamFilterTest {
         data.add(new CnecRamData(ID, "empty", "AT", BASECASE, BRANCH_STATUS_OK,
                                  getDummyRamValues(),
                                  getDummyFValues(),
-                                 Map.of()
+                                 Map.of(),
+                                 true
                  )
         );
         data.add(new CnecRamData(ID, PREFIX_NO_CURRENT_LIMIT + " abbnndd", FRENCH_TSO, BASECASE, BRANCH_STATUS_OK,
                                  getDummyRamValues(),
                                  getDummyFValues(),
-                                 Map.of()
+                                 Map.of(),
+                                 true
                  )
         );
         data.add(new CnecRamData(ID, NE_NAME, FRENCH_TSO, BASECASE, "OUT",
                                  getDummyRamValues(),
                                  getDummyFValues(),
-                                 Map.of()
+                                 Map.of(),
+                                 true
                  )
         );
         data.add(new CnecRamData(ID + SUFFIX_NEC_ID_BEFORE, NE_NAME, FRENCH_TSO, BASECASE, BRANCH_STATUS_OK,
                                  getDummyRamValues(),
                                  getDummyFValues(),
-                                 Map.of()
+                                 Map.of(),
+                                 true
                  )
         );
         data.add(new CnecRamData(ID + SUFFIX_NEC_ID_AFTER, NE_NAME, FRENCH_TSO, BASECASE, BRANCH_STATUS_OK,
                                  getDummyRamValues(),
                                  getDummyFValues(),
-                                 Map.of()
+                                 Map.of(),
+                                 true
                  )
         );
         data.add(new CnecRamData(ID, NE_NAME, FRENCH_TSO, BASECASE, BRANCH_STATUS_OK,
                                  new CnecRamValuesData(3, 4, BigDecimal.valueOf(5), MIN_AMR_VALUE, 7, 8, 9),
                                  getDummyFValues(),
-                                 Map.of()
+                                 Map.of(),
+                                 true
                  )
         );
         List<CnecRamData>  output = CnecRamFilter.filterBeforeIvaCalculus(data);
@@ -99,19 +105,22 @@ class CnecRamFilterTest {
         data.add(new CnecRamData(ID, NE_NAME, FRENCH_TSO, BASECASE, BRANCH_STATUS_OK,
                                  getDummyRamValues(),
                                  getDummyFValues(),
-                                 Map.of()
+                                 Map.of(),
+                                 false
                  )
         );
         data.add(new CnecRamData("2", NE_NAME, FRENCH_TSO, BASECASE, BRANCH_STATUS_OK,
                                  getDummyRamValues(),
                                  getDummyFValues(),
-                                 Map.of()
+                                 Map.of(),
+                                 true
                  )
         );
         data.add(new CnecRamData("3", NE_NAME, FRENCH_TSO, BASECASE, BRANCH_STATUS_OK,
                                  getDummyRamValues(),
                                  getDummyFValues(),
-                                 Map.of()
+                                 Map.of(),
+                                 false
                  )
         );
         List<CnecRamData>  output = CnecRamFilter.filterBeforeIvaCalculus(data);
@@ -119,5 +128,38 @@ class CnecRamFilterTest {
                 .isNotNull()
                 .isNotEmpty()
                 .hasSize(3);
+    }
+
+    @Test
+    void filterBeforeVerticesCalculusEmptyGivesEmpty() {
+        List<CnecRamData> data = new ArrayList<>();
+        List<CnecRamData> output = CnecRamFilter.filterBeforeVerticesCalculus(data);
+        Assertions.assertThat(output)
+                .isNotNull()
+                .isEmpty();
+    }
+
+    @Test
+    void filterBeforeVerticesCalculusFiltersGivesAllOK() {
+        List<CnecRamData> data = new ArrayList<>();
+        data.add(new CnecRamData(ID, NE_NAME, FRENCH_TSO, BASECASE, BRANCH_STATUS_OK,
+                                 getDummyRamValues(),
+                                 getDummyFValues(),
+                                 Map.of(),
+                                 false
+                 )
+        );
+        data.add(new CnecRamData("2", NE_NAME, FRENCH_TSO, BASECASE, BRANCH_STATUS_OK,
+                                 getDummyRamValues(),
+                                 getDummyFValues(),
+                                 Map.of(),
+                                 true
+                 )
+        );
+        List<CnecRamData>  output = CnecRamFilter.filterBeforeVerticesCalculus(data);
+        Assertions.assertThat(output)
+                .isNotNull()
+                .isNotEmpty()
+                .hasSize(1);
     }
 }

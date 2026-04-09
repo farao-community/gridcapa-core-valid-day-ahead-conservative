@@ -24,7 +24,7 @@ class CnecRamDataTest {
         final BigDecimal minRamFactor = new BigDecimal(44.44);
         final CnecRamValuesData ramValues = new CnecRamValuesData(22, 33, minRamFactor, 55, 66, 77, 88);
         final CnecRamFValuesData fvalues = new CnecRamFValuesData(200, 300, 400, 500, 600, 700, 800);
-        final CnecRamData testData = new CnecRamData("testId", "testName", "testTSO", "test_Contingency_Name", "OK", ramValues, fvalues, ptdfs);
+        final CnecRamData testData = new CnecRamData("testId", "testName", "testTSO", "test_Contingency_Name", "OK", ramValues, fvalues, ptdfs, true);
         Assertions.assertThat(testData)
                 .isNotNull()
                 .hasFieldOrPropertyWithValue("necId", "testId")
@@ -33,7 +33,8 @@ class CnecRamDataTest {
                 .hasFieldOrPropertyWithValue("branchStatus", "OK")
                 .hasFieldOrPropertyWithValue("contingencyName", "test_Contingency_Name")
                 .hasFieldOrPropertyWithValue("ramValues", ramValues)
-                .hasFieldOrPropertyWithValue("fValues", fvalues);
+                .hasFieldOrPropertyWithValue("fValues", fvalues)
+                .hasFieldOrPropertyWithValue("presolvedRegion", true);
         Assertions.assertThat(testData.getPtdfValues())
                 .isNotNull()
                 .isNotEmpty()

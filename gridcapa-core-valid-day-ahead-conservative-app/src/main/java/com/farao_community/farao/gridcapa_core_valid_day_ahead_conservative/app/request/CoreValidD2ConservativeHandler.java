@@ -51,9 +51,10 @@ public class CoreValidD2ConservativeHandler {
         final CoreValidD2TaskParameters iniParameters = new CoreValidD2TaskParameters(request.getTaskParameterList());
         final List<Vertex> importedVertices = fileImporter.importVertices(request.getVertices());
         final List<CnecRamData> cnecRams = fileImporter.importCnecRam(request.getCnecRam());
-        final List<Vertex> verticesForCalculus = getVerticesForCalculus(importedVertices, cnecRams, iniParameters.shouldProjectVertices());
-        final List<CnecRamData> filteredCnecRams = CnecRamFilter.filterBeforeIvaCalculus(cnecRams);
-        final List<IvaBranchData> branches = branchMaxIvaService.computeBranchData(verticesForCalculus, filteredCnecRams, iniParameters);
+        final List<CnecRamData> filteredCnecRamsForVertices = CnecRamFilter.filterBeforeVerticesCalculus(cnecRams);
+        final List<Vertex> verticesForCalculus = getVerticesForCalculus(importedVertices, filteredCnecRamsForVertices, iniParameters.shouldProjectVertices());
+        final List<CnecRamData> filteredCnecRamsForIva = CnecRamFilter.filterBeforeIvaCalculus(cnecRams);
+        final List<IvaBranchData> branches = branchMaxIvaService.computeBranchData(verticesForCalculus, filteredCnecRamsForIva, iniParameters);
         ConservativeIvaCalculationUtils.feedConservativeIVAs(branches, iniParameters);
         final byte[] jsonOutput = ivaBranchesToJson(branches);
         fileExporter.uploadOutputToMinio(jsonOutput, request.getTimestamp());
