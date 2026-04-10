@@ -129,7 +129,7 @@
         </Reason>
     </TimeSeries>
     <TimeSeries>
-        <mRID>NOT-CORE</mRID>
+        <mRID>IT-FR</mRID>
         <businessType>B63</businessType>
         <product>123456789</product>
         <in_Domain.mRID codingScheme="A01">IN_DOMAIN_MRID</in_Domain.mRID>

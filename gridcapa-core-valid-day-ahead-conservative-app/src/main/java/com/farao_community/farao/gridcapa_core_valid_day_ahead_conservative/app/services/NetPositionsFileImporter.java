@@ -7,10 +7,8 @@
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services;
 
 import _351.iec62325.tc57wg16._451_n.reportinginformationdocument._2._1.ReportingInformationMarketDocument;
-import _351.iec62325.tc57wg16._451_n.reportinginformationdocument._2._1.TimeSeries;
-import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHub;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
-import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.model.CoreNetPositions;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.model.FrenchCoreNetPositions;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.DateTimeUtils;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Unmarshaller;
@@ -19,9 +17,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import java.io.InputStream;
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.DateTimeUtils.errorGettingStart;
 import static javax.xml.stream.XMLInputFactory.SUPPORT_DTD;
@@ -31,16 +27,11 @@ public final class NetPositionsFileImporter {
         // utility class
     }
 
-    public static CoreNetPositions getCoreNetPositions(final InputStream inputStream, final List<CoreHub> coreHubs) {
-        final List<String> hubNames = coreHubs.stream().map(CoreHub::forecastCode).toList();
+    public static FrenchCoreNetPositions getFrenchCoreNetPositions(final InputStream inputStream) {
         final ReportingInformationMarketDocument npf = importNetPositionsForecast(inputStream);
-        final CoreNetPositions netPositions = new CoreNetPositions(getDocumentStart(npf));
-        final Predicate<TimeSeries> isHubTimeSeries = ts -> hubNames.contains(ts.getMRID());
+        final FrenchCoreNetPositions netPositions = new FrenchCoreNetPositions(getDocumentStart(npf));
 
-        npf.getTimeSeries()
-            .stream()
-            .filter(isHubTimeSeries)
-            .forEach(netPositions::put);
+        npf.getTimeSeries().forEach(netPositions::putIfFrench);
 
         return netPositions;
     }

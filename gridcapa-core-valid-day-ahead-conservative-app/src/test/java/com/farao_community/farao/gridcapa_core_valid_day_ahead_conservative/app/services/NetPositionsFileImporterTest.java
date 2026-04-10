@@ -25,7 +25,7 @@ class NetPositionsFileImporterTest {
     void shouldFailOnInvalidFile() throws IOException {
         try (final InputStream inputStream = getFailingInputStream()) {
             Assertions.assertThatThrownBy(
-                () -> NetPositionsFileImporter.getCoreNetPositions(inputStream, coreHubsConfiguration.getCoreHubs())
+                () -> NetPositionsFileImporter.getFrenchCoreNetPositions(inputStream)
             ).hasMessage("Cannot unmarshal ReportingInformationMarketDocument");
         }
     }
