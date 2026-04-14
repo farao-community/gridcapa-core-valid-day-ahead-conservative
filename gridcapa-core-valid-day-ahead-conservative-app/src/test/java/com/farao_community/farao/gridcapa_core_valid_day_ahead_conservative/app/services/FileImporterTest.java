@@ -6,11 +6,11 @@
  */
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services;
 
+import _351.iec62325.tc57wg16._451_n.reportinginformationdocument._2._1.Point;
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamData;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.resource.CoreValidD2ConservativeFileResource;
-import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.model.FrenchCoreNetPositions;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -66,11 +66,10 @@ class FileImporterTest {
     @Test
     void shouldImportFrenchCoreNetPositions() {
         final CoreValidD2ConservativeFileResource npfFile = createFileResource("netpositions", getClass().getResource("/20250921-F230-v4-17XTSO-CS------W-to-10V1001C--00085T.xml"));
-        final FrenchCoreNetPositions result = fileImporter.importCoreNetPositions(npfFile);
-        Assertions.assertThat(result.getNetPositionFromFranceTo("CORE")).isNotEmpty();
-        Assertions.assertThat(result.getNetPositionToFranceFrom("IT")).isNotEmpty();
-        Assertions.assertThat(result.getNetPositionFromFranceTo("DE")).isEmpty();
-        Assertions.assertThat(result.getNetPositionToFranceFrom("DE")).isEmpty();
+        final List<Point> resultNoAhc = fileImporter.importFrenchCoreNetPositions(npfFile, false);
+        final List<Point> resultWithAhc = fileImporter.importFrenchCoreNetPositions(npfFile, true);
+        Assertions.assertThat(resultNoAhc).isNotEmpty();
+        Assertions.assertThat(resultWithAhc).isEmpty();
     }
 
     @Test

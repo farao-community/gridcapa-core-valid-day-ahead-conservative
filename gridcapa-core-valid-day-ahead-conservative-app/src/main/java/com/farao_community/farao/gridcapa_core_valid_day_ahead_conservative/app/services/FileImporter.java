@@ -6,20 +6,22 @@
  */
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services;
 
+import _351.iec62325.tc57wg16._451_n.reportinginformationdocument._2._1.Point;
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHub;
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubsConfiguration;
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.VerticesUtils;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamData;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.resource.CoreValidD2ConservativeFileResource;
-import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamData;
-import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.model.FrenchCoreNetPositions;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
+
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services.NetPositionsFileImporter.getFrenchCoreNetPositions;
 
 @Service
 public class FileImporter {
@@ -40,12 +42,13 @@ public class FileImporter {
         return importFile(cnecRamFile, is -> CnecRamImporter.importCnecRam(is, coreHubs));
     }
 
-    public FrenchCoreNetPositions importCoreNetPositions(final CoreValidD2ConservativeFileResource npfFile) {
-        return importFile(npfFile, NetPositionsFileImporter::getFrenchCoreNetPositions);
+    public List<Point> importFrenchCoreNetPositions(final CoreValidD2ConservativeFileResource npfFile,
+                                                    final boolean withAhc) {
+        return importFile(npfFile, is -> getFrenchCoreNetPositions(is, withAhc));
     }
 
     private <T> T importFile(final CoreValidD2ConservativeFileResource file,
-                            final Function<InputStream, T> inputStreamMapper) {
+                             final Function<InputStream, T> inputStreamMapper) {
         try (final InputStream fileContentStream = urlValidationService.openUrlStream(file.getUrl())) {
             return inputStreamMapper.apply(fileContentStream);
         } catch (final Exception e) {

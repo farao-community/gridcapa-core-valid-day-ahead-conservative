@@ -6,9 +6,11 @@
  */
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services;
 
+import _351.iec62325.tc57wg16._451_n.reportinginformationdocument._2._1.Point;
 import _351.iec62325.tc57wg16._451_n.reportinginformationdocument._2._1.ReportingInformationMarketDocument;
+import _351.iec62325.tc57wg16._451_n.reportinginformationdocument._2._1.SeriesPeriod;
+import _351.iec62325.tc57wg16._451_n.reportinginformationdocument._2._1.TimeSeries;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
-import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.model.FrenchCoreNetPositions;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.DateTimeUtils;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Unmarshaller;
@@ -17,9 +19,12 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import java.io.InputStream;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.DateTimeUtils.errorGettingStart;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.DateTimeUtils.getIntervalStart;
 import static javax.xml.stream.XMLInputFactory.SUPPORT_DTD;
 
 public final class NetPositionsFileImporter {
@@ -27,13 +32,30 @@ public final class NetPositionsFileImporter {
         // utility class
     }
 
-    public static FrenchCoreNetPositions getFrenchCoreNetPositions(final InputStream inputStream) {
+    public static List<Point> getFrenchCoreNetPositions(final InputStream inputStream, final boolean withAhc) {
         final ReportingInformationMarketDocument npf = importNetPositionsForecast(inputStream);
-        final FrenchCoreNetPositions netPositions = new FrenchCoreNetPositions(getDocumentStart(npf));
+        final String expectedMrid = withAhc ? "FR-CORE_AHC" : "FR-CORE";
+        final Optional<TimeSeries> frenchTimeSerie = npf.getTimeSeries()
+            .stream()
+            .filter(timeSeries -> expectedMrid.equals(timeSeries.getMRID()))
+            .findFirst(); // there should be only one
 
-        npf.getTimeSeries().forEach(netPositions::putIfFrench);
+        if (frenchTimeSerie.isPresent()) {
+            return extractNetPositions(getDocumentStart(npf), frenchTimeSerie.get());
+        } else {
+            return new ArrayList<>();
+        }
+    }
 
-        return netPositions;
+    private static List<Point> extractNetPositions(final OffsetDateTime targetDate, final TimeSeries timeSeries) {
+        return timeSeries
+            .getPeriod()
+            .stream()
+            .filter(p -> targetDate.isEqual(getIntervalStart(p.getTimeInterval())))
+            .findFirst()// there should be only one
+            .map(SeriesPeriod::getPoint)
+            .orElseThrow(errorGettingStart());
+
     }
 
     private static OffsetDateTime getDocumentStart(final ReportingInformationMarketDocument document) {
