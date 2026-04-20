@@ -9,8 +9,8 @@
     <receiver_MarketParticipant.marketRole.type>A04</receiver_MarketParticipant.marketRole.type>
     <createdDateTime>2025-09-19T16:10:00Z</createdDateTime>
     <time_Period.timeInterval>
-        <start>2025-09-20T22:00Z</start>
-        <end>2025-09-21T22:00Z</end>
+        <start>2025-09-24T22:00Z</start>
+        <end>2025-09-25T23:00Z</end>
     </time_Period.timeInterval>
     <TimeSeries>
         <mRID>FR-CORE</mRID>
@@ -22,8 +22,8 @@
         <curveType>A01</curveType>
         <Period>
             <timeInterval>
-                <start>2025-09-20T22:00Z</start>
-                <end>2025-09-21T22:00Z</end>
+                <start>2025-09-24T22:00Z</start>
+                <end>2025-09-25T23:00Z</end>
             </timeInterval>
             <resolution>PT60M</resolution>
             <Point>
@@ -121,6 +121,10 @@
             <Point>
                 <position>24</position>
                 <quantity>-700.0</quantity>
+            </Point>
+            <Point>
+                <position>25</position>
+                <quantity>-25.0</quantity>
             </Point>
         </Period>
         <Reason>
