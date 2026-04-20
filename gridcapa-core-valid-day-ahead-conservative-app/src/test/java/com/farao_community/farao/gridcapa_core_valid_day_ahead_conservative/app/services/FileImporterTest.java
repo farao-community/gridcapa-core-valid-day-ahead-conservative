@@ -73,11 +73,17 @@ class FileImporterTest {
     }
 
     @Test
-    void shouldImportFrenchCoreNetPositionsAtDst() {
+    void shouldImportFrenchCoreNetPositionsAtWinterDst() {
         final CoreValidD2ConservativeFileResource npfFile = createFileResource("netpositions", getClass().getResource("/20251025-F230-v4-17XTSO-CS------W-to-10V1001C--00085T.xml"));
-        final List<Point> resultNoAhc = fileImporter.importFrenchCoreNetPositions(npfFile, false);
-        final List<Point> resultWithAhc = fileImporter.importFrenchCoreNetPositions(npfFile, true);
-        Assertions.assertThat(resultNoAhc).hasSize(25);
+        final List<Point> result = fileImporter.importFrenchCoreNetPositions(npfFile, false);
+        Assertions.assertThat(result).hasSize(25);
+    }
+
+    @Test
+    void shouldImportFrenchCoreNetPositionsAtSummerDst() {
+        final CoreValidD2ConservativeFileResource npfFile = createFileResource("netpositions", getClass().getResource("/20260328-F230-v4-17XTSO-CS------W-to-10V1001C--00085T.xml"));
+        final List<Point> result = fileImporter.importFrenchCoreNetPositions(npfFile, false);
+        Assertions.assertThat(result).hasSize(23);
     }
 
     @Test
