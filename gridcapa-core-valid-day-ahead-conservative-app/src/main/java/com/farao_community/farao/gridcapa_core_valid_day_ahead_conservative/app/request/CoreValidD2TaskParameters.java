@@ -22,6 +22,7 @@ import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservati
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.CURATIVE_IVA_MARGIN;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.EXCLUDED_BRANCHES;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.INT;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.JUSTIFICATION_MESSAGE;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.MAX_VERTICES_PER_BRANCH;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.MIN_RAM_MCCC;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.PREVENTIVE_IVA_MARGIN;
@@ -39,6 +40,8 @@ public class CoreValidD2TaskParameters {
     private String excludedBranches;
     private int curativeIvaMargin;
     private int preventiveIvaMargin;
+    //unused here but we want to avoid warnings for this parameter
+    private String justificationMessage;
 
     public CoreValidD2TaskParameters(final List<TaskParameterDto> parameters) {
         final List<String> errors = new ArrayList<>();
@@ -52,6 +55,7 @@ public class CoreValidD2TaskParameters {
                 case EXCLUDED_BRANCHES -> excludedBranches = validateIsStringAndGet(parameter, errors);
                 case CURATIVE_IVA_MARGIN -> curativeIvaMargin = validateIsPositiveIntegerAndGet(parameter, errors);
                 case PREVENTIVE_IVA_MARGIN -> preventiveIvaMargin = validateIsPositiveIntegerAndGet(parameter, errors);
+                case JUSTIFICATION_MESSAGE -> justificationMessage = validateIsStringAndGet(parameter, errors);
                 default -> LOGGER.warn("Unknown parameter {} (value: {}) will be ignored",
                                        parameter.getId(),
                                        parameter.getValue());

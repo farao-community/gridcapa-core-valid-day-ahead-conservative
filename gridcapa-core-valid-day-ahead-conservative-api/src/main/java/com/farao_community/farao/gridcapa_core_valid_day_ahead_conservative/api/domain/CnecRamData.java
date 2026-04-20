@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public record CnecRamData(String necId, String neName, String tso, String contingencyName, String branchStatus,
                           CnecRamValuesData ramValues, CnecRamFValuesData fValues,
-                          Map<String, BigDecimal> ptdfValues) implements FlowBasedDomainBranchData {
+                          Map<String, BigDecimal> ptdfValues, boolean presolvedRegion) implements FlowBasedDomainBranchData {
 
     @JsonIgnore
     @Override

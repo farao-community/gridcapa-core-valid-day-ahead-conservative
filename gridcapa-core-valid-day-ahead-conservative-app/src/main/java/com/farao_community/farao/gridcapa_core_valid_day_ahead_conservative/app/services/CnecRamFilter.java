@@ -34,6 +34,21 @@ public final class CnecRamFilter {
                 .toList();
     }
 
+    public static List<CnecRamData> filterBeforeVerticesCalculus(final List<CnecRamData> unfiltered) {
+        return unfiltered.stream()
+                .filter(isPresolvedRegion())
+                .toList();
+    }
+
+    /**
+     * We only work on presolved region vertices
+     *
+     * @return a predicate to test this on a CnecRamData object
+     */
+    private static Predicate<CnecRamData> isPresolvedRegion() {
+        return CnecRamData::presolvedRegion;
+    }
+
     /**
      * We only work on French lines, RTE being the French TSO
      *
