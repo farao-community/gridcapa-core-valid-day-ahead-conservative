@@ -6,7 +6,7 @@
  */
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services;
 
-import _351.iec62325.tc57wg16._451_n.reportinginformationdocument._2._1.Point;
+import com.farao_community.gridcapa_core_valid_day_ahead_conservative.xsd.f230.Point;
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamData;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;

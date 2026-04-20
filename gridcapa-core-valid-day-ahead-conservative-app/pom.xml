@@ -67,10 +67,12 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
+                            <args>
+                                <arg>-XautoNameResolution</arg>
+                            </args>
+                            <forceRegenerate>true</forceRegenerate>
                             <schemaDirectory>src/main/resources/xsd/reporting_market_information</schemaDirectory>
                             <bindingDirectory>src/main/resources/xsd/reporting_market_information</bindingDirectory>
-                            <generateDirectory>${project.build.directory}/generated-sources/xjc-reporting_market_information</generateDirectory>
-                            <forceRegenerate>true</forceRegenerate>
                         </configuration>
                     </execution>
                 </executions>

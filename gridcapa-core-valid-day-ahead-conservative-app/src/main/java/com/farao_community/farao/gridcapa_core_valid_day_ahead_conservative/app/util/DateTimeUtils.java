@@ -6,8 +6,8 @@
  */
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util;
 
-import _351.iec62325.tc57wg16._451_n.reportinginformationdocument._2._1.ESMPDateTimeInterval;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
+import com.farao_community.gridcapa_core_valid_day_ahead_conservative.xsd.f230.ESMPDateTimeInterval;
 
 import java.time.OffsetDateTime;
 import java.util.function.Supplier;

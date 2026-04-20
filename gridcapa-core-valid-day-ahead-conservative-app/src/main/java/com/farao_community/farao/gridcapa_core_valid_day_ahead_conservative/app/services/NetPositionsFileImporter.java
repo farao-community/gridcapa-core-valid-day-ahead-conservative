@@ -6,17 +6,19 @@
  */
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services;
 
-import _351.iec62325.tc57wg16._451_n.reportinginformationdocument._2._1.Point;
-import _351.iec62325.tc57wg16._451_n.reportinginformationdocument._2._1.ReportingInformationMarketDocument;
-import _351.iec62325.tc57wg16._451_n.reportinginformationdocument._2._1.SeriesPeriod;
-import _351.iec62325.tc57wg16._451_n.reportinginformationdocument._2._1.TimeSeries;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.DateTimeUtils;
+import com.farao_community.gridcapa_core_valid_day_ahead_conservative.xsd.f230.ReportingInformationMarketDocument;
+import com.farao_community.gridcapa_core_valid_day_ahead_conservative.xsd.f230.SeriesPeriod;
+import com.farao_community.gridcapa_core_valid_day_ahead_conservative.xsd.f230.TimeSeries;
+import com.farao_community.gridcapa_core_valid_day_ahead_conservative.xsd.f230.Point;
+
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Unmarshaller;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
+import java.awt.*;
 import java.io.InputStream;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jxb:bindings version="3.0"
+              xmlns:jxb="https://jakarta.ee/xml/ns/jaxb"
+              xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
+              xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <jxb:bindings schemaLocation="iec62325-451-n-reportinginformation_v2_1.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="com.farao_community.gridcapa_core_valid_day_ahead_conservative.xsd.f230" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+    <jxb:bindings schemaLocation="urn-entsoe-eu-local-extension-types.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="com.farao_community.gridcapa_core_valid_day_ahead_conservative.xsd.entsoe" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+    <jxb:bindings schemaLocation="urn-entsoe-eu-wgedi-codelists.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="com.farao_community.gridcapa_core_valid_day_ahead_conservative.xsd.entsoe" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+</jxb:bindings>

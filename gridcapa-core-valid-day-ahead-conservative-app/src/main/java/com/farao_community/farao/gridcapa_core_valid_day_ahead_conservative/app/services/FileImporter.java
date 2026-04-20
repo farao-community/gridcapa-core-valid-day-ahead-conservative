@@ -6,7 +6,6 @@
  */
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services;
 
-import _351.iec62325.tc57wg16._451_n.reportinginformationdocument._2._1.Point;
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHub;
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubsConfiguration;
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
@@ -15,7 +14,9 @@ import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.resource.CoreValidD2ConservativeFileResource;
 import org.springframework.stereotype.Service;
+import com.farao_community.gridcapa_core_valid_day_ahead_conservative.xsd.f230.Point;
 
+import java.awt.*;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
