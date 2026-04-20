@@ -31,6 +31,7 @@ public final class CoreValidD2Constants {
     public static final String EXCLUDED_BRANCHES = "EXCLUDED_BRANCHES";
     public static final String CURATIVE_IVA_MARGIN = "CURATIVE_IVA_MARGIN";
     public static final String PREVENTIVE_IVA_MARGIN = "PREVENTIVE_IVA_MARGIN";
+    public static final String JUSTIFICATION_MESSAGE = "JUSTIFICATION_MESSAGE";
     public static final String SEMICOLON = ";";
     //CSV HEADERS
     public static final String IS_PRESOLVED_REGION_HEADER = "PresolvedRegion";

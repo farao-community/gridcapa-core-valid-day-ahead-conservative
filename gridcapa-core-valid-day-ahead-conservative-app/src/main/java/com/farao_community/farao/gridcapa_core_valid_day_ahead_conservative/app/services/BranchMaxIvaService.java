@@ -26,8 +26,6 @@ import java.util.Map;
 
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.SEMICOLON;
 import static java.math.RoundingMode.HALF_EVEN;
-import static java.math.RoundingMode.HALF_UP;
-import static java.math.RoundingMode.UP;
 
 @Service
 public class BranchMaxIvaService {
@@ -82,7 +80,7 @@ public class BranchMaxIvaService {
         return coreHubsConfiguration.getCoreHubs().stream()
                 .map(coreHub -> getFlowOnHub(verticesNPs, cnecPtdfs, coreHub))
                 .reduce(BigDecimal::add)
-                .map(f -> f.setScale(0, HALF_UP).intValue())
+                .map(f -> f.setScale(0, HALF_EVEN).intValue())
                 .orElse(0);
 
     }
@@ -102,7 +100,7 @@ public class BranchMaxIvaService {
         final int fMax = fValues.fMax();
         final BigDecimal fMaxPercentage = new BigDecimal(minRamMccc).multiply(new BigDecimal(fMax)).divide(new BigDecimal(100), 0, HALF_EVEN);
         final int fMaxMinusFrmMinusF0Core = fMax - fValues.frm() - fValues.f0Core();
-        final int positiveMax = Math.max(0, fMaxPercentage.subtract(new BigDecimal(fMaxMinusFrmMinusF0Core)).setScale(0, UP).intValue());
+        final int positiveMax = Math.max(0, fMaxPercentage.subtract(new BigDecimal(fMaxMinusFrmMinusF0Core)).setScale(0, HALF_EVEN).intValue());
         return Math.max(0, ramValues.amr() - ramValues.cva() - positiveMax);
     }
 }
