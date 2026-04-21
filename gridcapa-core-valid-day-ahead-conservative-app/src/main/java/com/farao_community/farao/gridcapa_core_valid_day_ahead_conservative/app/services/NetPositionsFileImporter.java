@@ -26,7 +26,7 @@ import java.util.Optional;
 
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.FRENCH_FORECAST_CODE;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.FRENCH_FORECAST_WITH_AHC_CODE;
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.DateTimeUtils.getStartExceptionSupplier;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.DateTimeUtils.intervalStartExceptionSupplier;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.DateTimeUtils.getIntervalStart;
 import static javax.xml.stream.XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES;
 import static javax.xml.stream.XMLInputFactory.SUPPORT_DTD;
@@ -58,14 +58,14 @@ public final class NetPositionsFileImporter {
             .filter(p -> targetDate.isEqual(getIntervalStart(p.getTimeInterval())))
             .findFirst()// there should be only one
             .map(SeriesPeriod::getPoint)
-            .orElseThrow(getStartExceptionSupplier());
+            .orElseThrow(intervalStartExceptionSupplier());
 
     }
 
     private static OffsetDateTime getDocumentStart(final ReportingInformationMarketDocument document) {
         return Optional.ofNullable(document.getTimePeriodTimeInterval())
             .map(DateTimeUtils::getIntervalStart)
-            .orElseThrow(getStartExceptionSupplier());
+            .orElseThrow(intervalStartExceptionSupplier());
     }
 
     private static ReportingInformationMarketDocument importNetPositionsForecast(final InputStream inputStream) {

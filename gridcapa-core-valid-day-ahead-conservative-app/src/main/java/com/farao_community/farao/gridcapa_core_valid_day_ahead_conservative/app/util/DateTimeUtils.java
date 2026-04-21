@@ -23,7 +23,7 @@ public final class DateTimeUtils {
         return OffsetDateTime.parse(dateTimeInterval.getStart(), ISO_DATE_TIME);
     }
 
-    public static Supplier<CoreValidD2ConservativeInvalidDataException> getStartExceptionSupplier() {
+    public static Supplier<CoreValidD2ConservativeInvalidDataException> intervalStartExceptionSupplier() {
         return () -> new CoreValidD2ConservativeInvalidDataException("Could not get start from interval");
     }
 }
