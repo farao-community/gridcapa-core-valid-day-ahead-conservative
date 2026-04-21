@@ -28,11 +28,10 @@ import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservati
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.FRENCH_FORECAST_WITH_AHC_CODE;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.DateTimeUtils.getStartExceptionSupplier;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.DateTimeUtils.getIntervalStart;
+import static javax.xml.stream.XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES;
 import static javax.xml.stream.XMLInputFactory.SUPPORT_DTD;
 
 public final class NetPositionsFileImporter {
-    private static final String EXTERNAL_ENTITIES_SUPPORT = "javax.xml.stream.isSupportingExternalEntities";
-
     private NetPositionsFileImporter() {
         // utility class
     }
@@ -75,7 +74,7 @@ public final class NetPositionsFileImporter {
             final Unmarshaller unmarshaller = JAXBContext.newInstance(documentClass).createUnmarshaller();
             final XMLInputFactory xif = XMLInputFactory.newFactory();
             xif.setProperty(SUPPORT_DTD, false);
-            xif.setProperty(EXTERNAL_ENTITIES_SUPPORT, false);
+            xif.setProperty(IS_SUPPORTING_EXTERNAL_ENTITIES, false);
             final XMLStreamReader xsr = xif.createXMLStreamReader(inputStream);
             return unmarshaller.unmarshal(xsr, documentClass).getValue();
         } catch (final Exception e) {
