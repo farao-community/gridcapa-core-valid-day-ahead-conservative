@@ -18,25 +18,28 @@ import jakarta.xml.bind.Unmarshaller;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
-import java.awt.*;
 import java.io.InputStream;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.DateTimeUtils.errorGettingStart;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.FRENCH_FORECAST_CODE;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.FRENCH_FORECAST_WITH_AHC_CODE;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.DateTimeUtils.getStartExceptionSupplier;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.DateTimeUtils.getIntervalStart;
 import static javax.xml.stream.XMLInputFactory.SUPPORT_DTD;
 
 public final class NetPositionsFileImporter {
+    private static final String EXTERNAL_ENTITIES_SUPPORT = "javax.xml.stream.isSupportingExternalEntities";
+
     private NetPositionsFileImporter() {
         // utility class
     }
 
     public static List<Point> getFrenchCoreNetPositions(final InputStream inputStream, final boolean withAhc) {
         final ReportingInformationMarketDocument npf = importNetPositionsForecast(inputStream);
-        final String expectedMrid = withAhc ? "FR-CORE_AHC" : "FR-CORE";
+        final String expectedMrid = withAhc ? FRENCH_FORECAST_WITH_AHC_CODE : FRENCH_FORECAST_CODE;
         final Optional<TimeSeries> frenchTimeSerie = npf.getTimeSeries()
             .stream()
             .filter(timeSeries -> expectedMrid.equals(timeSeries.getMRID()))
@@ -56,14 +59,14 @@ public final class NetPositionsFileImporter {
             .filter(p -> targetDate.isEqual(getIntervalStart(p.getTimeInterval())))
             .findFirst()// there should be only one
             .map(SeriesPeriod::getPoint)
-            .orElseThrow(errorGettingStart());
+            .orElseThrow(getStartExceptionSupplier());
 
     }
 
     private static OffsetDateTime getDocumentStart(final ReportingInformationMarketDocument document) {
         return Optional.ofNullable(document.getTimePeriodTimeInterval())
             .map(DateTimeUtils::getIntervalStart)
-            .orElseThrow(errorGettingStart());
+            .orElseThrow(getStartExceptionSupplier());
     }
 
     private static ReportingInformationMarketDocument importNetPositionsForecast(final InputStream inputStream) {
@@ -72,7 +75,7 @@ public final class NetPositionsFileImporter {
             final Unmarshaller unmarshaller = JAXBContext.newInstance(documentClass).createUnmarshaller();
             final XMLInputFactory xif = XMLInputFactory.newFactory();
             xif.setProperty(SUPPORT_DTD, false);
-            xif.setProperty("javax.xml.stream.isSupportingExternalEntities", false);
+            xif.setProperty(EXTERNAL_ENTITIES_SUPPORT, false);
             final XMLStreamReader xsr = xif.createXMLStreamReader(inputStream);
             return unmarshaller.unmarshal(xsr, documentClass).getValue();
         } catch (final Exception e) {
