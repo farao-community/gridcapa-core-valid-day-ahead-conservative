@@ -81,7 +81,6 @@
                     <artifactId>jaxb-maven-plugin</artifactId>
                     <version>${maven.jaxb.version}</version>
                 </plugin>
-
             </plugins>
         </pluginManagement>
     </build>
