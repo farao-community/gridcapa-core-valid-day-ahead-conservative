@@ -16,13 +16,13 @@ import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.
 import org.springframework.stereotype.Service;
 import com.farao_community.gridcapa_core_valid_day_ahead_conservative.xsd.f230.Point;
 
-import java.awt.*;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services.NetPositionsFileImporter.getFrenchCoreNetPositions;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services.NetPositionsFileImporter.getCoreNetPositions;
 
 @Service
 public class FileImporter {
@@ -43,9 +43,9 @@ public class FileImporter {
         return importFile(cnecRamFile, is -> CnecRamImporter.importCnecRam(is, coreHubs));
     }
 
-    public List<Point> importFrenchCoreNetPositions(final CoreValidD2ConservativeFileResource npfFile,
-                                                    final boolean withAhc) {
-        return importFile(npfFile, is -> getFrenchCoreNetPositions(is, withAhc));
+    public Map<CoreHub, List<Point>> importCoreNetPositions(final CoreValidD2ConservativeFileResource npfFile,
+                                                            final boolean withAhc) {
+        return importFile(npfFile, is -> getCoreNetPositions(is, coreHubs, withAhc));
     }
 
     private <T> T importFile(final CoreValidD2ConservativeFileResource file,
