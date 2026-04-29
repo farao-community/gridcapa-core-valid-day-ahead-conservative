@@ -91,9 +91,9 @@ class FileImporterTest {
     void shouldImportCoreNetPositionsAtWinterDst() {
         final CoreValidD2ConservativeFileResource npfFile = createFileResource("netpositions", getClass().getResource("/20251025-F230-v4-17XTSO-CS------W-to-10V1001C--00085T.xml"));
         final Map<CoreHub, List<Point>>  result = fileImporter.importCoreNetPositions(npfFile, false);
-        final Optional<CoreHub> first = coreHubs.getCoreHubs().stream().filter(hub -> hub.forecastCode().equals("FR-CORE")).findFirst();
-        if (first.isPresent()) {
-            Assertions.assertThat(result.get(first.get())).hasSize(25);
+        final Optional<CoreHub> frCore = coreHubs.getCoreHubs().stream().filter(hub -> hub.forecastCode().equals("FR-CORE")).findFirst();
+        if (frCore.isPresent()) {
+            Assertions.assertThat(result.get(frCore.get())).hasSize(25);
         } else {
             Assertions.fail();
         }
@@ -103,9 +103,9 @@ class FileImporterTest {
     void shouldImportCoreNetPositionsAtSummerDst() {
         final CoreValidD2ConservativeFileResource npfFile = createFileResource("netpositions", getClass().getResource("/20260328-F230-v4-17XTSO-CS------W-to-10V1001C--00085T.xml"));
         final Map<CoreHub, List<Point>>  result = fileImporter.importCoreNetPositions(npfFile, false);
-        final Optional<CoreHub> first = coreHubs.getCoreHubs().stream().filter(hub -> hub.forecastCode().equals("FR-CORE")).findFirst();
-        if (first.isPresent()) {
-            Assertions.assertThat(result.get(first.get())).hasSize(23);
+        final Optional<CoreHub> frCore = coreHubs.getCoreHubs().stream().filter(hub -> hub.forecastCode().equals("FR-CORE")).findFirst();
+        if (frCore.isPresent()) {
+            Assertions.assertThat(result.get(frCore.get())).hasSize(23);
         } else {
             Assertions.fail();
         }

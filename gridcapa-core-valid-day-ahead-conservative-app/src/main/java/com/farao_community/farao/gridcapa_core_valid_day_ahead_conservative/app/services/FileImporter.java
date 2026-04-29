@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services.NetPositionsFileImporter.getCoreNetPositions;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services.NetPositionsFileImporter.getNetPositionsByCoreHub;
 
 @Service
 public class FileImporter {
@@ -45,7 +45,7 @@ public class FileImporter {
 
     public Map<CoreHub, List<Point>> importCoreNetPositions(final CoreValidD2ConservativeFileResource npfFile,
                                                             final boolean withAhc) {
-        return importFile(npfFile, is -> getCoreNetPositions(is, coreHubs, withAhc));
+        return importFile(npfFile, is -> getNetPositionsByCoreHub(is, coreHubs, withAhc));
     }
 
     private <T> T importFile(final CoreValidD2ConservativeFileResource file,

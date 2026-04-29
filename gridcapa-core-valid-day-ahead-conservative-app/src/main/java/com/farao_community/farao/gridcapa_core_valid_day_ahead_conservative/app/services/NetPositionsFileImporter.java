@@ -38,9 +38,9 @@ public final class NetPositionsFileImporter {
         // utility class
     }
 
-    public static Map<CoreHub, List<Point>> getCoreNetPositions(final InputStream inputStream,
-                                                                final List<CoreHub> coreHubs,
-                                                                final boolean withAhc) {
+    public static Map<CoreHub, List<Point>> getNetPositionsByCoreHub(final InputStream inputStream,
+                                                                     final List<CoreHub> coreHubs,
+                                                                     final boolean withAhc) {
         final Map<CoreHub, List<Point>> listPointsByCoreHub = new HashMap<>();
         final ReportingInformationMarketDocument npf = importNetPositionsForecast(inputStream);
         final List<String> forecastCodes = getForecastCodes(coreHubs, withAhc);
@@ -56,9 +56,7 @@ public final class NetPositionsFileImporter {
                                                     final List<CoreHub> coreHubs,
                                                     final boolean withAhc) {
         return coreHubs.stream()
-                .filter(coreHub -> withAhc ?
-                        forecastCode.equals(coreHub.forecastCode() + FORECAST_SUFFIX_AHC_CODE) :
-                        coreHub.forecastCode().equals(forecastCode))
+                .filter(coreHub -> forecastCode.equals(getCoreHubForecastCodeString(coreHub, withAhc)))
                 .findFirst()
                 .orElseThrow(() -> new CoreValidD2ConservativeInvalidDataException("invalid CoreHub forecast code: " + forecastCode));
     }
@@ -66,10 +64,14 @@ public final class NetPositionsFileImporter {
     private static @NotNull List<String> getForecastCodes(final List<CoreHub> coreHubs,
                                                           final boolean withAhc) {
         return coreHubs.stream()
-                .map(coreHub -> withAhc ?
-                        coreHub.forecastCode() + FORECAST_SUFFIX_AHC_CODE :
-                        coreHub.forecastCode())
+                .map(coreHub -> getCoreHubForecastCodeString(coreHub, withAhc))
                 .toList();
+    }
+
+    private static String getCoreHubForecastCodeString(final CoreHub coreHub, final boolean withAhc) {
+        return withAhc ?
+                coreHub.forecastCode() + FORECAST_SUFFIX_AHC_CODE :
+                coreHub.forecastCode();
     }
 
     private static List<Point> extractNetPositions(final OffsetDateTime targetDate, final TimeSeries timeSeries) {
