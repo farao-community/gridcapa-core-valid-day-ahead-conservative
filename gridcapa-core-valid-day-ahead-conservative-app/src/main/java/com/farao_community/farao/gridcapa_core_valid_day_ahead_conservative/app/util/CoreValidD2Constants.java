@@ -66,6 +66,5 @@ public final class CoreValidD2Constants {
     public static final String BRANCH_STATUS_OK = "OK";
     public static final int MIN_AMR_VALUE = 0;
     //NET POSITION
-    public static final String FRENCH_FORECAST_CODE = "FR-CORE";
-    public static final String FRENCH_FORECAST_WITH_AHC_CODE = "FR-CORE_AHC";
+    public static final String FORECAST_SUFFIX_AHC_CODE = "_AHC";
 }

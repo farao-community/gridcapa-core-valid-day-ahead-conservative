@@ -13,7 +13,7 @@
         <end>2025-09-21T22:00Z</end>
     </time_Period.timeInterval>
     <TimeSeries>
-        <mRID>FR-CORE</mRID>
+        <mRID>FR-CORE_AHC</mRID>
         <businessType>B63</businessType>
         <product>123456789</product>
         <in_Domain.mRID codingScheme="A01">IN_DOMAIN_MRID</in_Domain.mRID>
@@ -129,7 +129,7 @@
         </Reason>
     </TimeSeries>
     <TimeSeries>
-        <mRID>BE-CORE</mRID>
+        <mRID>BE-CORE_AHC</mRID>
         <businessType>B63</businessType>
         <product>123456789</product>
         <in_Domain.mRID codingScheme="A01">IN_DOMAIN_MRID</in_Domain.mRID>

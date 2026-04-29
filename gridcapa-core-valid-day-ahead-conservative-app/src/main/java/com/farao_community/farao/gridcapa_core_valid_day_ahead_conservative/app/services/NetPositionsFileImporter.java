@@ -6,6 +6,7 @@
  */
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services;
 
+import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHub;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.DateTimeUtils;
 import com.farao_community.gridcapa_core_valid_day_ahead_conservative.xsd.f230.ReportingInformationMarketDocument;
@@ -15,17 +16,18 @@ import com.farao_community.gridcapa_core_valid_day_ahead_conservative.xsd.f230.P
 
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Unmarshaller;
+import org.jetbrains.annotations.NotNull;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import java.io.InputStream;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.FRENCH_FORECAST_CODE;
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.FRENCH_FORECAST_WITH_AHC_CODE;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.FORECAST_SUFFIX_AHC_CODE;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.DateTimeUtils.intervalStartExceptionSupplier;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.DateTimeUtils.getIntervalStart;
 import static javax.xml.stream.XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES;
@@ -36,19 +38,40 @@ public final class NetPositionsFileImporter {
         // utility class
     }
 
-    public static List<Point> getFrenchCoreNetPositions(final InputStream inputStream, final boolean withAhc) {
+    public static Map<CoreHub, List<Point>> getNetPositionsByCoreHub(final InputStream inputStream,
+                                                                     final List<CoreHub> coreHubs,
+                                                                     final boolean withAhc) {
+        final Map<CoreHub, List<Point>> listPointsByCoreHub = new HashMap<>();
         final ReportingInformationMarketDocument npf = importNetPositionsForecast(inputStream);
-        final String expectedMrid = withAhc ? FRENCH_FORECAST_WITH_AHC_CODE : FRENCH_FORECAST_CODE;
-        final Optional<TimeSeries> frenchTimeSerie = npf.getTimeSeries()
-            .stream()
-            .filter(timeSeries -> expectedMrid.equals(timeSeries.getMRID()))
-            .findFirst(); // there should be only one
+        final List<String> forecastCodes = getForecastCodes(coreHubs, withAhc);
+        final OffsetDateTime documentStart = getDocumentStartDateTime(npf);
+        npf.getTimeSeries()
+                .stream()
+                .filter(timeSeries -> forecastCodes.contains(timeSeries.getMRID()))
+                .forEach(timeSeries -> listPointsByCoreHub.put(getCoreHubByForecastCode(timeSeries.getMRID(), coreHubs, withAhc), extractNetPositions(documentStart, timeSeries)));
+        return listPointsByCoreHub;
+    }
 
-        if (frenchTimeSerie.isPresent()) {
-            return extractNetPositions(getDocumentStart(npf), frenchTimeSerie.get());
-        } else {
-            return new ArrayList<>();
-        }
+    private static CoreHub getCoreHubByForecastCode(final String forecastCode,
+                                                    final List<CoreHub> coreHubs,
+                                                    final boolean withAhc) {
+        return coreHubs.stream()
+                .filter(coreHub -> forecastCode.equals(getCoreHubForecastCodeString(coreHub, withAhc)))
+                .findFirst()
+                .orElseThrow(() -> new CoreValidD2ConservativeInvalidDataException("invalid CoreHub forecast code: " + forecastCode));
+    }
+
+    private static @NotNull List<String> getForecastCodes(final List<CoreHub> coreHubs,
+                                                          final boolean withAhc) {
+        return coreHubs.stream()
+                .map(coreHub -> getCoreHubForecastCodeString(coreHub, withAhc))
+                .toList();
+    }
+
+    private static String getCoreHubForecastCodeString(final CoreHub coreHub, final boolean withAhc) {
+        return withAhc ?
+                coreHub.forecastCode() + FORECAST_SUFFIX_AHC_CODE :
+                coreHub.forecastCode();
     }
 
     private static List<Point> extractNetPositions(final OffsetDateTime targetDate, final TimeSeries timeSeries) {
@@ -62,7 +85,7 @@ public final class NetPositionsFileImporter {
 
     }
 
-    private static OffsetDateTime getDocumentStart(final ReportingInformationMarketDocument document) {
+    private static OffsetDateTime getDocumentStartDateTime(final ReportingInformationMarketDocument document) {
         return Optional.ofNullable(document.getTimePeriodTimeInterval())
             .map(DateTimeUtils::getIntervalStart)
             .orElseThrow(intervalStartExceptionSupplier());

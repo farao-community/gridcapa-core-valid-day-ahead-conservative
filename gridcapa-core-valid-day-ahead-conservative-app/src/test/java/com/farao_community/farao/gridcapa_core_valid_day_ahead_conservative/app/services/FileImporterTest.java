@@ -6,6 +6,8 @@
  */
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services;
 
+import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHub;
+import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubsConfiguration;
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamData;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
@@ -21,6 +23,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -36,6 +39,9 @@ class FileImporterTest {
 
     @Autowired
     private FileImporter fileImporter;
+
+    @Autowired
+    private CoreHubsConfiguration coreHubs;
 
     private CoreValidD2ConservativeFileResource createFileResource(final String filename, final URL resource) {
         return new CoreValidD2ConservativeFileResource(filename, resource.toExternalForm());
@@ -64,26 +70,45 @@ class FileImporterTest {
     }
 
     @Test
-    void shouldImportFrenchCoreNetPositions() {
+    void shouldImportCoreNetPositions() {
         final CoreValidD2ConservativeFileResource npfFile = createFileResource("netpositions", getClass().getResource("/20250921-F230-v4-17XTSO-CS------W-to-10V1001C--00085T.xml"));
-        final List<Point> resultNoAhc = fileImporter.importFrenchCoreNetPositions(npfFile, false);
-        final List<Point> resultWithAhc = fileImporter.importFrenchCoreNetPositions(npfFile, true);
-        Assertions.assertThat(resultNoAhc).isNotEmpty();
+        final Map<CoreHub, List<Point>> resultNoAhc = fileImporter.importCoreNetPositions(npfFile, false);
+        final Map<CoreHub, List<Point>>  resultWithAhc = fileImporter.importCoreNetPositions(npfFile, true);
+        Assertions.assertThat(resultNoAhc).hasSize(2);
         Assertions.assertThat(resultWithAhc).isEmpty();
     }
 
     @Test
-    void shouldImportFrenchCoreNetPositionsAtWinterDst() {
-        final CoreValidD2ConservativeFileResource npfFile = createFileResource("netpositions", getClass().getResource("/20251025-F230-v4-17XTSO-CS------W-to-10V1001C--00085T.xml"));
-        final List<Point> result = fileImporter.importFrenchCoreNetPositions(npfFile, false);
-        Assertions.assertThat(result).hasSize(25);
+    void shouldImportCoreAhcNetPositions() {
+        final CoreValidD2ConservativeFileResource npfFile = createFileResource("netpositions", getClass().getResource("/20250921-F230-v4-17XTSO-CS------W-to-10V1001C--00085T_AHC.xml"));
+        final Map<CoreHub, List<Point>> resultNoAhc = fileImporter.importCoreNetPositions(npfFile, false);
+        final Map<CoreHub, List<Point>>  resultWithAhc = fileImporter.importCoreNetPositions(npfFile, true);
+        Assertions.assertThat(resultNoAhc).isEmpty();
+        Assertions.assertThat(resultWithAhc).hasSize(2);
     }
 
     @Test
-    void shouldImportFrenchCoreNetPositionsAtSummerDst() {
+    void shouldImportCoreNetPositionsAtWinterDst() {
+        final CoreValidD2ConservativeFileResource npfFile = createFileResource("netpositions", getClass().getResource("/20251025-F230-v4-17XTSO-CS------W-to-10V1001C--00085T.xml"));
+        final Map<CoreHub, List<Point>>  result = fileImporter.importCoreNetPositions(npfFile, false);
+        final Optional<CoreHub> frCore = coreHubs.getCoreHubs().stream().filter(hub -> hub.forecastCode().equals("FR-CORE")).findFirst();
+        if (frCore.isPresent()) {
+            Assertions.assertThat(result.get(frCore.get())).hasSize(25);
+        } else {
+            Assertions.fail();
+        }
+    }
+
+    @Test
+    void shouldImportCoreNetPositionsAtSummerDst() {
         final CoreValidD2ConservativeFileResource npfFile = createFileResource("netpositions", getClass().getResource("/20260328-F230-v4-17XTSO-CS------W-to-10V1001C--00085T.xml"));
-        final List<Point> result = fileImporter.importFrenchCoreNetPositions(npfFile, false);
-        Assertions.assertThat(result).hasSize(23);
+        final Map<CoreHub, List<Point>>  result = fileImporter.importCoreNetPositions(npfFile, false);
+        final Optional<CoreHub> frCore = coreHubs.getCoreHubs().stream().filter(hub -> hub.forecastCode().equals("FR-CORE")).findFirst();
+        if (frCore.isPresent()) {
+            Assertions.assertThat(result.get(frCore.get())).hasSize(23);
+        } else {
+            Assertions.fail();
+        }
     }
 
     @Test
