@@ -28,12 +28,14 @@ import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservati
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.PREVENTIVE_IVA_MARGIN;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.RAM_THRESHOLD;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.STRING;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.USE_AHC;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.USE_PROJECTION;
 
 public class CoreValidD2TaskParameters {
     private static final Logger LOGGER = LoggerFactory.getLogger(CoreValidD2TaskParameters.class);
     private static final String KEY_VALUE_JSON_FORMAT = "%n\t\"%s\": %s";
     private boolean useProjection;
+    private boolean useAhc;
     private int maxVerticesPerBranch;
     private int ramThreshold;
     private int minRamMccc;
@@ -48,6 +50,7 @@ public class CoreValidD2TaskParameters {
         for (final TaskParameterDto parameter : Optional.ofNullable(parameters).orElse(List.of())) {
             switch (parameter.getId()) {
                 case USE_PROJECTION -> useProjection = validateIsBooleanAndGet(parameter, errors);
+                case USE_AHC -> useAhc = validateIsBooleanAndGet(parameter, errors);
                 case MAX_VERTICES_PER_BRANCH ->
                         maxVerticesPerBranch = validateIsPositiveIntegerAndGet(parameter, errors);
                 case RAM_THRESHOLD -> ramThreshold = validateIsIntegerAndGet(parameter, errors);
@@ -120,6 +123,10 @@ public class CoreValidD2TaskParameters {
 
     public boolean shouldProjectVertices() {
         return useProjection;
+    }
+
+    public boolean shouldUseAhcImport() {
+        return useAhc;
     }
 
     public int getMaxVerticesPerBranch() {

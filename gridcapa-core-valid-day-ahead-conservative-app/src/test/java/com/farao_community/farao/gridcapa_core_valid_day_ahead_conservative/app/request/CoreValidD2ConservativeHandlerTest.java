@@ -11,6 +11,7 @@ import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubsCo
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.resource.CoreValidD2ConservativeRequest;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services.BranchMaxIvaService;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services.FileImporter;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services.StudyPointService;
 import com.farao_community.farao.minio_adapter.starter.MinioAdapter;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -38,6 +39,8 @@ class CoreValidD2ConservativeHandlerTest {
     private BranchMaxIvaService branchMaxIvaService;
     @MockitoBean
     private CoreHubsConfiguration coreHubsConfiguration;
+    @MockitoBean
+    private StudyPointService studyPointService;
 
     @Autowired
     private CoreValidD2ConservativeHandler coreValidD2ConservativeHandler;
@@ -59,6 +62,7 @@ class CoreValidD2ConservativeHandlerTest {
         return  new CoreValidD2ConservativeRequest(TEST_ID,
                                                    "currentRunId",
                                                    timestamp,
+                                                   null,
                                                    null,
                                                    null,
                                                    List.of(new TaskParameterDto("USE_PROJECTION", "BOOLEAN", Boolean.toString(isProjected), "true"))

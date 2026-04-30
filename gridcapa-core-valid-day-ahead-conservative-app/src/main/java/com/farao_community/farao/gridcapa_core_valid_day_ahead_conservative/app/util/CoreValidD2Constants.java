@@ -18,11 +18,13 @@ public final class CoreValidD2Constants {
     public static final String IVA_RESULT_FILE_TYPE = "IVA-RESULT";
     public static final String STUDY_POINT_FILE_TYPE = "STUDY-POINT";
     public static final String IVA_BRANCH_JSON_FILE_NAME = "ivaBranch.json";
+    public static final String STUDY_POINT_JSON_FILE_NAME = "studyPoint.json";
     //TASK MANAGING
     public static final String TASK_STATUS_UPDATE = "task-status-update";
     public static final String GRIDCAPA_TASK_ID = "gridcapa-task-id";
     public static final String BUSINESS_LOGGER = "BUSINESS_LOGGER";
     public static final String USE_PROJECTION = "USE_PROJECTION";
+    public static final String USE_AHC = "USE_AHC";
     public static final String BOOLEAN = "BOOLEAN";
     public static final String INT = "INT";
     public static final String STRING = "STRING";
