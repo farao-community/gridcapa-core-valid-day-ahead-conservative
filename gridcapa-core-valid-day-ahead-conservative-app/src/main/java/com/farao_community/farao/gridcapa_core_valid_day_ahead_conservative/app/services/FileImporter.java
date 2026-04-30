@@ -52,10 +52,10 @@ public class FileImporter {
 
     private <T> T importFile(final CoreValidD2ConservativeFileResource file,
                              final Function<InputStream, T> inputStreamMapper) {
-        try (final InputStream fileContentStream = urlValidationService.openUrlStream(file.getUrl())) {
+        try (final InputStream fileContentStream = urlValidationService.openUrlStream(file.url())) {
             return inputStreamMapper.apply(fileContentStream);
         } catch (final Exception e) {
-            throw new CoreValidD2ConservativeInvalidDataException(String.format("Cannot import %s file from URL '%s'", file.getFilename(), file.getUrl()), e);
+            throw new CoreValidD2ConservativeInvalidDataException(String.format("Cannot import %s file from URL '%s'", file.filename(), file.url()), e);
         }
     }
 }

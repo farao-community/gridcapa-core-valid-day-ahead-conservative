@@ -61,17 +61,17 @@ public class CoreValidD2ConservativeHandler {
 
     public String handleCoreValidD2ConservativeRequest(final CoreValidD2ConservativeRequest request) {
         MDC.put(GRIDCAPA_TASK_ID, request.getId());
-        final CoreValidD2TaskParameters iniParameters = new CoreValidD2TaskParameters(request.getTaskParameterList());
+        final CoreValidD2TaskParameters taskParameters = new CoreValidD2TaskParameters(request.getTaskParameterList());
         final List<Vertex> importedVertices = fileImporter.importVertices(request.getVertices());
         final List<CnecRamData> cnecRams = fileImporter.importCnecRam(request.getCnecRam());
         final List<CnecRamData> filteredCnecRamsForVertices = CnecRamFilter.filterBeforeVerticesCalculus(cnecRams);
-        final List<Vertex> verticesForCalculus = getVerticesForCalculus(importedVertices, filteredCnecRamsForVertices, iniParameters.shouldProjectVertices());
+        final List<Vertex> verticesForCalculus = getVerticesForCalculus(importedVertices, filteredCnecRamsForVertices, taskParameters.shouldProjectVertices());
         final List<CnecRamData> filteredCnecRamsForIva = CnecRamFilter.filterBeforeIvaCalculus(cnecRams);
-        final List<IvaBranchData> branches = branchMaxIvaService.computeBranchData(verticesForCalculus, filteredCnecRamsForIva, iniParameters);
-        ConservativeIvaCalculationUtils.feedConservativeIVAs(branches, iniParameters);
+        final List<IvaBranchData> branches = branchMaxIvaService.computeBranchData(verticesForCalculus, filteredCnecRamsForIva, taskParameters);
+        ConservativeIvaCalculationUtils.feedConservativeIVAs(branches, taskParameters);
         final OffsetDateTime targetTimestamp = request.getTimestamp();
         fileExporter.uploadOutputToMinio(toJson(branches), targetTimestamp, IVA_RESULT_FILE_TYPE, IVA_BRANCH_JSON_FILE_NAME);
-        final Map<CoreHub, Point> npForecast = fileImporter.importCoreNetPositions(request.getNetPositionForecast(), iniParameters.shouldUseAhcImport(), targetTimestamp);
+        final Map<CoreHub, Point> npForecast = fileImporter.importCoreNetPositions(request.getNetPositionForecast(), taskParameters.shouldUseAhcImport(), targetTimestamp);
         List<StudyPoint> studyPoints = studyPointService.generateStudyPoints(verticesForCalculus, branches, npForecast);
         fileExporter.uploadOutputToMinio(toJson(studyPoints),  targetTimestamp, STUDY_POINT_FILE_TYPE, STUDY_POINT_JSON_FILE_NAME);
 

@@ -30,10 +30,12 @@ class JsonApiConverterTest {
         final String inputMessage = Files.readString(Paths.get(getClass().getResource("/validRequest.json").toURI()));
         final CoreValidD2ConservativeRequest request = jsonApiConverter.fromJsonMessage(inputMessage.getBytes(), CoreValidD2ConservativeRequest.class);
         assertEquals("id", request.getId());
-        assertEquals("cnecRam.txt", request.getCnecRam().getFilename());
-        assertEquals("https://cnecRam/file/url", request.getCnecRam().getUrl());
-        assertEquals("vertices.txt", request.getVertices().getFilename());
-        assertEquals("https://vertice/file/url", request.getVertices().getUrl());
+        assertEquals("cnecRam.txt", request.getCnecRam().filename());
+        assertEquals("https://cnecRam/file/url", request.getCnecRam().url());
+        assertEquals("vertices.txt", request.getVertices().filename());
+        assertEquals("https://vertice/file/url", request.getVertices().url());
+        assertEquals("npf.txt", request.getNetPositionForecast().filename());
+        assertEquals("https://npf/file/url", request.getNetPositionForecast().url());
     }
 
     @Test

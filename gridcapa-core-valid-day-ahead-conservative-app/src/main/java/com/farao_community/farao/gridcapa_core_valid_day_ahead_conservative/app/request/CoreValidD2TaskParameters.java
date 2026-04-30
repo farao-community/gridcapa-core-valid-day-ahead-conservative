@@ -156,6 +156,7 @@ public class CoreValidD2TaskParameters {
     public String toJsonString() {
         final List<String> appender = new ArrayList<>();
         appender.add(formatForJson(USE_PROJECTION, useProjection));
+        appender.add(formatForJson(USE_AHC, useAhc));
         appender.add(formatForJson(MAX_VERTICES_PER_BRANCH, maxVerticesPerBranch));
         appender.add(formatForJson(RAM_THRESHOLD, ramThreshold));
         appender.add(formatForJson(MIN_RAM_MCCC, minRamMccc));

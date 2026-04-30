@@ -44,9 +44,9 @@ class CoreValidD2ConservativeRequestTest {
         assertEquals("id", request.getId());
         assertEquals("runId", request.getCurrentRunId());
         assertEquals("2025-10-01T00:30Z", request.getTimestamp().toString());
-        assertEquals("cnecRam.txt", request.getCnecRam().getFilename());
-        assertEquals("cnecRam.txt", request.getCnecRam().getFilename());
-        assertEquals("npf.txt", request.getNetPositionForecast().getFilename());
+        assertEquals("cnecRam.txt", request.getCnecRam().filename());
+        assertEquals("vertice.txt", request.getVertices().filename());
+        assertEquals("npf.txt", request.getNetPositionForecast().filename());
         assertFalse(request.getLaunchedAutomatically());
         assertTrue(request.getTaskParameterList().isEmpty());
     }

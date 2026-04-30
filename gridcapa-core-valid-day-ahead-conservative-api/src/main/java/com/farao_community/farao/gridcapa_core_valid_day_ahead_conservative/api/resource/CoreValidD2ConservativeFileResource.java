@@ -5,39 +5,10 @@
  *  file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  */
-
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.resource;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import java.util.Objects;
 
 /**
  * @author Antoine Limouzin {@literal <antoine.limouzin at rte-france.com>}
  */
-public class CoreValidD2ConservativeFileResource {
-    private final String filename;
-    private final String url;
-
-    @JsonCreator
-    public CoreValidD2ConservativeFileResource(final @JsonProperty("filename") String filename,
-                                               final @JsonProperty("url") String url) {
-        this.filename = Objects.requireNonNull(filename);
-        this.url = Objects.requireNonNull(url);
-    }
-
-    public String getFilename() {
-        return filename;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
+public record CoreValidD2ConservativeFileResource(String filename, String url) {
 }
