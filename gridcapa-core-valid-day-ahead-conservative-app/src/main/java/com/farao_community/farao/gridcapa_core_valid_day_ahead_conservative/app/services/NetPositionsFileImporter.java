@@ -43,7 +43,7 @@ public final class NetPositionsFileImporter {
                                                                final List<CoreHub> coreHubs,
                                                                final boolean withAhc,
                                                                final OffsetDateTime targetDateTime) {
-        final Map<CoreHub, Point> mapPointByCoreHub = new HashMap<>();
+
         final ReportingInformationMarketDocument npf = importNetPositionsForecast(inputStream);
         final List<String> forecastCodes = getForecastCodes(coreHubs, withAhc);
         final OffsetDateTime documentStart = getDocumentStartDateTime(npf);

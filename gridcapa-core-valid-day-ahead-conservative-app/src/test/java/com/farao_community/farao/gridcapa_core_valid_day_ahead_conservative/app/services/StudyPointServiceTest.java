@@ -22,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -66,8 +67,11 @@ class StudyPointServiceTest {
 
     @Test
     void testStudyPointWithNoVertices() {
+        final List<Vertex> vertices = new ArrayList<>();
+        final List<IvaBranchData> testBranches = getTestBranches();
+        final Map<CoreHub, Point> testNetPositions = getTestNetPositions();
         Assertions.assertThatExceptionOfType(CoreValidD2ConservativeInvalidDataException.class)
-                .isThrownBy(() -> studyPointService.generateStudyPoints(List.of(), getTestBranches(), getTestNetPositions()));
+                .isThrownBy(() -> studyPointService.generateStudyPoints(vertices, testBranches, testNetPositions));
     }
 
     private List<CoreHub> getTestCoreHubs() {
