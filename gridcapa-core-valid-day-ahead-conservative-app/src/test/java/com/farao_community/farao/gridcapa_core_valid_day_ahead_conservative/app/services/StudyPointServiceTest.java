@@ -30,6 +30,8 @@ import java.util.Map;
 class StudyPointServiceTest {
 
     private static final int POSITION = 3;
+    private static final Vertex VERTEX_2 = new Vertex(2, Map.of("FR", 2000, "DE", 2000));
+    private static final Vertex VERTEX_1 = new Vertex(1, Map.of("FR", 100, "DE", 100));
     @Autowired
     private StudyPointService studyPointService;
 
@@ -59,10 +61,11 @@ class StudyPointServiceTest {
         final List<StudyPoint> points1 = studyPointService.generateStudyPoints(getTestVertices(), getTestBranchesNoWorseVertices(), getTestNetPositions());
         Assertions.assertThat(points1).hasSize(1);
         Assertions.assertThat(points1.getFirst().position()).isEqualTo(POSITION);
-        Assertions.assertThat(points1.getFirst().vertex().vertexId()).isEqualTo(1);
+        Assertions.assertThat(points1.getFirst().vertex()).isEqualTo(VERTEX_1);
 
         final List<StudyPoint> points2 = studyPointService.generateStudyPoints(getTestVertices(), getTestBranches(), getTestNetPositions());
         Assertions.assertThat(points2).hasSize(2);
+        Assertions.assertThat(points2).containsExactlyInAnyOrder(new StudyPoint(POSITION, VERTEX_1), new StudyPoint(POSITION, VERTEX_2));
     }
 
     @Test
@@ -79,8 +82,8 @@ class StudyPointServiceTest {
     }
 
     private List<Vertex> getTestVertices() {
-        return List.of(new Vertex(1, Map.of("FR", 100, "DE", 100)),
-                       new Vertex(2, Map.of("FR", 2000, "DE", 2000)),
+        return List.of(VERTEX_1,
+                       VERTEX_2,
                        new Vertex(3, Map.of("FR", 3000, "DE", 3000)),
                        new Vertex(4, Map.of("FR", 1000, "DE", 1000)),
                        new Vertex(5, Map.of("FR", 2000, "DE", 2000)),
@@ -92,8 +95,8 @@ class StudyPointServiceTest {
     }
 
     private List<IvaBranchData> getTestBranches() {
-        return List.of(new IvaBranchData(null, 0, 0, List.of(new RamVertex(750, new Vertex(1, Map.of("FR", 100, "DE", 100))),
-                                                             new RamVertex(750, new Vertex(2, Map.of("FR", 2000, "DE", 2000))))));
+        return List.of(new IvaBranchData(null, 0, 0, List.of(new RamVertex(750, VERTEX_1),
+                                                             new RamVertex(750, VERTEX_2))));
     }
 
     private Map<CoreHub, Point> getTestNetPositions() {
