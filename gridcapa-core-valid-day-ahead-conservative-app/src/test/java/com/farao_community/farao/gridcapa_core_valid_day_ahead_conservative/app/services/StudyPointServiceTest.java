@@ -64,8 +64,9 @@ class StudyPointServiceTest {
         Assertions.assertThat(points1.getFirst().vertex()).isEqualTo(VERTEX_1);
 
         final List<StudyPoint> points2 = studyPointService.generateStudyPoints(getTestVertices(), getTestBranches(), getTestNetPositions());
-        Assertions.assertThat(points2).hasSize(2);
-        Assertions.assertThat(points2).containsExactlyInAnyOrder(new StudyPoint(POSITION, VERTEX_1), new StudyPoint(POSITION, VERTEX_2));
+        Assertions.assertThat(points2)
+                .hasSize(2)
+                .containsExactlyInAnyOrder(new StudyPoint(POSITION, VERTEX_1), new StudyPoint(POSITION, VERTEX_2));
     }
 
     @Test
