@@ -32,7 +32,6 @@ import org.springframework.stereotype.Component;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Map;
 
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.GRIDCAPA_TASK_ID;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.IVA_BRANCH_JSON_FILE_NAME;
@@ -75,8 +74,8 @@ public class CoreValidD2ConservativeHandler {
         final List<CnecRamData> filteredCnecRamsForIva = CnecRamFilter.filterBeforeIvaCalculus(cnecRams);
         final List<IvaBranchData> branches = branchMaxIvaService.computeBranchData(verticesForCalculus, filteredCnecRamsForIva, iniParameters);
         ConservativeIvaCalculationUtils.feedConservativeIVAs(branches, taskParameters);
-        final byte[] jsonOutput = toJson(branches);
-        fileExporter.uploadOutputToMinio(jsonOutput, request.getTimestamp());
+        final OffsetDateTime targetTimestamp = request.getTimestamp();
+        fileExporter.uploadOutputToMinio(toJson(branches), targetTimestamp, IVA_RESULT_FILE_TYPE, IVA_BRANCH_JSON_FILE_NAME);
         final Map<CoreHub, Point> npForecast = fileImporter.importCoreNetPositions(request.getNetPositionForecast(), iniParameters.shouldUseAhcImport(), targetTimestamp);
         List<StudyPoint> studyPoints = studyPointService.generateStudyPoints(verticesForCalculus, branches, npForecast);
         fileExporter.uploadOutputToMinio(toJson(studyPoints),  targetTimestamp, STUDY_POINT_FILE_TYPE, STUDY_POINT_JSON_FILE_NAME);

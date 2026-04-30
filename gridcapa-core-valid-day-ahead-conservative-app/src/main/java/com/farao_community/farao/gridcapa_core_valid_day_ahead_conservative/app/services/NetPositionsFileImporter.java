@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.FORECAST_SUFFIX_AHC_CODE;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.DateTimeUtils.intervalStartExceptionSupplier;
@@ -39,18 +40,18 @@ public final class NetPositionsFileImporter {
     }
 
     public static Map<CoreHub, Point> getNetPositionsByCoreHub(final InputStream inputStream,
-                                                                     final List<CoreHub> coreHubs,
-                                                                     final boolean withAhc,
-                                                                     final OffsetDateTime targetDateTime) {
+                                                               final List<CoreHub> coreHubs,
+                                                               final boolean withAhc,
+                                                               final OffsetDateTime targetDateTime) {
         final Map<CoreHub, Point> mapPointByCoreHub = new HashMap<>();
         final ReportingInformationMarketDocument npf = importNetPositionsForecast(inputStream);
         final List<String> forecastCodes = getForecastCodes(coreHubs, withAhc);
         final OffsetDateTime documentStart = getDocumentStartDateTime(npf);
-        npf.getTimeSeries()
-                .stream()
+        return npf.getTimeSeries().stream()
                 .filter(timeSeries -> forecastCodes.contains(timeSeries.getMRID()))
-                .forEach(timeSeries -> mapPointByCoreHub.put(getCoreHubByForecastCode(timeSeries.getMRID(), coreHubs, withAhc), extractNetPosition(documentStart, timeSeries, targetDateTime)));
-        return mapPointByCoreHub;
+                .collect(Collectors.toMap(timeSeries -> getCoreHubByForecastCode(timeSeries.getMRID(), coreHubs, withAhc),
+                                          timeSeries -> extractNetPosition(documentStart, timeSeries, targetDateTime)
+                ));
     }
 
     private static CoreHub getCoreHubByForecastCode(final String forecastCode,
@@ -75,20 +76,21 @@ public final class NetPositionsFileImporter {
                 coreHub.forecastCode();
     }
 
-    private static Point extractNetPosition(final OffsetDateTime documentStartDateTime, final TimeSeries timeSeries, final OffsetDateTime targetDateTime) {
+    private static Point extractNetPosition(final OffsetDateTime documentStartDateTime,
+                                            final TimeSeries timeSeries,
+                                            final OffsetDateTime targetDateTime) {
         int targetPosition = DateTimeUtils.getPositionInTimeSeries(targetDateTime, documentStartDateTime);
-        return timeSeries
+        List<Point> points = timeSeries
             .getPeriod()
             .stream()
             .filter(p -> documentStartDateTime.isEqual(getIntervalStart(p.getTimeInterval())))
             .findFirst()// there should be only one
             .map(SeriesPeriod::getPoint)
-            .orElseThrow(intervalStartExceptionSupplier())
-                .stream()
+            .orElseThrow(intervalStartExceptionSupplier());
+        return points.stream()
                 .filter(point -> point.getPosition() == targetPosition)
                 .findFirst()
                 .orElseThrow(() -> new CoreValidD2ConservativeInvalidDataException("Could not get net position point"));
-
     }
 
     private static OffsetDateTime getDocumentStartDateTime(final ReportingInformationMarketDocument document) {
