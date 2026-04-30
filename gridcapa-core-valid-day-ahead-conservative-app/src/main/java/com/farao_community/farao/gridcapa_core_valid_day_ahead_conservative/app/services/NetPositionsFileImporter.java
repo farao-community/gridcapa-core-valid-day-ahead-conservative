@@ -38,18 +38,19 @@ public final class NetPositionsFileImporter {
         // utility class
     }
 
-    public static Map<CoreHub, List<Point>> getNetPositionsByCoreHub(final InputStream inputStream,
+    public static Map<CoreHub, Point> getNetPositionsByCoreHub(final InputStream inputStream,
                                                                      final List<CoreHub> coreHubs,
-                                                                     final boolean withAhc) {
-        final Map<CoreHub, List<Point>> listPointsByCoreHub = new HashMap<>();
+                                                                     final boolean withAhc,
+                                                                     final OffsetDateTime targetDateTime) {
+        final Map<CoreHub, Point> mapPointByCoreHub = new HashMap<>();
         final ReportingInformationMarketDocument npf = importNetPositionsForecast(inputStream);
         final List<String> forecastCodes = getForecastCodes(coreHubs, withAhc);
         final OffsetDateTime documentStart = getDocumentStartDateTime(npf);
         npf.getTimeSeries()
                 .stream()
                 .filter(timeSeries -> forecastCodes.contains(timeSeries.getMRID()))
-                .forEach(timeSeries -> listPointsByCoreHub.put(getCoreHubByForecastCode(timeSeries.getMRID(), coreHubs, withAhc), extractNetPositions(documentStart, timeSeries)));
-        return listPointsByCoreHub;
+                .forEach(timeSeries -> mapPointByCoreHub.put(getCoreHubByForecastCode(timeSeries.getMRID(), coreHubs, withAhc), extractNetPosition(documentStart, timeSeries, targetDateTime)));
+        return mapPointByCoreHub;
     }
 
     private static CoreHub getCoreHubByForecastCode(final String forecastCode,
@@ -74,14 +75,19 @@ public final class NetPositionsFileImporter {
                 coreHub.forecastCode();
     }
 
-    private static List<Point> extractNetPositions(final OffsetDateTime targetDate, final TimeSeries timeSeries) {
+    private static Point extractNetPosition(final OffsetDateTime documentStartDateTime, final TimeSeries timeSeries, final OffsetDateTime targetDateTime) {
+        int targetPosition = DateTimeUtils.getPositionInTimeSeries(targetDateTime, documentStartDateTime);
         return timeSeries
             .getPeriod()
             .stream()
-            .filter(p -> targetDate.isEqual(getIntervalStart(p.getTimeInterval())))
+            .filter(p -> documentStartDateTime.isEqual(getIntervalStart(p.getTimeInterval())))
             .findFirst()// there should be only one
             .map(SeriesPeriod::getPoint)
-            .orElseThrow(intervalStartExceptionSupplier());
+            .orElseThrow(intervalStartExceptionSupplier())
+                .stream()
+                .filter(point -> point.getPosition() == targetPosition)
+                .findFirst()
+                .orElseThrow(() -> new CoreValidD2ConservativeInvalidDataException("Could not get net position point"));
 
     }
 

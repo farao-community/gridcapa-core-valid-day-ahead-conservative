@@ -34,6 +34,7 @@ public class CoreValidD2ConservativeRequest {
     private final OffsetDateTime timestamp;
     private final CoreValidD2ConservativeFileResource cnecRam;
     private final CoreValidD2ConservativeFileResource vertices;
+    private final CoreValidD2ConservativeFileResource netPositionForecast;
     private final boolean launchedAutomatically;
     private final List<TaskParameterDto> taskParameterList;
 
@@ -43,6 +44,7 @@ public class CoreValidD2ConservativeRequest {
                                           final @JsonProperty("timestamp") OffsetDateTime timestamp,
                                           final @JsonProperty("cnecRam") CoreValidD2ConservativeFileResource cnecRam,
                                           final @JsonProperty("vertices") CoreValidD2ConservativeFileResource vertices,
+                                          final @JsonProperty("netPositionForecast") CoreValidD2ConservativeFileResource netPositionForecast,
                                           final @JsonProperty("launchedAutomatically") boolean launchedAutomatically,
                                           final @JsonProperty("taskParameterList") List<TaskParameterDto> taskParameterList) {
         this.id = id;
@@ -50,6 +52,7 @@ public class CoreValidD2ConservativeRequest {
         this.timestamp = timestamp;
         this.cnecRam = cnecRam;
         this.vertices = vertices;
+        this.netPositionForecast = netPositionForecast;
         this.launchedAutomatically = launchedAutomatically;
         this.taskParameterList = taskParameterList;
     }
@@ -59,8 +62,9 @@ public class CoreValidD2ConservativeRequest {
                                           final OffsetDateTime timestamp,
                                           final CoreValidD2ConservativeFileResource cnecRam,
                                           final CoreValidD2ConservativeFileResource vertices,
+                                          final CoreValidD2ConservativeFileResource netPositionForecast,
                                           final List<TaskParameterDto> taskParameterList) {
-        this(id, currentRunId, timestamp, cnecRam, vertices, false, taskParameterList);
+        this(id, currentRunId, timestamp, cnecRam, vertices, netPositionForecast, false, taskParameterList);
     }
 
     public String getId() {
@@ -81,6 +85,10 @@ public class CoreValidD2ConservativeRequest {
 
     public CoreValidD2ConservativeFileResource getVertices() {
         return vertices;
+    }
+
+    public CoreValidD2ConservativeFileResource getNetPositionForecast() {
+        return netPositionForecast;
     }
 
     public boolean getLaunchedAutomatically() {

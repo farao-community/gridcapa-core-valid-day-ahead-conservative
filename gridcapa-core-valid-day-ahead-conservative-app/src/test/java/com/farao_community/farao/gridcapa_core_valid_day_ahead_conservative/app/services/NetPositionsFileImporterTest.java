@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.OffsetDateTime;
 
 @SpringBootTest
 class NetPositionsFileImporterTest {
@@ -25,7 +26,7 @@ class NetPositionsFileImporterTest {
     void shouldFailOnInvalidFile() throws IOException {
         try (final InputStream inputStream = getFailingInputStream()) {
             Assertions.assertThatThrownBy(
-                () -> NetPositionsFileImporter.getNetPositionsByCoreHub(inputStream, coreHubsConfiguration.getCoreHubs(), false)
+                () -> NetPositionsFileImporter.getNetPositionsByCoreHub(inputStream, coreHubsConfiguration.getCoreHubs(), false, OffsetDateTime.now())
             ).hasMessage("Cannot unmarshal ReportingInformationMarketDocument");
         }
     }

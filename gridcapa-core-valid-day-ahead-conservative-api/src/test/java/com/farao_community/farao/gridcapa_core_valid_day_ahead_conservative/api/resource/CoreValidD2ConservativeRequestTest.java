@@ -26,31 +26,34 @@ class CoreValidD2ConservativeRequestTest {
 
     private CoreValidD2ConservativeFileResource cnecRam;
     private CoreValidD2ConservativeFileResource vertice;
+    private CoreValidD2ConservativeFileResource npf;
     private OffsetDateTime dateTime;
 
     @BeforeEach
     void setUp() {
         cnecRam = new CoreValidD2ConservativeFileResource("cnecRam.txt", "http://path/to/cnecRam/file");
         vertice = new CoreValidD2ConservativeFileResource("vertice.txt", "http://path/to/vertice/file");
+        npf = new CoreValidD2ConservativeFileResource("npf.txt", "http://path/to/npf/file");
         dateTime = OffsetDateTime.parse("2025-10-01T00:30Z");
     }
 
     @Test
     void checkManualCoreValidRequest() {
-        final CoreValidD2ConservativeRequest request = new CoreValidD2ConservativeRequest("id", "runId", dateTime, cnecRam, vertice, new ArrayList<>());
+        final CoreValidD2ConservativeRequest request = new CoreValidD2ConservativeRequest("id", "runId", dateTime, cnecRam, vertice, npf, new ArrayList<>());
         assertNotNull(request);
         assertEquals("id", request.getId());
         assertEquals("runId", request.getCurrentRunId());
         assertEquals("2025-10-01T00:30Z", request.getTimestamp().toString());
         assertEquals("cnecRam.txt", request.getCnecRam().getFilename());
-        assertEquals("vertice.txt", request.getVertices().getFilename());
+        assertEquals("cnecRam.txt", request.getCnecRam().getFilename());
+        assertEquals("npf.txt", request.getNetPositionForecast().getFilename());
         assertFalse(request.getLaunchedAutomatically());
         assertTrue(request.getTaskParameterList().isEmpty());
     }
 
     @Test
     void checkAutoCoreValidRequest() {
-        final CoreValidD2ConservativeRequest request = new CoreValidD2ConservativeRequest("id", "runId", dateTime, cnecRam, vertice, true, new ArrayList<>());
+        final CoreValidD2ConservativeRequest request = new CoreValidD2ConservativeRequest("id", "runId", dateTime, cnecRam, vertice, npf, true, new ArrayList<>());
         assertTrue(request.getLaunchedAutomatically());
         assertTrue(request.getTaskParameterList().isEmpty());
     }
