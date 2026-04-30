@@ -12,6 +12,7 @@ import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.IvaBranchData;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.RamVertex;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.StudyPoint;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
 import com.farao_community.gridcapa_core_valid_day_ahead_conservative.xsd.f230.Point;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -61,7 +62,12 @@ class StudyPointServiceTest {
 
         final List<StudyPoint> points2 = studyPointService.generateStudyPoints(getTestVertices(), getTestBranches(), getTestNetPositions());
         Assertions.assertThat(points2).hasSize(2);
+    }
 
+    @Test
+    void testStudyPointWithNoVertices() {
+        Assertions.assertThatExceptionOfType(CoreValidD2ConservativeInvalidDataException.class)
+                .isThrownBy(() -> studyPointService.generateStudyPoints(List.of(), getTestBranches(), getTestNetPositions()));
     }
 
     private List<CoreHub> getTestCoreHubs() {
