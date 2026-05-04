@@ -122,6 +122,7 @@ class CoreValidD2TaskParametersTest {
         assertEquals("""
                          {
                          \t"USE_PROJECTION": true,\s
+                         \t"USE_AHC": false,\s
                          \t"MAX_VERTICES_PER_BRANCH": 5,\s
                          \t"RAM_THRESHOLD": -500,\s
                          \t"MIN_RAM_MCCC": 20,\s
@@ -138,6 +139,7 @@ class CoreValidD2TaskParametersTest {
             """
                 {
                 \t"USE_PROJECTION": false,\s
+                \t"USE_AHC": false,\s
                 \t"MAX_VERTICES_PER_BRANCH": 0,\s
                 \t"RAM_THRESHOLD": 0,\s
                 \t"MIN_RAM_MCCC": 0,\s
@@ -167,7 +169,8 @@ class CoreValidD2TaskParametersTest {
         "MIN_RAM_MCCC,INT,20,15",
         "EXCLUDED_BRANCHES,STRING,EXCLUDED,EMPTY",
         "CURATIVE_IVA_MARGIN,INT,100,0",
-        "PREVENTIVE_IVA_MARGIN,INT,50,0"
+        "PREVENTIVE_IVA_MARGIN,INT,50,0",
+        "USE_AHC,BOOLEAN,true,false"
     })
     void coreValidD2TaskParametersTest(final String id,
                                        final String parameterType,

@@ -7,10 +7,10 @@
     <sender_MarketParticipant.marketRole.type>A36</sender_MarketParticipant.marketRole.type>
     <receiver_MarketParticipant.mRID codingScheme="A01">10V1001C--00085T</receiver_MarketParticipant.mRID>
     <receiver_MarketParticipant.marketRole.type>A04</receiver_MarketParticipant.marketRole.type>
-    <createdDateTime>2025-09-19T16:10:00Z</createdDateTime>
+    <createdDateTime>2025-10-25T16:10:00Z</createdDateTime>
     <time_Period.timeInterval>
-        <start>2025-09-24T22:00Z</start>
-        <end>2025-09-25T23:00Z</end>
+        <start>2025-10-24T22:00Z</start>
+        <end>2025-10-25T23:00Z</end>
     </time_Period.timeInterval>
     <TimeSeries>
         <mRID>FR-CORE</mRID>
@@ -22,8 +22,8 @@
         <curveType>A01</curveType>
         <Period>
             <timeInterval>
-                <start>2025-09-24T22:00Z</start>
-                <end>2025-09-25T23:00Z</end>
+                <start>2025-10-24T22:00Z</start>
+                <end>2025-10-25T23:00Z</end>
             </timeInterval>
             <resolution>PT60M</resolution>
             <Point>

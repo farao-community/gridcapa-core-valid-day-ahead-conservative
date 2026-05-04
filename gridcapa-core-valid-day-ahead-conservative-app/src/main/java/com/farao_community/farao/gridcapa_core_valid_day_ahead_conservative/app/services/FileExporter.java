@@ -19,8 +19,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.IVA_BRANCH_JSON_FILE_NAME;
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.IVA_RESULT_FILE_TYPE;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.MINIO_DESTINATION_PATH_FORMAT;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.PROCESS_NAME;
 
@@ -36,10 +34,10 @@ public class FileExporter {
         this.minioAdapter = minioAdapter;
     }
 
-    public void uploadOutputToMinio(final byte[] outputFile, final OffsetDateTime timestamp) {
+    public void uploadOutputToMinio(final byte[] outputFile, final OffsetDateTime timestamp, final String fileType, final String filename) {
         try (final InputStream inputStream = new ByteArrayInputStream(outputFile)) {
-            final String minioOutputPath = makeDestinationMinioPath(timestamp) + IVA_BRANCH_JSON_FILE_NAME;
-            minioAdapter.uploadOutputForTimestamp(minioOutputPath, inputStream, PROCESS_NAME, IVA_RESULT_FILE_TYPE, timestamp);
+            final String minioOutputPath = makeDestinationMinioPath(timestamp) + filename;
+            minioAdapter.uploadOutputForTimestamp(minioOutputPath, inputStream, PROCESS_NAME, fileType, timestamp);
         } catch (final IOException e) {
             throw new CoreValidD2ConservativeInternalException("Error during output file upload", e);
         }

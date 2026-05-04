@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.farao_community.gridcapa_core_valid_day_ahead_conservative.xsd.f230.Point;
 
 import java.io.InputStream;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -43,17 +44,18 @@ public class FileImporter {
         return importFile(cnecRamFile, is -> CnecRamImporter.importCnecRam(is, coreHubs));
     }
 
-    public Map<CoreHub, List<Point>> importCoreNetPositions(final CoreValidD2ConservativeFileResource npfFile,
-                                                            final boolean withAhc) {
-        return importFile(npfFile, is -> getNetPositionsByCoreHub(is, coreHubs, withAhc));
+    public Map<CoreHub, Point> importCoreNetPositions(final CoreValidD2ConservativeFileResource npfFile,
+                                                      final boolean withAhc,
+                                                      final OffsetDateTime timestamp) {
+        return importFile(npfFile, is -> getNetPositionsByCoreHub(is, coreHubs, withAhc, timestamp));
     }
 
     private <T> T importFile(final CoreValidD2ConservativeFileResource file,
                              final Function<InputStream, T> inputStreamMapper) {
-        try (final InputStream fileContentStream = urlValidationService.openUrlStream(file.getUrl())) {
+        try (final InputStream fileContentStream = urlValidationService.openUrlStream(file.url())) {
             return inputStreamMapper.apply(fileContentStream);
         } catch (final Exception e) {
-            throw new CoreValidD2ConservativeInvalidDataException(String.format("Cannot import %s file from URL '%s'", file.getFilename(), file.getUrl()), e);
+            throw new CoreValidD2ConservativeInvalidDataException(String.format("Cannot import %s file from URL '%s'", file.filename(), file.url()), e);
         }
     }
 }

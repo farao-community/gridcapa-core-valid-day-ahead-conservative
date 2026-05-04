@@ -13,6 +13,10 @@
       "vertices": {
         "filename": "vertices.txt",
         "url": "https://vertice/file/url"
+      },
+      "netPositionForecast": {
+        "filename": "npf.txt",
+        "url": "https://npf/file/url"
       }
     }
   }

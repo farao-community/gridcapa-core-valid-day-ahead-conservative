@@ -11,6 +11,7 @@ import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubsCo
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.resource.CoreValidD2ConservativeRequest;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services.BranchMaxIvaService;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services.FileImporter;
+import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services.StudyPointService;
 import com.farao_community.farao.minio_adapter.starter.MinioAdapter;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,6 +27,7 @@ import java.util.List;
 
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.IVA_RESULT_FILE_TYPE;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.PROCESS_NAME;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.STUDY_POINT_FILE_TYPE;
 
 @SpringBootTest
 class CoreValidD2ConservativeHandlerTest {
@@ -38,6 +40,8 @@ class CoreValidD2ConservativeHandlerTest {
     private BranchMaxIvaService branchMaxIvaService;
     @MockitoBean
     private CoreHubsConfiguration coreHubsConfiguration;
+    @MockitoBean
+    private StudyPointService studyPointService;
 
     @Autowired
     private CoreValidD2ConservativeHandler coreValidD2ConservativeHandler;
@@ -52,6 +56,7 @@ class CoreValidD2ConservativeHandlerTest {
         final String id = coreValidD2ConservativeHandler.handleCoreValidD2ConservativeRequest(request);
         Assertions.assertThat(id).isEqualTo(TEST_ID);
         Mockito.verify(minioAdapter, Mockito.atLeastOnce()).uploadOutputForTimestamp(Mockito.eq("2025/12/08/15_00/ivaBranch.json"), Mockito.any(InputStream.class), Mockito.eq(PROCESS_NAME), Mockito.eq(IVA_RESULT_FILE_TYPE), Mockito.eq(request.getTimestamp()));
+        Mockito.verify(minioAdapter, Mockito.atLeastOnce()).uploadOutputForTimestamp(Mockito.eq("2025/12/08/15_00/studyPoint.json"), Mockito.any(InputStream.class), Mockito.eq(PROCESS_NAME), Mockito.eq(STUDY_POINT_FILE_TYPE), Mockito.eq(request.getTimestamp()));
     }
 
     private CoreValidD2ConservativeRequest getTestRequest(final boolean isProjected) {
@@ -59,6 +64,7 @@ class CoreValidD2ConservativeHandlerTest {
         return  new CoreValidD2ConservativeRequest(TEST_ID,
                                                    "currentRunId",
                                                    timestamp,
+                                                   null,
                                                    null,
                                                    null,
                                                    List.of(new TaskParameterDto("USE_PROJECTION", "BOOLEAN", Boolean.toString(isProjected), "true"))
