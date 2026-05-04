@@ -27,6 +27,7 @@ import java.util.List;
 
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.IVA_RESULT_FILE_TYPE;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.PROCESS_NAME;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.STUDY_POINT_FILE_TYPE;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.USE_AHC_HUBS;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.USE_PROJECTION;
 
@@ -64,6 +65,7 @@ class CoreValidD2ConservativeHandlerTest {
         final String id = coreValidD2ConservativeHandler.handleCoreValidD2ConservativeRequest(request);
         Assertions.assertThat(id).isEqualTo(TEST_ID);
         Mockito.verify(minioAdapter, Mockito.atLeastOnce()).uploadOutputForTimestamp(Mockito.eq("2025/12/08/14_00/ivaBranch.json"), Mockito.any(InputStream.class), Mockito.eq(PROCESS_NAME), Mockito.eq(IVA_RESULT_FILE_TYPE), Mockito.eq(request.getTimestamp()));
+        Mockito.verify(minioAdapter, Mockito.atLeastOnce()).uploadOutputForTimestamp(Mockito.eq("2025/12/08/15_00/studyPoint.json"), Mockito.any(InputStream.class), Mockito.eq(PROCESS_NAME), Mockito.eq(STUDY_POINT_FILE_TYPE), Mockito.eq(request.getTimestamp()));
     }
 
     private CoreValidD2ConservativeRequest getTestRequest(final boolean isProjected, final boolean isAhc) {
