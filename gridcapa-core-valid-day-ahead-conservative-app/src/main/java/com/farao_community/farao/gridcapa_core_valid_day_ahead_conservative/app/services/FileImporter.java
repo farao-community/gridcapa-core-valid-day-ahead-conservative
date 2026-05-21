@@ -7,7 +7,6 @@
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services;
 
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHub;
-import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubsConfiguration;
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.VerticesUtils;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamData;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import com.farao_community.gridcapa_core_valid_day_ahead_conservative.xsd.f230.Point;
 
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -26,20 +24,19 @@ import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservati
 
 @Service
 public class FileImporter {
-    private final List<CoreHub> coreHubs;
     private final UrlValidationService urlValidationService;
 
-    public FileImporter(final UrlValidationService urlValidationService,
-                        final CoreHubsConfiguration coreHubsConfiguration) {
-        this.coreHubs = Collections.unmodifiableList(coreHubsConfiguration.getCoreHubs());
+    public FileImporter(final UrlValidationService urlValidationService) {
         this.urlValidationService = urlValidationService;
     }
 
-    public List<Vertex> importVertices(final CoreValidD2ConservativeFileResource verticesFile) {
+    public List<Vertex> importVertices(final CoreValidD2ConservativeFileResource verticesFile,
+                                       final List<CoreHub> coreHubs) {
         return importFile(verticesFile, is -> VerticesUtils.importVertices(is, coreHubs));
     }
 
-    public List<CnecRamData> importCnecRam(final CoreValidD2ConservativeFileResource cnecRamFile) {
+    public List<CnecRamData> importCnecRam(final CoreValidD2ConservativeFileResource cnecRamFile,
+                                           final List<CoreHub> coreHubs) {
         return importFile(cnecRamFile, is -> CnecRamImporter.importCnecRam(is, coreHubs));
     }
 

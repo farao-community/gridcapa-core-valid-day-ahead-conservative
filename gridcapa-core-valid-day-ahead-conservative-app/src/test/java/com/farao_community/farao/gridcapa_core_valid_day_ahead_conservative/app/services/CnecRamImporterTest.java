@@ -7,6 +7,7 @@
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services;
 
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHub;
+import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubUtils;
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubsConfiguration;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInvalidDataException;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamData;
@@ -32,7 +33,7 @@ class CnecRamImporterTest {
     @Test
     void testImportCnecRam() throws IOException {
         try (final InputStream inputStream = getClass().getResource("/cnecRamFileOk.csv").openStream()) {
-            final List<CnecRamData> cnecRams = CnecRamImporter.importCnecRam(inputStream, coreHubsConfiguration.getCoreHubs());
+            final List<CnecRamData> cnecRams = CnecRamImporter.importCnecRam(inputStream, CoreHubUtils.getNonAhcCoreHubs(coreHubsConfiguration.getCoreHubs()));
             Assertions.assertThat(cnecRams)
                     .isNotNull()
                     .hasSize(3)

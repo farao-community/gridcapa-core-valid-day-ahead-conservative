@@ -7,6 +7,7 @@
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services;
 
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHub;
+import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubUtils;
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubsConfiguration;
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamData;
@@ -36,6 +37,7 @@ class BranchMaxIvaServiceTest {
     private static final String TEST_NAME_FILTEREDOUT = "testName filteredout";
     private static final String EMPTY_STRING = "";
     private static final boolean IS_HVDC_HUB = false;
+    private static final boolean IS_NOT_AHC_HUB = false;
     private static final double COEFFICIENT = 1.0;
     private static final int ZERO_INT = 0;
 
@@ -47,7 +49,7 @@ class BranchMaxIvaServiceTest {
 
     @Test
     void computeBranchDataEmptyTest() {
-        Assertions.assertThat(branchMaxIvaService.computeBranchData(List.of(), List.of(), null))
+        Assertions.assertThat(branchMaxIvaService.computeBranchData(List.of(), List.of(), null, null))
                 .isNotNull()
                 .isEmpty();
     }
@@ -58,7 +60,7 @@ class BranchMaxIvaServiceTest {
         final CnecRamData cnec = getTestCnec();
         final List<CoreHub> coreHubs = getTestCoreHubs();
         Mockito.when(coreHubsConfiguration.getCoreHubs()).thenReturn(coreHubs);
-        Assertions.assertThat(branchMaxIvaService.computeBranchData(vertices, List.of(cnec), getTestParameters()))
+        Assertions.assertThat(branchMaxIvaService.computeBranchData(vertices, List.of(cnec), getTestParameters(), getTestCoreHubs()))
                 .isNotNull()
                 .isNotEmpty()
                 .first()
@@ -84,7 +86,8 @@ class BranchMaxIvaServiceTest {
                                                                                vertices,
                                                                                cnec,
                                                                                ramLimit,
-                                                                               maxVertexPerBranch);
+                                                                               maxVertexPerBranch,
+                                                                               CoreHubUtils.getNonAhcCoreHubs(coreHubsConfiguration.getCoreHubs()));
         Assertions.assertThat(worstVertices)
                 .isNotNull()
                 .hasSize(expectedCount)
@@ -166,9 +169,9 @@ class BranchMaxIvaServiceTest {
 
     private List<CoreHub> getTestCoreHubs() {
         final List<CoreHub> corehubs = new ArrayList<>();
-        corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_AAA", EMPTY_STRING, "AA", IS_HVDC_HUB, COEFFICIENT));
-        corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_BBB", EMPTY_STRING, "BB", IS_HVDC_HUB, COEFFICIENT));
-        corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_CCC", EMPTY_STRING, "CC", IS_HVDC_HUB, COEFFICIENT));
+        corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_AAA", EMPTY_STRING, "AA", IS_HVDC_HUB, IS_NOT_AHC_HUB, COEFFICIENT));
+        corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_BBB", EMPTY_STRING, "BB", IS_HVDC_HUB, IS_NOT_AHC_HUB, COEFFICIENT));
+        corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_CCC", EMPTY_STRING, "CC", IS_HVDC_HUB, IS_NOT_AHC_HUB, COEFFICIENT));
         return corehubs;
     }
 

@@ -21,6 +21,7 @@ public final class CoreValidD2Constants {
     public static final String TASK_STATUS_UPDATE = "task-status-update";
     public static final String GRIDCAPA_TASK_ID = "gridcapa-task-id";
     public static final String BUSINESS_LOGGER = "BUSINESS_LOGGER";
+    public static final String USE_AHC_HUBS = "USE_AHC_HUBS";
     public static final String USE_PROJECTION = "USE_PROJECTION";
     public static final String BOOLEAN = "BOOLEAN";
     public static final String INT = "INT";

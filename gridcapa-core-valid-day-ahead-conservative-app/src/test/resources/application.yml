@@ -32,6 +32,7 @@ core-valid-commons:
       forecast-code: AT-CORE
       cluster-vertice-code: AT
       is-hvdc-hub: false
+      is-ahc-hub: false
       coefficient: 1
     - name: Belgique
       ramcep2-code: BE
@@ -39,13 +40,15 @@ core-valid-commons:
       forecast-code: BE-CORE
       cluster-vertice-code: BE
       is-hvdc-hub: false
+      is-ahc-hub: false
       coefficient: 1
-    - name: République Tchèque
+    - name: République Tchéque
       ramcep2-code: CZ
       flowbased-code: PTDF_CZ
       forecast-code: CZ-CORE
       cluster-vertice-code: CZ
       is-hvdc-hub: false
+      is-ahc-hub: false
       coefficient: 1
     - name: Allemagne
       ramcep2-code: DE
@@ -53,6 +56,7 @@ core-valid-commons:
       forecast-code: DE-CORE
       cluster-vertice-code: DE
       is-hvdc-hub: false
+      is-ahc-hub: false
       coefficient: 1
     - name: France
       ramcep2-code: FR
@@ -60,6 +64,7 @@ core-valid-commons:
       forecast-code: FR-CORE
       cluster-vertice-code: FR
       is-hvdc-hub: false
+      is-ahc-hub: false
       coefficient: 1
     - name: Croatie
       ramcep2-code: HR
@@ -67,6 +72,7 @@ core-valid-commons:
       forecast-code: HR-CORE
       cluster-vertice-code: HR
       is-hvdc-hub: false
+      is-ahc-hub: false
       coefficient: 1
     - name: Hongrie
       ramcep2-code: HU
@@ -74,6 +80,7 @@ core-valid-commons:
       forecast-code: HU-CORE
       cluster-vertice-code: HU
       is-hvdc-hub: false
+      is-ahc-hub: false
       coefficient: 1
     - name: Pays-Bas
       ramcep2-code: NL
@@ -81,6 +88,7 @@ core-valid-commons:
       forecast-code: NL-CORE
       cluster-vertice-code: NL
       is-hvdc-hub: false
+      is-ahc-hub: false
       coefficient: 1
     - name: Pologne
       ramcep2-code: PL
@@ -88,6 +96,7 @@ core-valid-commons:
       forecast-code: PL-CORE
       cluster-vertice-code: PL
       is-hvdc-hub: false
+      is-ahc-hub: false
       coefficient: 1
     - name: Roumanie
       ramcep2-code: RO
@@ -95,6 +104,7 @@ core-valid-commons:
       forecast-code: RO-CORE
       cluster-vertice-code: RO
       is-hvdc-hub: false
+      is-ahc-hub: false
       coefficient: 1
     - name: Slovénie
       ramcep2-code: SI
@@ -102,6 +112,7 @@ core-valid-commons:
       forecast-code: SI-CORE
       cluster-vertice-code: SI
       is-hvdc-hub: false
+      is-ahc-hub: false
       coefficient: 1
     - name: Slovaquie
       ramcep2-code: SK
@@ -109,20 +120,95 @@ core-valid-commons:
       forecast-code: SK-CORE
       cluster-vertice-code: SK
       is-hvdc-hub: false
+      is-ahc-hub: false
       coefficient: 1
-    - name: Hub Belgique AleGro
+    - name: Belgique_ ALEGrO Virtual Hub
       ramcep2-code: BE_ALEGrO
       flowbased-code: PTDF_BE_AL
       forecast-code: ALBE-CORE
       cluster-vertice-code: BE_AL
       is-hvdc-hub: true
+      is-ahc-hub: false
       coefficient: 1
-    - name: Hub Allemagne AleGro
+    - name: Allemagne_ ALEGrO  Virtual Hub
       ramcep2-code: DE_ALEGrO
       flowbased-code: PTDF_DE_AL
       forecast-code: ALDE-CORE
       cluster-vertice-code: DE_AL
       is-hvdc-hub: true
+      is-ahc-hub: false
+      coefficient: 1
+    - name: Roumanie_Bulgarie AHC Virtual Hub
+      ramcep2-code: RO_BG_VH
+      flowbased-code: PTDF_RO_BG_VH
+      forecast-code: BG_RO-CORE_AHC
+      cluster-vertice-code: RO_BG_VH
+      is-hvdc-hub: true
+      is-ahc-hub: true
+      coefficient: 1
+    - name: Allemagne_Kontek et CGS AHC Virtual Hub
+      ramcep2-code: DE_DK2_BigHub
+      flowbased-code: PTDF_DE_DK2_BigHub
+      forecast-code: DK2_DE-CORE_AHC
+      cluster-vertice-code: DE_DK2_BigHub
+      is-hvdc-hub: true
+      is-ahc-hub: true
+      coefficient: 1
+    - name: Pologne_LitPol 1 et 2 AHC Virtual Hub
+      ramcep2-code: PL_LT_BigHub
+      flowbased-code: PTDF_PL_LT_BigHub
+      forecast-code: LT_PL-CORE_AHC
+      cluster-vertice-code: PL_LT_BigHub
+      is-hvdc-hub: true
+      is-ahc-hub: true
+      coefficient: 1
+    - name: Allemagne_Nordlink link 1 et 2 AHC Virtual Hub
+      ramcep2-code: DE_NO2_BigHub
+      flowbased-code: PTDF_DE_NO2_BigHub
+      forecast-code: NO2_DE-CORE_AHC
+      cluster-vertice-code: DE_NO2_BigHub
+      is-hvdc-hub: true
+      is-ahc-hub: true
+      coefficient: 1
+    - name: Allemagne_Denmark AHC Virtual Hub
+      ramcep2-code: DE_DK1_VH
+      flowbased-code: PTDF_DE_DK1_VH
+      forecast-code: DK1_DE-CORE_AHC
+      cluster-vertice-code: DE_DK1_VH
+      is-hvdc-hub: true
+      is-ahc-hub: true
+      coefficient: 1
+    - name: Pays-Bas_Cobra AHC Virtual Hub
+      ramcep2-code: NL_DK1_COBRA
+      flowbased-code: PTDF_NL_DK1_COBRA
+      forecast-code: DK1_NL-CORE_AHC
+      cluster-vertice-code: NL_DK1_COBRA
+      is-hvdc-hub: true
+      is-ahc-hub: true
+      coefficient: 1
+    - name: Pays-Bas_NorNed AHC Virtual Hub
+      ramcep2-code: NL_NO2_NorNed
+      flowbased-code: PTDF_NL_NO2_NorNed
+      forecast-code: NO2_NL-CORE_AHC
+      cluster-vertice-code: NL_NO2_NorNed
+      is-hvdc-hub: true
+      is-ahc-hub: true
+      coefficient: 1
+    - name: Allemagne_Baltic AHC Virtual Hub
+      ramcep2-code: DE_SE4_Baltic
+      flowbased-code: PTDF_DE_SE4_Baltic
+      forecast-code: SE4_DE-CORE_AHC
+      cluster-vertice-code: DE_SE4_Baltic
+      is-hvdc-hub: true
+      is-ahc-hub: true
+      coefficient: 1
+    - name: Pologne_SwePol AHC Virtual Hub
+      ramcep2-code: PL_SE4_SwePol
+      flowbased-code: PTDF_PL_SE4_SwePol
+      forecast-code: SE4_PL-CORE_AHC
+      cluster-vertice-code: PL_SE4_SwePol
+      is-hvdc-hub: true
+      is-ahc-hub: true
       coefficient: 1
 
 minio-adapter:
