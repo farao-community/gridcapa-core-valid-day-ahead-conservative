@@ -16,15 +16,11 @@ class CnecRamValuesDataTest {
     @Test
     void testRamValues() {
         final BigDecimal minRamFactor = new BigDecimal("44.44");
-        final CnecRamValuesData ramValues = new CnecRamValuesData(22, 33, minRamFactor, 55, 66, 77, 88);
+        final CnecRamValuesData ramValues = new CnecRamValuesData(22, 33, 55);
         Assertions.assertThat(ramValues)
                 .isNotNull()
-                .hasFieldOrPropertyWithValue("ram", 22)
-                .hasFieldOrPropertyWithValue("ram0Core", 33)
-                .hasFieldOrPropertyWithValue("minRamFactor", minRamFactor)
-                .hasFieldOrPropertyWithValue("amr", 55)
-                .hasFieldOrPropertyWithValue("ltaMargin", 66)
-                .hasFieldOrPropertyWithValue("cva", 77)
-                .hasFieldOrPropertyWithValue("iva", 88);
+                .hasFieldOrPropertyWithValue("ram0Core", 22)
+                .hasFieldOrPropertyWithValue("amr", 33)
+                .hasFieldOrPropertyWithValue("cva", 55);
     }
 }

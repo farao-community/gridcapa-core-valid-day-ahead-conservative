@@ -64,8 +64,8 @@ class BranchMaxIvaServiceTest {
                 .first()
                 .isNotNull()
                 .hasFieldOrPropertyWithValue("cnec", cnec)
-                .hasFieldOrPropertyWithValue("minRealRam", -250)
-                .hasFieldOrPropertyWithValue("ivaMax", 360);
+                .hasFieldOrPropertyWithValue("minRealRam", -377)
+                .hasFieldOrPropertyWithValue("ivaMax", ZERO_INT);
     }
 
     @ParameterizedTest
@@ -132,8 +132,8 @@ class BranchMaxIvaServiceTest {
     }
 
     private CnecRamData getTestCnec() {
-        final CnecRamValuesData ram = new CnecRamValuesData(ZERO_INT, 227, BigDecimal.ZERO, 1000, ZERO_INT, 500, ZERO_INT);
-        final CnecRamFValuesData fValues = new CnecRamFValuesData(1200, 300, ZERO_INT, 800, ZERO_INT, ZERO_INT, ZERO_INT);
+        final CnecRamValuesData ram = new CnecRamValuesData(100, 227, 1000);
+        final CnecRamFValuesData fValues = new CnecRamFValuesData(1200, 300, 800);
         final Map<String, BigDecimal> ptdfs = getCnecTestPtdfs();
         return  new CnecRamData("testId",
                                 "testName",

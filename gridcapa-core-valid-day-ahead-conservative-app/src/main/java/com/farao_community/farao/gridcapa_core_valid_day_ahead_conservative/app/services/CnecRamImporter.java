@@ -32,21 +32,13 @@ import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservati
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.CONTINGENCY_NAME_HEADER;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.CVA_HEADER;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.FRM_HEADER;
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.F_0ALL_HEADER;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.F_0CORE_HEADER;
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.F_LTA_MAX_HEADER;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.F_MAX_HEADER;
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.F_REF_HEADER;
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.F_UAF_HEADER;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.IS_CNEC_HEADER;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.IS_PRESOLVED_REGION_HEADER;
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.IVA_HEADER;
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.LTA_MARGIN_HEADER;
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.MIN_RAM_FACTOR_HEADER;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.NEC_ID_HEADER;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.NE_NAME_HEADER;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.RAM0_CORE_HEADER;
-import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.RAM_HEADER;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.TSO_HEADER;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -105,21 +97,13 @@ public final class CnecRamImporter {
     private static CnecRamFValuesData getFValues(final CSVRecord csvRecord) {
         return new CnecRamFValuesData(get(csvRecord, F_MAX_HEADER),
                                       get(csvRecord, FRM_HEADER),
-                                      get(csvRecord, F_REF_HEADER),
-                                      get(csvRecord, F_0CORE_HEADER),
-                                      get(csvRecord, F_UAF_HEADER),
-                                      get(csvRecord, F_0ALL_HEADER),
-                                      get(csvRecord, F_LTA_MAX_HEADER));
+                                      get(csvRecord, F_0CORE_HEADER));
     }
 
     private static CnecRamValuesData getRamValues(final CSVRecord csvRecord) {
-        return new CnecRamValuesData(get(csvRecord, RAM_HEADER),
-                                     get(csvRecord, RAM0_CORE_HEADER),
-                                     new BigDecimal(csvRecord.get(MIN_RAM_FACTOR_HEADER)),
+        return new CnecRamValuesData(get(csvRecord, RAM0_CORE_HEADER),
                                      get(csvRecord, AMR_HEADER),
-                                     get(csvRecord, LTA_MARGIN_HEADER),
-                                     get(csvRecord, CVA_HEADER),
-                                     get(csvRecord, IVA_HEADER));
+                                     get(csvRecord, CVA_HEADER));
     }
 
     private static boolean shouldImport(final CSVRecord csvRecord, final String ram0CoreString) {
