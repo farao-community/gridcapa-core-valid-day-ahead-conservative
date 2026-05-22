@@ -44,24 +44,27 @@ class CoreValidD2ConservativeHandlerTest {
 
     @ParameterizedTest
     @CsvSource({
-        "true",
-        "false"
+        "false,false",
+        "true,false",
+        "false,true",
+        "true,true"
     })
-    void handleCoreValidD2ConservativeRequestUnprojected(boolean isProjected) {
-        final CoreValidD2ConservativeRequest request = getTestRequest(isProjected);
+    void handleCoreValidD2ConservativeRequestUnprojected(final boolean isProjected, final boolean isAhc) {
+        final CoreValidD2ConservativeRequest request = getTestRequest(isProjected, isAhc);
         final String id = coreValidD2ConservativeHandler.handleCoreValidD2ConservativeRequest(request);
         Assertions.assertThat(id).isEqualTo(TEST_ID);
         Mockito.verify(minioAdapter, Mockito.atLeastOnce()).uploadOutputForTimestamp(Mockito.eq("2025/12/08/15_00/ivaBranch.json"), Mockito.any(InputStream.class), Mockito.eq(PROCESS_NAME), Mockito.eq(IVA_RESULT_FILE_TYPE), Mockito.eq(request.getTimestamp()));
     }
 
-    private CoreValidD2ConservativeRequest getTestRequest(final boolean isProjected) {
+    private CoreValidD2ConservativeRequest getTestRequest(final boolean isProjected, final boolean isAhc) {
         final OffsetDateTime timestamp = OffsetDateTime.parse("2025-12-08T14:00Z");
         return  new CoreValidD2ConservativeRequest(TEST_ID,
                                                    "currentRunId",
                                                    timestamp,
                                                    null,
                                                    null,
-                                                   List.of(new TaskParameterDto("USE_PROJECTION", "BOOLEAN", Boolean.toString(isProjected), "true"))
+                                                   List.of(new TaskParameterDto("USE_PROJECTION", "BOOLEAN", Boolean.toString(isProjected), "true"),
+                                                           new TaskParameterDto("USE_AHC", "BOOLEAN", Boolean.toString(isAhc), "true"))
 
         );
     }
