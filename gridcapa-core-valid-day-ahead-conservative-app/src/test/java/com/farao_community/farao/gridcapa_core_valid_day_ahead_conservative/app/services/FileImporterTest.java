@@ -7,6 +7,7 @@
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services;
 
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHub;
+import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubUtils;
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubsConfiguration;
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamData;
@@ -41,7 +42,7 @@ class FileImporterTest {
     private FileImporter fileImporter;
 
     @Autowired
-    private CoreHubsConfiguration coreHubs;
+    private CoreHubsConfiguration coreHubsConfiguration;
 
     private CoreValidD2ConservativeFileResource createFileResource(final String filename, final URL resource) {
         return new CoreValidD2ConservativeFileResource(filename, resource.toExternalForm());
@@ -49,8 +50,8 @@ class FileImporterTest {
 
     @Test
     void shouldImportVerticesFromCoreHubSettings() {
-        final CoreValidD2ConservativeFileResource verticesFile = createFileResource("vertices", getClass().getResource("/fake-vertice.csv"));
-        final List<Vertex> vertices = fileImporter.importVertices(verticesFile);
+        final CoreValidD2ConservativeFileResource verticesFile = createFileResource("vertices",  getClass().getResource("/fake-vertice.csv"));
+        final List<Vertex> vertices = fileImporter.importVertices(verticesFile, CoreHubUtils.getNonAhcCoreHubs(coreHubsConfiguration.getCoreHubs()));
         Assertions.assertThat(vertices)
             .isNotNull()
             .hasSize(4);
@@ -72,8 +73,8 @@ class FileImporterTest {
     @Test
     void shouldImportCoreNetPositions() {
         final CoreValidD2ConservativeFileResource npfFile = createFileResource("netpositions", getClass().getResource("/20250921-F230-v4-17XTSO-CS------W-to-10V1001C--00085T.xml"));
-        final Map<CoreHub, List<Point>> resultNoAhc = fileImporter.importCoreNetPositions(npfFile, false);
-        final Map<CoreHub, List<Point>>  resultWithAhc = fileImporter.importCoreNetPositions(npfFile, true);
+        final Map<CoreHub, List<Point>> resultNoAhc = fileImporter.importCoreNetPositions(npfFile, CoreHubUtils.getNonAhcCoreHubs(coreHubsConfiguration.getCoreHubs()), false);
+        final Map<CoreHub, List<Point>>  resultWithAhc = fileImporter.importCoreNetPositions(npfFile, CoreHubUtils.getNonAhcCoreHubs(coreHubsConfiguration.getCoreHubs()), true);
         Assertions.assertThat(resultNoAhc).hasSize(2);
         Assertions.assertThat(resultWithAhc).isEmpty();
     }
@@ -81,8 +82,8 @@ class FileImporterTest {
     @Test
     void shouldImportCoreAhcNetPositions() {
         final CoreValidD2ConservativeFileResource npfFile = createFileResource("netpositions", getClass().getResource("/20250921-F230-v4-17XTSO-CS------W-to-10V1001C--00085T_AHC.xml"));
-        final Map<CoreHub, List<Point>> resultNoAhc = fileImporter.importCoreNetPositions(npfFile, false);
-        final Map<CoreHub, List<Point>>  resultWithAhc = fileImporter.importCoreNetPositions(npfFile, true);
+        final Map<CoreHub, List<Point>> resultNoAhc = fileImporter.importCoreNetPositions(npfFile, CoreHubUtils.getNonAhcCoreHubs(coreHubsConfiguration.getCoreHubs()), false);
+        final Map<CoreHub, List<Point>>  resultWithAhc = fileImporter.importCoreNetPositions(npfFile, CoreHubUtils.getNonAhcCoreHubs(coreHubsConfiguration.getCoreHubs()), true);
         Assertions.assertThat(resultNoAhc).isEmpty();
         Assertions.assertThat(resultWithAhc).hasSize(2);
     }
@@ -90,8 +91,8 @@ class FileImporterTest {
     @Test
     void shouldImportCoreNetPositionsAtWinterDst() {
         final CoreValidD2ConservativeFileResource npfFile = createFileResource("netpositions", getClass().getResource("/20251025-F230-v4-17XTSO-CS------W-to-10V1001C--00085T.xml"));
-        final Map<CoreHub, List<Point>>  result = fileImporter.importCoreNetPositions(npfFile, false);
-        final Optional<CoreHub> frCore = coreHubs.getCoreHubs().stream().filter(hub -> hub.forecastCode().equals("FR-CORE")).findFirst();
+        final Map<CoreHub, List<Point>>  result = fileImporter.importCoreNetPositions(npfFile, CoreHubUtils.getNonAhcCoreHubs(coreHubsConfiguration.getCoreHubs()), false);
+        final Optional<CoreHub> frCore = coreHubsConfiguration.getCoreHubs().stream().filter(hub -> hub.forecastCode().equals("FR-CORE")).findFirst();
         if (frCore.isPresent()) {
             Assertions.assertThat(result.get(frCore.get())).hasSize(25);
         } else {
@@ -102,8 +103,8 @@ class FileImporterTest {
     @Test
     void shouldImportCoreNetPositionsAtSummerDst() {
         final CoreValidD2ConservativeFileResource npfFile = createFileResource("netpositions", getClass().getResource("/20260328-F230-v4-17XTSO-CS------W-to-10V1001C--00085T.xml"));
-        final Map<CoreHub, List<Point>>  result = fileImporter.importCoreNetPositions(npfFile, false);
-        final Optional<CoreHub> frCore = coreHubs.getCoreHubs().stream().filter(hub -> hub.forecastCode().equals("FR-CORE")).findFirst();
+        final Map<CoreHub, List<Point>>  result = fileImporter.importCoreNetPositions(npfFile, CoreHubUtils.getNonAhcCoreHubs(coreHubsConfiguration.getCoreHubs()), false);
+        final Optional<CoreHub> frCore = coreHubsConfiguration.getCoreHubs().stream().filter(hub -> hub.forecastCode().equals("FR-CORE")).findFirst();
         if (frCore.isPresent()) {
             Assertions.assertThat(result.get(frCore.get())).hasSize(23);
         } else {
@@ -119,14 +120,14 @@ class FileImporterTest {
         when(urlValidationService.openUrlStream(anyString())).thenThrow(new CoreValidD2ConservativeInvalidDataException("Connection failed"));
 
         Assertions.assertThatExceptionOfType(CoreValidD2ConservativeInvalidDataException.class)
-            .isThrownBy(() -> fileImporter.importVertices(verticesFile))
-            .withMessage("Cannot import vertices file from URL 'https://example.com/vertice.csv'");
+                .isThrownBy(() -> fileImporter.importVertices(verticesFile, CoreHubUtils.getNonAhcCoreHubs(coreHubsConfiguration.getCoreHubs())))
+                .withMessage("Cannot import vertices file from URL 'https://example.com/vertice.csv'");
     }
 
     @Test
     void shouldImportCnecRamFromCoreHubSettings() {
-        final CoreValidD2ConservativeFileResource cnecRamFile = createFileResource("cnec ram", getClass().getResource("/cnecRamFileOk.csv"));
-        final List<CnecRamData> cnecRams = fileImporter.importCnecRam(cnecRamFile);
+        final CoreValidD2ConservativeFileResource cnecRamFile = createFileResource("cnec ram",  getClass().getResource("/cnecRamFileOk.csv"));
+        final List<CnecRamData> cnecRams = fileImporter.importCnecRam(cnecRamFile, CoreHubUtils.getNonAhcCoreHubs(coreHubsConfiguration.getCoreHubs()));
         Assertions.assertThat(cnecRams)
             .isNotNull()
             .hasSize(3);
@@ -137,8 +138,8 @@ class FileImporterTest {
         final CoreValidD2ConservativeFileResource cnecRamFile = createFileResource("cnec ram", new URI("https://example.com/cnecRamFile.csv").toURL());
         when(urlValidationService.openUrlStream(anyString())).thenThrow(new CoreValidD2ConservativeInvalidDataException("Connection failed"));
         Assertions.assertThatExceptionOfType(CoreValidD2ConservativeInvalidDataException.class)
-            .isThrownBy(() -> fileImporter.importCnecRam(cnecRamFile))
-            .withMessage("Cannot import cnec ram file from URL 'https://example.com/cnecRamFile.csv'");
+                .isThrownBy(() -> fileImporter.importCnecRam(cnecRamFile, CoreHubUtils.getNonAhcCoreHubs(coreHubsConfiguration.getCoreHubs())))
+                .withMessage("Cannot import cnec ram file from URL 'https://example.com/cnecRamFile.csv'");
 
     }
 }

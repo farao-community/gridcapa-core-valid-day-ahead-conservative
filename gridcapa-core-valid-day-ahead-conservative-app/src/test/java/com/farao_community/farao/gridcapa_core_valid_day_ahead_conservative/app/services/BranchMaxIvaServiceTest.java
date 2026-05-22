@@ -71,7 +71,6 @@ class BranchMaxIvaServiceTest {
                 .hasFieldOrPropertyWithValue("ivaMax", ZERO_INT);
     }
 
-
     @Test
     void computeBranchDataOkTest() {
         final List<Vertex> vertices = getTestVertices();

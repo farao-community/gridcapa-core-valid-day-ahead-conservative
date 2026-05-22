@@ -41,6 +41,7 @@ public class FileImporter {
     }
 
     public Map<CoreHub, List<Point>> importCoreNetPositions(final CoreValidD2ConservativeFileResource npfFile,
+                                                            final List<CoreHub> coreHubs,
                                                             final boolean withAhc) {
         return importFile(npfFile, is -> getNetPositionsByCoreHub(is, coreHubs, withAhc));
     }
