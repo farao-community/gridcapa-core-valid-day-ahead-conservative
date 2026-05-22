@@ -9,13 +9,10 @@ package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
-
 class CnecRamValuesDataTest {
 
     @Test
     void testRamValues() {
-        final BigDecimal minRamFactor = new BigDecimal("44.44");
         final CnecRamValuesData ramValues = new CnecRamValuesData(22, 33, 55);
         Assertions.assertThat(ramValues)
                 .isNotNull()

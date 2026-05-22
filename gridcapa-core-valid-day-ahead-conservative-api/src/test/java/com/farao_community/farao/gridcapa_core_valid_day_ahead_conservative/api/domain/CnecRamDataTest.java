@@ -21,7 +21,6 @@ class CnecRamDataTest {
                 "BBB", BigDecimal.valueOf(0.00200),
                 "CCCC", BigDecimal.valueOf(0.02500)
         );
-        final BigDecimal minRamFactor = new BigDecimal(44.44);
         final CnecRamValuesData ramValues = new CnecRamValuesData(22, 33, 55);
         final CnecRamFValuesData fvalues = new CnecRamFValuesData(200, 300, 400);
         final CnecRamData testData = new CnecRamData("testId", "testName", "testTSO", "test_Contingency_Name", "OK", ramValues, fvalues, ptdfs, true);

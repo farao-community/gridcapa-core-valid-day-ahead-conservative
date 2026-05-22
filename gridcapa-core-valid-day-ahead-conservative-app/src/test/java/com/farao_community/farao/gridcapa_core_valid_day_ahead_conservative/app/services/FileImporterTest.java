@@ -127,7 +127,8 @@ class FileImporterTest {
     @Test
     void shouldImportCnecRamFromCoreHubSettings() {
         final CoreValidD2ConservativeFileResource cnecRamFile = createFileResource("cnec ram",  getClass().getResource("/cnecRamFileOk.csv"));
-        final List<CnecRamData> cnecRams = fileImporter.importCnecRam(cnecRamFile, CoreHubUtils.getNonAhcCoreHubs(coreHubsConfiguration.getCoreHubs()));
+        final List<CoreHub> nonAhcCoreHubs = CoreHubUtils.getNonAhcCoreHubs(coreHubsConfiguration.getCoreHubs());
+        final List<CnecRamData> cnecRams = fileImporter.importCnecRam(cnecRamFile, nonAhcCoreHubs);
         Assertions.assertThat(cnecRams)
             .isNotNull()
             .hasSize(3);
@@ -137,8 +138,9 @@ class FileImporterTest {
     void shouldThrowExceptionWhenImportCnecRam() throws Exception {
         final CoreValidD2ConservativeFileResource cnecRamFile = createFileResource("cnec ram", new URI("https://example.com/cnecRamFile.csv").toURL());
         when(urlValidationService.openUrlStream(anyString())).thenThrow(new CoreValidD2ConservativeInvalidDataException("Connection failed"));
+        final List<CoreHub> nonAhcCoreHubs = CoreHubUtils.getNonAhcCoreHubs(coreHubsConfiguration.getCoreHubs());
         Assertions.assertThatExceptionOfType(CoreValidD2ConservativeInvalidDataException.class)
-                .isThrownBy(() -> fileImporter.importCnecRam(cnecRamFile, CoreHubUtils.getNonAhcCoreHubs(coreHubsConfiguration.getCoreHubs())))
+                .isThrownBy(() -> fileImporter.importCnecRam(cnecRamFile, nonAhcCoreHubs))
                 .withMessage("Cannot import cnec ram file from URL 'https://example.com/cnecRamFile.csv'");
 
     }
