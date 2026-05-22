@@ -119,8 +119,9 @@ class FileImporterTest {
 
         when(urlValidationService.openUrlStream(anyString())).thenThrow(new CoreValidD2ConservativeInvalidDataException("Connection failed"));
 
+        final List<CoreHub> nonAhcCoreHubs = CoreHubUtils.getNonAhcCoreHubs(coreHubsConfiguration.getCoreHubs());
         Assertions.assertThatExceptionOfType(CoreValidD2ConservativeInvalidDataException.class)
-                .isThrownBy(() -> fileImporter.importVertices(verticesFile, CoreHubUtils.getNonAhcCoreHubs(coreHubsConfiguration.getCoreHubs())))
+                .isThrownBy(() -> fileImporter.importVertices(verticesFile, nonAhcCoreHubs))
                 .withMessage("Cannot import vertices file from URL 'https://example.com/vertice.csv'");
     }
 
