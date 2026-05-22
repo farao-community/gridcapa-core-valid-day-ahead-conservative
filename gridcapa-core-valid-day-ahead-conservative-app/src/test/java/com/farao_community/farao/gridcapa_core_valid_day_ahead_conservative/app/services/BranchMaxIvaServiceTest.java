@@ -38,6 +38,7 @@ class BranchMaxIvaServiceTest {
     private static final String EMPTY_STRING = "";
     private static final boolean IS_HVDC_HUB = false;
     private static final boolean IS_NOT_AHC_HUB = false;
+    private static final boolean IS_AHC_HUB = true;
     private static final double COEFFICIENT = 1.0;
     private static final int ZERO_INT = 0;
 
@@ -53,6 +54,23 @@ class BranchMaxIvaServiceTest {
                 .isNotNull()
                 .isEmpty();
     }
+
+    @Test
+    void computeBranchDataOkAhcTest() {
+        final List<Vertex> vertices = getTestVertices();
+        final CnecRamData cnec = getTestCnec();
+        final List<CoreHub> coreHubsAhc = getTestCoreHubsWithAhc();
+        Mockito.when(coreHubsConfiguration.getCoreHubs()).thenReturn(coreHubsAhc);
+        Assertions.assertThat(branchMaxIvaService.computeBranchData(vertices, List.of(cnec), getTestParameters(), coreHubsAhc))
+                .isNotNull()
+                .isNotEmpty()
+                .first()
+                .isNotNull()
+                .hasFieldOrPropertyWithValue("cnec", cnec)
+                .hasFieldOrPropertyWithValue("minRealRam", -854)
+                .hasFieldOrPropertyWithValue("ivaMax", ZERO_INT);
+    }
+
 
     @Test
     void computeBranchDataOkTest() {
@@ -164,6 +182,9 @@ class BranchMaxIvaServiceTest {
         ptdfs.put("PT_AAA", BigDecimal.valueOf(0.1));
         ptdfs.put("PT_BBB", BigDecimal.valueOf(0.25));
         ptdfs.put("PT_CCC", BigDecimal.valueOf(0.5));
+        ptdfs.put("PT_DDD", BigDecimal.valueOf(0.1));
+        ptdfs.put("PT_EEE", BigDecimal.valueOf(0.25));
+        ptdfs.put("PT_FFF", BigDecimal.valueOf(0.5));
         return ptdfs;
     }
 
@@ -172,6 +193,17 @@ class BranchMaxIvaServiceTest {
         corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_AAA", EMPTY_STRING, "AA", IS_HVDC_HUB, IS_NOT_AHC_HUB, COEFFICIENT));
         corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_BBB", EMPTY_STRING, "BB", IS_HVDC_HUB, IS_NOT_AHC_HUB, COEFFICIENT));
         corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_CCC", EMPTY_STRING, "CC", IS_HVDC_HUB, IS_NOT_AHC_HUB, COEFFICIENT));
+        return corehubs;
+    }
+
+    private List<CoreHub> getTestCoreHubsWithAhc() {
+        final List<CoreHub> corehubs = new ArrayList<>();
+        corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_AAA", EMPTY_STRING, "AA", IS_HVDC_HUB, IS_NOT_AHC_HUB, COEFFICIENT));
+        corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_BBB", EMPTY_STRING, "BB", IS_HVDC_HUB, IS_NOT_AHC_HUB, COEFFICIENT));
+        corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_CCC", EMPTY_STRING, "CC", IS_HVDC_HUB, IS_NOT_AHC_HUB, COEFFICIENT));
+        corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_DDD", EMPTY_STRING, "DD", IS_HVDC_HUB, IS_AHC_HUB, COEFFICIENT));
+        corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_EEE", EMPTY_STRING, "EE", IS_HVDC_HUB, IS_AHC_HUB, COEFFICIENT));
+        corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_FFF", EMPTY_STRING, "FF", IS_HVDC_HUB, IS_AHC_HUB, COEFFICIENT));
         return corehubs;
     }
 
@@ -198,6 +230,9 @@ class BranchMaxIvaServiceTest {
         testNps.put("AA", i1);
         testNps.put("BB", i2);
         testNps.put("CC", i3);
+        testNps.put("DD", i1);
+        testNps.put("EE", i2);
+        testNps.put("FF", i3);
         return testNps;
     }
 
