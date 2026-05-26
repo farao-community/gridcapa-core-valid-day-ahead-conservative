@@ -13,7 +13,6 @@ import org.assertj.core.api.Assertions;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -79,7 +78,7 @@ class CnecRamFilterTest {
                  )
         );
         data.add(new CnecRamData(ID, NE_NAME, FRENCH_TSO, BASECASE, BRANCH_STATUS_OK,
-                                 new CnecRamValuesData(3, 4, BigDecimal.valueOf(5), MIN_AMR_VALUE, 7, 8, 9),
+                                 new CnecRamValuesData(3, MIN_AMR_VALUE, 4),
                                  getDummyFValues(),
                                  Map.of(),
                                  true
@@ -92,11 +91,11 @@ class CnecRamFilterTest {
     }
 
     private static @NotNull CnecRamFValuesData getDummyFValues() {
-        return new CnecRamFValuesData(1, 2, 3, 4, 5, 6, 7);
+        return new CnecRamFValuesData(1, 2, 3);
     }
 
     private static @NotNull CnecRamValuesData getDummyRamValues() {
-        return new CnecRamValuesData(3, 4, BigDecimal.valueOf(5), 6, 7, 8, 9);
+        return new CnecRamValuesData(3, 4, 6);
     }
 
     @Test

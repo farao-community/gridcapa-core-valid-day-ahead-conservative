@@ -9,5 +9,5 @@ package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api
 /**
  * @author Marc Schwitzguebel {@literal <marc.schwitzguebel_externe at rte-france.com>}
  */
-public record CnecRamFValuesData(int fMax, int frm, int fRef, int f0Core, int fUaf, int f0All, int fLtaMax) {
+public record CnecRamFValuesData(int fMax, int frm, int f0Core) {
 }

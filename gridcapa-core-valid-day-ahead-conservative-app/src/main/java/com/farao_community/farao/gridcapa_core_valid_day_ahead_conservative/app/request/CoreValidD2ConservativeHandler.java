@@ -6,6 +6,8 @@
  */
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.request;
 
+import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHub;
+import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubUtils;
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubsConfiguration;
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.VerticesUtils;
@@ -48,24 +50,36 @@ public class CoreValidD2ConservativeHandler {
 
     public String handleCoreValidD2ConservativeRequest(final CoreValidD2ConservativeRequest request) {
         MDC.put(GRIDCAPA_TASK_ID, request.getId());
-        final CoreValidD2TaskParameters iniParameters = new CoreValidD2TaskParameters(request.getTaskParameterList());
-        final List<Vertex> importedVertices = fileImporter.importVertices(request.getVertices());
-        final List<CnecRamData> cnecRams = fileImporter.importCnecRam(request.getCnecRam());
+        final CoreValidD2TaskParameters taskParameters = new CoreValidD2TaskParameters(request.getTaskParameterList());
+        final List<CoreHub> requestCoreHubs = getCoreHubsForCalculus(taskParameters);
+        final List<Vertex> importedVertices = fileImporter.importVertices(request.getVertices(), requestCoreHubs);
+        final List<CnecRamData> cnecRams = fileImporter.importCnecRam(request.getCnecRam(), requestCoreHubs);
         final List<CnecRamData> filteredCnecRamsForVertices = CnecRamFilter.filterBeforeVerticesCalculus(cnecRams);
-        final List<Vertex> verticesForCalculus = getVerticesForCalculus(importedVertices, filteredCnecRamsForVertices, iniParameters.shouldProjectVertices());
+        final List<Vertex> verticesForCalculus = getVerticesForCalculus(importedVertices,
+                                                                        filteredCnecRamsForVertices,
+                                                                        taskParameters.shouldProjectVertices(),
+                                                                        requestCoreHubs);
         final List<CnecRamData> filteredCnecRamsForIva = CnecRamFilter.filterBeforeIvaCalculus(cnecRams);
-        final List<IvaBranchData> branches = branchMaxIvaService.computeBranchData(verticesForCalculus, filteredCnecRamsForIva, iniParameters);
-        ConservativeIvaCalculationUtils.feedConservativeIVAs(branches, iniParameters);
+        final List<IvaBranchData> branches = branchMaxIvaService.computeBranchData(verticesForCalculus, filteredCnecRamsForIva, taskParameters, requestCoreHubs);
+        ConservativeIvaCalculationUtils.feedConservativeIVAs(branches, taskParameters);
         final byte[] jsonOutput = ivaBranchesToJson(branches);
         fileExporter.uploadOutputToMinio(jsonOutput, request.getTimestamp());
         return request.getId();
     }
 
+    private List<CoreHub> getCoreHubsForCalculus(final CoreValidD2TaskParameters coreValidD2TaskParameters) {
+        final List<CoreHub> coreHubs = coreHubsConfiguration.getCoreHubs();
+        return coreValidD2TaskParameters.shouldUseAhcHubs()
+                ? coreHubs
+                : CoreHubUtils.getNonAhcCoreHubs(coreHubs);
+    }
+
     private List<Vertex> getVerticesForCalculus(final List<Vertex> importedVertices,
                                                 final List<CnecRamData> cnecRamData,
-                                                final boolean shouldProjectVertices) {
+                                                final boolean shouldProjectVertices,
+                                                final List<CoreHub> coreHubs) {
         return shouldProjectVertices
-                ? VerticesUtils.getVerticesProjectedOnDomain(importedVertices, cnecRamData, coreHubsConfiguration.getCoreHubs())
+                ? VerticesUtils.getVerticesProjectedOnDomain(importedVertices, cnecRamData, coreHubs)
                 : importedVertices;
     }
 

@@ -13,15 +13,11 @@ class CnecRamFValuesDataTest {
 
     @Test
     void testDataValues() {
-        final CnecRamFValuesData fValues = new CnecRamFValuesData(200, 300, 400, 500, 600, 700, 800);
+        final CnecRamFValuesData fValues = new CnecRamFValuesData(200, 300, 400);
         Assertions.assertThat(fValues)
                 .isNotNull()
                 .hasFieldOrPropertyWithValue("fMax", 200)
                 .hasFieldOrPropertyWithValue("frm", 300)
-                .hasFieldOrPropertyWithValue("fRef", 400)
-                .hasFieldOrPropertyWithValue("f0Core", 500)
-                .hasFieldOrPropertyWithValue("fUaf", 600)
-                .hasFieldOrPropertyWithValue("f0All", 700)
-                .hasFieldOrPropertyWithValue("fLtaMax", 800);
+                .hasFieldOrPropertyWithValue("f0Core", 400);
     }
 }

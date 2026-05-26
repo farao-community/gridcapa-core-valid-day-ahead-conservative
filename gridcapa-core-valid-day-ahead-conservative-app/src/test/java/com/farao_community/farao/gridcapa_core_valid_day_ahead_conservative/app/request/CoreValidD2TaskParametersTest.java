@@ -27,6 +27,7 @@ import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservati
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.PREVENTIVE_IVA_MARGIN;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.RAM_THRESHOLD;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.STRING;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.USE_AHC_HUBS;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.USE_PROJECTION;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -119,9 +120,15 @@ class CoreValidD2TaskParametersTest {
         Mockito.when(parameter7.getParameterType()).thenReturn(INT);
         Mockito.when(parameter7.getValue()).thenReturn("50");
         parameters.add(parameter7);
+        final TaskParameterDto parameter8 = Mockito.mock(TaskParameterDto.class);
+        Mockito.when(parameter8.getId()).thenReturn(USE_AHC_HUBS);
+        Mockito.when(parameter8.getParameterType()).thenReturn(BOOLEAN);
+        Mockito.when(parameter8.getValue()).thenReturn("true");
+        parameters.add(parameter8);
         assertEquals("""
                          {
                          \t"USE_PROJECTION": true,\s
+                         \t"USE_AHC": true,\s
                          \t"MAX_VERTICES_PER_BRANCH": 5,\s
                          \t"RAM_THRESHOLD": -500,\s
                          \t"MIN_RAM_MCCC": 20,\s
@@ -138,6 +145,7 @@ class CoreValidD2TaskParametersTest {
             """
                 {
                 \t"USE_PROJECTION": false,\s
+                \t"USE_AHC": false,\s
                 \t"MAX_VERTICES_PER_BRANCH": 0,\s
                 \t"RAM_THRESHOLD": 0,\s
                 \t"MIN_RAM_MCCC": 0,\s
@@ -162,6 +170,7 @@ class CoreValidD2TaskParametersTest {
     @ParameterizedTest
     @CsvSource({
         "USE_PROJECTION,BOOLEAN,true,false",
+        "USE_AHC,BOOLEAN,true,false",
         "MAX_VERTICES_PER_BRANCH,INT,2,5",
         "RAM_THRESHOLD,INT,-10,-100",
         "MIN_RAM_MCCC,INT,20,15",

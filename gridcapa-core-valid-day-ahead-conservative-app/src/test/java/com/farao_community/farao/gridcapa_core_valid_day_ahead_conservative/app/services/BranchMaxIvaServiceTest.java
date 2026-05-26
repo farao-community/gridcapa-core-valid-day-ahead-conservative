@@ -7,6 +7,7 @@
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services;
 
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHub;
+import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubUtils;
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubsConfiguration;
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamData;
@@ -36,6 +37,8 @@ class BranchMaxIvaServiceTest {
     private static final String TEST_NAME_FILTEREDOUT = "testName filteredout";
     private static final String EMPTY_STRING = "";
     private static final boolean IS_HVDC_HUB = false;
+    private static final boolean IS_NOT_AHC_HUB = false;
+    private static final boolean IS_AHC_HUB = true;
     private static final double COEFFICIENT = 1.0;
     private static final int ZERO_INT = 0;
 
@@ -47,9 +50,25 @@ class BranchMaxIvaServiceTest {
 
     @Test
     void computeBranchDataEmptyTest() {
-        Assertions.assertThat(branchMaxIvaService.computeBranchData(List.of(), List.of(), null))
+        Assertions.assertThat(branchMaxIvaService.computeBranchData(List.of(), List.of(), null, null))
                 .isNotNull()
                 .isEmpty();
+    }
+
+    @Test
+    void computeBranchDataOkAhcTest() {
+        final List<Vertex> vertices = getTestVertices();
+        final CnecRamData cnec = getTestCnec();
+        final List<CoreHub> coreHubsAhc = getTestCoreHubsWithAhc();
+        Mockito.when(coreHubsConfiguration.getCoreHubs()).thenReturn(coreHubsAhc);
+        Assertions.assertThat(branchMaxIvaService.computeBranchData(vertices, List.of(cnec), getTestParameters(), coreHubsAhc))
+                .isNotNull()
+                .isNotEmpty()
+                .first()
+                .isNotNull()
+                .hasFieldOrPropertyWithValue("cnec", cnec)
+                .hasFieldOrPropertyWithValue("minRealRam", -854)
+                .hasFieldOrPropertyWithValue("ivaMax", ZERO_INT);
     }
 
     @Test
@@ -58,14 +77,14 @@ class BranchMaxIvaServiceTest {
         final CnecRamData cnec = getTestCnec();
         final List<CoreHub> coreHubs = getTestCoreHubs();
         Mockito.when(coreHubsConfiguration.getCoreHubs()).thenReturn(coreHubs);
-        Assertions.assertThat(branchMaxIvaService.computeBranchData(vertices, List.of(cnec), getTestParameters()))
+        Assertions.assertThat(branchMaxIvaService.computeBranchData(vertices, List.of(cnec), getTestParameters(), getTestCoreHubs()))
                 .isNotNull()
                 .isNotEmpty()
                 .first()
                 .isNotNull()
                 .hasFieldOrPropertyWithValue("cnec", cnec)
-                .hasFieldOrPropertyWithValue("minRealRam", -250)
-                .hasFieldOrPropertyWithValue("ivaMax", 360);
+                .hasFieldOrPropertyWithValue("minRealRam", -377)
+                .hasFieldOrPropertyWithValue("ivaMax", ZERO_INT);
     }
 
     @ParameterizedTest
@@ -84,7 +103,8 @@ class BranchMaxIvaServiceTest {
                                                                                vertices,
                                                                                cnec,
                                                                                ramLimit,
-                                                                               maxVertexPerBranch);
+                                                                               maxVertexPerBranch,
+                                                                               CoreHubUtils.getNonAhcCoreHubs(coreHubsConfiguration.getCoreHubs()));
         Assertions.assertThat(worstVertices)
                 .isNotNull()
                 .hasSize(expectedCount)
@@ -132,8 +152,8 @@ class BranchMaxIvaServiceTest {
     }
 
     private CnecRamData getTestCnec() {
-        final CnecRamValuesData ram = new CnecRamValuesData(ZERO_INT, 227, BigDecimal.ZERO, 1000, ZERO_INT, 500, ZERO_INT);
-        final CnecRamFValuesData fValues = new CnecRamFValuesData(1200, 300, ZERO_INT, 800, ZERO_INT, ZERO_INT, ZERO_INT);
+        final CnecRamValuesData ram = new CnecRamValuesData(100, 227, 1000);
+        final CnecRamFValuesData fValues = new CnecRamFValuesData(1200, 300, 800);
         final Map<String, BigDecimal> ptdfs = getCnecTestPtdfs();
         return  new CnecRamData("testId",
                                 "testName",
@@ -161,14 +181,28 @@ class BranchMaxIvaServiceTest {
         ptdfs.put("PT_AAA", BigDecimal.valueOf(0.1));
         ptdfs.put("PT_BBB", BigDecimal.valueOf(0.25));
         ptdfs.put("PT_CCC", BigDecimal.valueOf(0.5));
+        ptdfs.put("PT_DDD", BigDecimal.valueOf(0.1));
+        ptdfs.put("PT_EEE", BigDecimal.valueOf(0.25));
+        ptdfs.put("PT_FFF", BigDecimal.valueOf(0.5));
         return ptdfs;
     }
 
     private List<CoreHub> getTestCoreHubs() {
         final List<CoreHub> corehubs = new ArrayList<>();
-        corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_AAA", EMPTY_STRING, "AA", IS_HVDC_HUB, COEFFICIENT));
-        corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_BBB", EMPTY_STRING, "BB", IS_HVDC_HUB, COEFFICIENT));
-        corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_CCC", EMPTY_STRING, "CC", IS_HVDC_HUB, COEFFICIENT));
+        corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_AAA", EMPTY_STRING, "AA", IS_HVDC_HUB, IS_NOT_AHC_HUB, COEFFICIENT));
+        corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_BBB", EMPTY_STRING, "BB", IS_HVDC_HUB, IS_NOT_AHC_HUB, COEFFICIENT));
+        corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_CCC", EMPTY_STRING, "CC", IS_HVDC_HUB, IS_NOT_AHC_HUB, COEFFICIENT));
+        return corehubs;
+    }
+
+    private List<CoreHub> getTestCoreHubsWithAhc() {
+        final List<CoreHub> corehubs = new ArrayList<>();
+        corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_AAA", EMPTY_STRING, "AA", IS_HVDC_HUB, IS_NOT_AHC_HUB, COEFFICIENT));
+        corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_BBB", EMPTY_STRING, "BB", IS_HVDC_HUB, IS_NOT_AHC_HUB, COEFFICIENT));
+        corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_CCC", EMPTY_STRING, "CC", IS_HVDC_HUB, IS_NOT_AHC_HUB, COEFFICIENT));
+        corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_DDD", EMPTY_STRING, "DD", IS_HVDC_HUB, IS_AHC_HUB, COEFFICIENT));
+        corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_EEE", EMPTY_STRING, "EE", IS_HVDC_HUB, IS_AHC_HUB, COEFFICIENT));
+        corehubs.add(new CoreHub(EMPTY_STRING, EMPTY_STRING, "PT_FFF", EMPTY_STRING, "FF", IS_HVDC_HUB, IS_AHC_HUB, COEFFICIENT));
         return corehubs;
     }
 
@@ -195,6 +229,9 @@ class BranchMaxIvaServiceTest {
         testNps.put("AA", i1);
         testNps.put("BB", i2);
         testNps.put("CC", i3);
+        testNps.put("DD", i1);
+        testNps.put("EE", i2);
+        testNps.put("FF", i3);
         return testNps;
     }
 

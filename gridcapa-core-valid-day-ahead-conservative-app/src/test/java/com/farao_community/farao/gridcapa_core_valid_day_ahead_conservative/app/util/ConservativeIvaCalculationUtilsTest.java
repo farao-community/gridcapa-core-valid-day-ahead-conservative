@@ -56,9 +56,7 @@ class ConservativeIvaCalculationUtilsTest {
                             final int curativeMargin,
                             final int expected) {
 
-        final CnecRamValuesData ramValues = new CnecRamValuesData(0, 0, BigDecimal.ZERO,
-                                                                  amr,
-                                                                  0, 0, 0);
+        final CnecRamValuesData ramValues = new CnecRamValuesData(0, amr, 0);
 
         final CnecRamData cnecRamData = getTestCnecRamData(contingencyName, cnecId, ramValues);
 
@@ -79,7 +77,7 @@ class ConservativeIvaCalculationUtilsTest {
                                                   final String cnecId,
                                                   final CnecRamValuesData ramValues) {
         //not used here, any values will do
-        final CnecRamFValuesData fValues = new CnecRamFValuesData(0, 0, 0, 0, 0, 0, 0);
+        final CnecRamFValuesData fValues = new CnecRamFValuesData(0, 0, 0);
 
         return new CnecRamData(cnecId,
                                "test_branch",

@@ -7,7 +7,6 @@
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services;
 
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHub;
-import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubsConfiguration;
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.IvaBranchData;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.CnecRamData;
@@ -30,15 +29,10 @@ import static java.math.RoundingMode.HALF_EVEN;
 @Service
 public class BranchMaxIvaService {
 
-    private final CoreHubsConfiguration coreHubsConfiguration;
-
-    public BranchMaxIvaService(final CoreHubsConfiguration coreHubsConfiguration) {
-        this.coreHubsConfiguration = coreHubsConfiguration;
-    }
-
     public List<IvaBranchData> computeBranchData(final List<Vertex> vertices,
                                                  final List<CnecRamData> cnecs,
-                                                 final CoreValidD2TaskParameters parameters) {
+                                                 final CoreValidD2TaskParameters parameters,
+                                                 final List<CoreHub> coreHubs) {
         final List<IvaBranchData> ivaBranchData = new ArrayList<>();
         if (cnecs.isEmpty()) {
             return ivaBranchData;
@@ -49,7 +43,7 @@ public class BranchMaxIvaService {
         final String excludedBranchesString = parameters.getExcludedBranches();
         final String[] excludedBranches = excludedBranchesString != null ? excludedBranchesString.split(SEMICOLON) : new String[0];
         cnecs.forEach(cnec -> {
-            final List<RamVertex> worstVertices = getWorstVerticesUnderRamThreshold(vertices, cnec, ramThreshold, maxVerticesPerBranch);
+            final List<RamVertex> worstVertices = getWorstVerticesUnderRamThreshold(vertices, cnec, ramThreshold, maxVerticesPerBranch, coreHubs);
             if (!worstVertices.isEmpty()) {
                 final int maxIva = computeMaxIva(cnec, excludedBranches, minRamMccc);
                 final RamVertex worstVertex = worstVertices.getFirst();
@@ -62,22 +56,23 @@ public class BranchMaxIvaService {
     private List<RamVertex> getWorstVerticesUnderRamThreshold(final List<Vertex> vertices,
                                                               final CnecRamData cnec,
                                                               final int ramThreshold,
-                                                              final int maxVerticesPerBranch) {
+                                                              final int maxVerticesPerBranch,
+                                                              final List<CoreHub> coreHubs) {
         return vertices.stream()
-                .map(vertex -> computeRealVertexRam(vertex, cnec))
+                .map(vertex -> computeRealVertexRam(vertex, cnec, coreHubs))
                 .filter(ramVertex -> ramVertex.realRam() < ramThreshold)
                 .sorted(Comparator.comparingInt(RamVertex::realRam).thenComparingInt(ramVertex -> ramVertex.vertex().vertexId()))
                 .limit(maxVerticesPerBranch)
                 .toList();
     }
 
-    private RamVertex computeRealVertexRam(final Vertex vertex, final CnecRamData cnec) {
-        final int realVertexRam = cnec.ramValues().ram0Core() - sumFlowsOnHubs(vertex.coordinates(), cnec.ptdfValues());
+    private RamVertex computeRealVertexRam(final Vertex vertex, final CnecRamData cnec, final List<CoreHub> coreHubs) {
+        final int realVertexRam = cnec.ramValues().ram0Core() - sumFlowsOnHubs(vertex.coordinates(), cnec.ptdfValues(), coreHubs);
         return new RamVertex(realVertexRam, vertex);
     }
 
-    private int sumFlowsOnHubs(final Map<String, Integer> verticesNPs, final Map<String, BigDecimal> cnecPtdfs) {
-        return coreHubsConfiguration.getCoreHubs().stream()
+    private int sumFlowsOnHubs(final Map<String, Integer> verticesNPs, final Map<String, BigDecimal> cnecPtdfs, final List<CoreHub> coreHubs) {
+        return coreHubs.stream()
                 .map(coreHub -> getFlowOnHub(verticesNPs, cnecPtdfs, coreHub))
                 .reduce(BigDecimal::add)
                 .map(f -> f.setScale(0, HALF_EVEN).intValue())
