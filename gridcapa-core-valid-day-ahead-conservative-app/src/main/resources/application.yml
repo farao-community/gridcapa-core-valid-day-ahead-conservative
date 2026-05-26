@@ -23,7 +23,7 @@ core-valid-commons:
       is-hvdc-hub: false
       is-ahc-hub: false
       coefficient: 1
-    - name: République Tchéque
+    - name: République Tchèque
       ramcep2-code: CZ
       flowbased-code: PTDF_CZ
       forecast-code: CZ-CORE
