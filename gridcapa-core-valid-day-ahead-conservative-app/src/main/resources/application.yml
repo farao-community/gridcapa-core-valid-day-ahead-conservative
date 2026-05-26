@@ -111,7 +111,7 @@ core-valid-commons:
       is-hvdc-hub: true
       is-ahc-hub: false
       coefficient: 1
-    - name: Allemagne_ ALEGrO  Virtual Hub
+    - name: Allemagne_ ALEGrO Virtual Hub
       ramcep2-code: DE_ALEGrO
       flowbased-code: PTDF_DE_AL
       forecast-code: ALDE-CORE

@@ -42,7 +42,7 @@ core-valid-commons:
       is-hvdc-hub: false
       is-ahc-hub: false
       coefficient: 1
-    - name: République Tchéque
+    - name: République Tchèque
       ramcep2-code: CZ
       flowbased-code: PTDF_CZ
       forecast-code: CZ-CORE
@@ -130,7 +130,7 @@ core-valid-commons:
       is-hvdc-hub: true
       is-ahc-hub: false
       coefficient: 1
-    - name: Allemagne_ ALEGrO  Virtual Hub
+    - name: Allemagne_ ALEGrO Virtual Hub
       ramcep2-code: DE_ALEGrO
       flowbased-code: PTDF_DE_AL
       forecast-code: ALDE-CORE

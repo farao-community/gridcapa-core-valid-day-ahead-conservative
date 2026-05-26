@@ -69,9 +69,9 @@ public class CoreValidD2ConservativeHandler {
 
     private List<CoreHub> getCoreHubsForCalculus(final CoreValidD2TaskParameters coreValidD2TaskParameters) {
         final List<CoreHub> coreHubs = coreHubsConfiguration.getCoreHubs();
-        return coreValidD2TaskParameters.shouldUseAhcHubs() ?
-                coreHubs :
-                CoreHubUtils.getNonAhcCoreHubs(coreHubs);
+        return coreValidD2TaskParameters.shouldUseAhcHubs()
+                ? coreHubs
+                : CoreHubUtils.getNonAhcCoreHubs(coreHubs);
     }
 
     private List<Vertex> getVerticesForCalculus(final List<Vertex> importedVertices,
