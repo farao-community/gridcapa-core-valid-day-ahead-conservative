@@ -45,7 +45,7 @@ class CoreValidD2ConservativeHandlerTest {
     @ParameterizedTest
     @CsvSource({
         "false,false",
-        "true,false"
+        "true,true"
     })
     void handleCoreValidD2ConservativeRequestUnprojected(final boolean isProjected, final boolean isAhc) {
         final CoreValidD2ConservativeRequest request = getTestRequest(isProjected, isAhc);
