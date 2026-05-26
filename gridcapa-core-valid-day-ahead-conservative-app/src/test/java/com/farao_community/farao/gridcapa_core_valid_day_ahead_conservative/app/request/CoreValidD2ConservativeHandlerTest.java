@@ -45,7 +45,7 @@ class CoreValidD2ConservativeHandlerTest {
     private CoreValidD2ConservativeHandler coreValidD2ConservativeHandler;
 
     /**
-     * Tests if request is correctly treated with and without AHC coore hubs
+     * Tests if request is correctly treated with and without AHC core hubs
      * @param isProjected
      * @param isAhc
      */
