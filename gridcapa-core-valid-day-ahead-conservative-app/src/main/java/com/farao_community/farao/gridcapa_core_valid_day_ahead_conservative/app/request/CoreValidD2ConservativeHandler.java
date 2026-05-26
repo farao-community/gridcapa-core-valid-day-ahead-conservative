@@ -50,18 +50,18 @@ public class CoreValidD2ConservativeHandler {
 
     public String handleCoreValidD2ConservativeRequest(final CoreValidD2ConservativeRequest request) {
         MDC.put(GRIDCAPA_TASK_ID, request.getId());
-        final CoreValidD2TaskParameters coreValidD2TaskParameters = new CoreValidD2TaskParameters(request.getTaskParameterList());
-        final List<CoreHub> requestCoreHubs = getCoreHubsForCalculus(coreValidD2TaskParameters);
+        final CoreValidD2TaskParameters taskParameters = new CoreValidD2TaskParameters(request.getTaskParameterList());
+        final List<CoreHub> requestCoreHubs = getCoreHubsForCalculus(taskParameters);
         final List<Vertex> importedVertices = fileImporter.importVertices(request.getVertices(), requestCoreHubs);
         final List<CnecRamData> cnecRams = fileImporter.importCnecRam(request.getCnecRam(), requestCoreHubs);
         final List<CnecRamData> filteredCnecRamsForVertices = CnecRamFilter.filterBeforeVerticesCalculus(cnecRams);
         final List<Vertex> verticesForCalculus = getVerticesForCalculus(importedVertices,
                                                                         filteredCnecRamsForVertices,
-                                                                        coreValidD2TaskParameters.shouldProjectVertices(),
+                                                                        taskParameters.shouldProjectVertices(),
                                                                         requestCoreHubs);
         final List<CnecRamData> filteredCnecRamsForIva = CnecRamFilter.filterBeforeIvaCalculus(cnecRams);
-        final List<IvaBranchData> branches = branchMaxIvaService.computeBranchData(verticesForCalculus, filteredCnecRamsForIva, coreValidD2TaskParameters, requestCoreHubs);
-        ConservativeIvaCalculationUtils.feedConservativeIVAs(branches, coreValidD2TaskParameters);
+        final List<IvaBranchData> branches = branchMaxIvaService.computeBranchData(verticesForCalculus, filteredCnecRamsForIva, taskParameters, requestCoreHubs);
+        ConservativeIvaCalculationUtils.feedConservativeIVAs(branches, taskParameters);
         final byte[] jsonOutput = ivaBranchesToJson(branches);
         fileExporter.uploadOutputToMinio(jsonOutput, request.getTimestamp());
         return request.getId();

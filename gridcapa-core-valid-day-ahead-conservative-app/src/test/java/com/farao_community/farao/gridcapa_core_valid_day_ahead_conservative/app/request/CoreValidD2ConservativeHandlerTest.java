@@ -26,6 +26,8 @@ import java.util.List;
 
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.IVA_RESULT_FILE_TYPE;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.PROCESS_NAME;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.USE_AHC_HUBS;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.USE_PROJECTION;
 
 @SpringBootTest
 class CoreValidD2ConservativeHandlerTest {
@@ -42,9 +44,16 @@ class CoreValidD2ConservativeHandlerTest {
     @Autowired
     private CoreValidD2ConservativeHandler coreValidD2ConservativeHandler;
 
+    /**
+     * Tests if request is correctly treated with and without AHC coore hubs
+     * @param isProjected
+     * @param isAhc
+     */
     @ParameterizedTest
     @CsvSource({
         "false,false",
+        "true,false",
+        "false,true",
         "true,true"
     })
     void handleCoreValidD2ConservativeRequestUnprojected(final boolean isProjected, final boolean isAhc) {
@@ -61,8 +70,8 @@ class CoreValidD2ConservativeHandlerTest {
                                                    timestamp,
                                                    null,
                                                    null,
-                                                   List.of(new TaskParameterDto("USE_PROJECTION", "BOOLEAN", Boolean.toString(isProjected), "true"),
-                                                           new TaskParameterDto("USE_AHC", "BOOLEAN", Boolean.toString(isAhc), "true"))
+                                                   List.of(new TaskParameterDto(USE_PROJECTION, "BOOLEAN", Boolean.toString(isProjected), "true"),
+                                                           new TaskParameterDto(USE_AHC_HUBS, "BOOLEAN", Boolean.toString(isAhc), "true"))
 
         );
     }
