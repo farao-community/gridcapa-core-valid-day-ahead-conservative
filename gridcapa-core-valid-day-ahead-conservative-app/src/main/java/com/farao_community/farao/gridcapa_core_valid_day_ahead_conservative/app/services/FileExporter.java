@@ -8,15 +8,12 @@ package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app
 
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.exception.CoreValidD2ConservativeInternalException;
 import com.farao_community.farao.minio_adapter.starter.MinioAdapter;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.IVA_BRANCH_JSON_FILE_NAME;
@@ -28,9 +25,6 @@ import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservati
 public class FileExporter {
 
     private final MinioAdapter minioAdapter;
-
-    @Value("${core-valid-day-ahead-conservative-runner.zone-id}")
-    private String zoneId;
 
     public FileExporter(MinioAdapter minioAdapter) {
         this.minioAdapter = minioAdapter;
@@ -46,8 +40,6 @@ public class FileExporter {
     }
 
     private String makeDestinationMinioPath(final OffsetDateTime offsetDateTime) {
-        final ZonedDateTime targetDateTime = offsetDateTime.atZoneSameInstant(ZoneId.of(zoneId));
-        final DateTimeFormatter df = DateTimeFormatter.ofPattern(MINIO_DESTINATION_PATH_FORMAT);
-        return df.format(targetDateTime);
+        return DateTimeFormatter.ofPattern(MINIO_DESTINATION_PATH_FORMAT).format(offsetDateTime);
     }
 }
