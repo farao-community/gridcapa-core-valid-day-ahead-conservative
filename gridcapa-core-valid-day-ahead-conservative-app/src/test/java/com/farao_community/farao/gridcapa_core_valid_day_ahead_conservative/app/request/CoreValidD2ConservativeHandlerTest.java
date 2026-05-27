@@ -60,7 +60,7 @@ class CoreValidD2ConservativeHandlerTest {
         final CoreValidD2ConservativeRequest request = getTestRequest(isProjected, isAhc);
         final String id = coreValidD2ConservativeHandler.handleCoreValidD2ConservativeRequest(request);
         Assertions.assertThat(id).isEqualTo(TEST_ID);
-        Mockito.verify(minioAdapter, Mockito.atLeastOnce()).uploadOutputForTimestamp(Mockito.eq("2025/12/08/15_00/ivaBranch.json"), Mockito.any(InputStream.class), Mockito.eq(PROCESS_NAME), Mockito.eq(IVA_RESULT_FILE_TYPE), Mockito.eq(request.getTimestamp()));
+        Mockito.verify(minioAdapter, Mockito.atLeastOnce()).uploadOutputForTimestamp(Mockito.eq("2025/12/08/14_00/ivaBranch.json"), Mockito.any(InputStream.class), Mockito.eq(PROCESS_NAME), Mockito.eq(IVA_RESULT_FILE_TYPE), Mockito.eq(request.getTimestamp()));
     }
 
     private CoreValidD2ConservativeRequest getTestRequest(final boolean isProjected, final boolean isAhc) {
