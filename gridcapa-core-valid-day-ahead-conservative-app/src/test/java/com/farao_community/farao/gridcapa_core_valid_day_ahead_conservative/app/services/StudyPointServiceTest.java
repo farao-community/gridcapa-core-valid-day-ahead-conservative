@@ -44,6 +44,7 @@ class StudyPointServiceTest {
                                                         "FR-CORE",
                                                         "FR",
                                                         false,
+                                                        false,
                                                         0.9);
 
     private static final CoreHub CORE_HUB_2 = new CoreHub("Allemagne",
@@ -52,6 +53,7 @@ class StudyPointServiceTest {
                                                                 "DE-CORE",
                                                                 "DE",
                                                                 false,
+                                                                true,
                                                                 0.5);
 
     @Test

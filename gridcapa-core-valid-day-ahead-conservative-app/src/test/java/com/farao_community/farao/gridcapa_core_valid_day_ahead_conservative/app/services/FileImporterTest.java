@@ -84,30 +84,20 @@ class FileImporterTest {
     void shouldImportCoreNetPositions() {
         final OffsetDateTime target = OffsetDateTime.parse("2025-09-20T22:00Z", ISO_DATE_TIME);
         final CoreValidD2ConservativeFileResource npfFile = createFileResource("netpositions", getClass().getResource("/20250921-F230-v4-17XTSO-CS------W-to-10V1001C--00085T.xml"));
-        final Map<CoreHub, List<Point>> resultNoAhc = fileImporter.importCoreNetPositions(npfFile, nonAhcCoreHubs, false, target);
-        final Map<CoreHub, List<Point>>  resultWithAhc = fileImporter.importCoreNetPositions(npfFile, nonAhcCoreHubs, true, target);
+        final Map<CoreHub, Point> resultNoAhc = fileImporter.importCoreNetPositions(npfFile, nonAhcCoreHubs, target);
+        final Map<CoreHub, Point>  resultWithAhc = fileImporter.importCoreNetPositions(npfFile, coreHubsConfiguration.getCoreHubs(), target);
         Assertions.assertThat(resultNoAhc).hasSize(2);
-        Assertions.assertThat(resultWithAhc).isEmpty();
-    }
-
-    @Test
-    void shouldImportCoreAhcNetPositions() {
-        final OffsetDateTime target = OffsetDateTime.parse("2025-09-20T23:00Z", ISO_DATE_TIME);
-        final CoreValidD2ConservativeFileResource npfFile = createFileResource("netpositions", getClass().getResource("/20250921-F230-v4-17XTSO-CS------W-to-10V1001C--00085T_AHC.xml"));
-        final Map<CoreHub, List<Point>> resultNoAhc = fileImporter.importCoreNetPositions(npfFile, nonAhcCoreHubs, false, target);
-        final Map<CoreHub, List<Point>>  resultWithAhc = fileImporter.importCoreNetPositions(npfFile, nonAhcCoreHubs, true, target);
-        Assertions.assertThat(resultNoAhc).isEmpty();
-        Assertions.assertThat(resultWithAhc).hasSize(2);
+        Assertions.assertThat(resultWithAhc).hasSize(3);
     }
 
     @Test
     void shouldImportCoreNetPositionsAtWinterDst() {
         final OffsetDateTime target = OffsetDateTime.parse("2025-10-25T22:00Z", ISO_DATE_TIME);
         final CoreValidD2ConservativeFileResource npfFile = createFileResource("netpositions", getClass().getResource("/20251025-F230-v4-17XTSO-CS------W-to-10V1001C--00085T.xml"));
-        final Map<CoreHub, List<Point>>  result = fileImporter.importCoreNetPositions(npfFile, nonAhcCoreHubs, false, target);
+        final Map<CoreHub, Point>  result = fileImporter.importCoreNetPositions(npfFile, nonAhcCoreHubs, target);
         final Optional<CoreHub> frCore = coreHubsConfiguration.getCoreHubs().stream().filter(hub -> hub.forecastCode().equals("FR-CORE")).findFirst();
         if (frCore.isPresent()) {
-            Assertions.assertThat(result.get(frCore.get())).hasSize(25);
+            Assertions.assertThat(result.get(frCore.get()).getPosition()).isEqualTo(25);
         } else {
             Assertions.fail();
         }
@@ -117,10 +107,10 @@ class FileImporterTest {
     void shouldImportCoreNetPositionsAtSummerDst() {
         final OffsetDateTime target = OffsetDateTime.parse("2026-03-29T21:00Z", ISO_DATE_TIME);
         final CoreValidD2ConservativeFileResource npfFile = createFileResource("netpositions", getClass().getResource("/20260328-F230-v4-17XTSO-CS------W-to-10V1001C--00085T.xml"));
-        final Map<CoreHub, List<Point>>  result = fileImporter.importCoreNetPositions(npfFile, nonAhcCoreHubs, false, target);
-        final Optional<CoreHub> frCore = coreHubs.getCoreHubs().stream().filter(hub -> hub.forecastCode().equals("FR-CORE")).findFirst();
+        final Map<CoreHub, Point>  result = fileImporter.importCoreNetPositions(npfFile, nonAhcCoreHubs, target);
+        final Optional<CoreHub> frCore = coreHubsConfiguration.getCoreHubs().stream().filter(hub -> hub.forecastCode().equals("FR-CORE")).findFirst();
         if (frCore.isPresent()) {
-            Assertions.assertThat(result.get(frCore.get())).hasSize(23);
+            Assertions.assertThat(result.get(frCore.get()).getPosition()).isEqualTo(23);
         } else {
             Assertions.fail();
         }

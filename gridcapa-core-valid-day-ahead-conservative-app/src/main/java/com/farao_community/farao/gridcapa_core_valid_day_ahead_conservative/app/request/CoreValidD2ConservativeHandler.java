@@ -72,11 +72,11 @@ public class CoreValidD2ConservativeHandler {
                                                                         taskParameters.shouldProjectVertices(),
                                                                         requestCoreHubs);
         final List<CnecRamData> filteredCnecRamsForIva = CnecRamFilter.filterBeforeIvaCalculus(cnecRams);
-        final List<IvaBranchData> branches = branchMaxIvaService.computeBranchData(verticesForCalculus, filteredCnecRamsForIva, iniParameters);
+        final List<IvaBranchData> branches = branchMaxIvaService.computeBranchData(verticesForCalculus, filteredCnecRamsForIva, taskParameters, requestCoreHubs);
         ConservativeIvaCalculationUtils.feedConservativeIVAs(branches, taskParameters);
         final OffsetDateTime targetTimestamp = request.getTimestamp();
         fileExporter.uploadOutputToMinio(toJson(branches), targetTimestamp, IVA_RESULT_FILE_TYPE, IVA_BRANCH_JSON_FILE_NAME);
-        final Map<CoreHub, Point> npForecast = fileImporter.importCoreNetPositions(request.getNetPositionForecast(), iniParameters.shouldUseAhcImport(), targetTimestamp);
+        final Map<CoreHub, Point> npForecast = fileImporter.importCoreNetPositions(request.getNetPositionForecast(), requestCoreHubs, targetTimestamp);
         List<StudyPoint> studyPoints = studyPointService.generateStudyPoints(verticesForCalculus, branches, npForecast);
         fileExporter.uploadOutputToMinio(toJson(studyPoints),  targetTimestamp, STUDY_POINT_FILE_TYPE, STUDY_POINT_JSON_FILE_NAME);
 
@@ -99,11 +99,11 @@ public class CoreValidD2ConservativeHandler {
                 : importedVertices;
     }
 
-    private byte[] toJson(final List<IvaBranchData> branches) {
+    private byte[] toJson(final Object o) {
         final ObjectMapper objectMapper = new ObjectMapper();
         final ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
         try {
-            return ow.writeValueAsString(branches).getBytes();
+            return ow.writeValueAsString(o).getBytes();
         } catch (final JsonProcessingException e) {
             throw new CoreValidD2ConservativeInternalException("Error creating JSON", e);
         }
