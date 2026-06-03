@@ -38,23 +38,9 @@ class StudyPointServiceTest {
     @MockitoBean
     private CoreHubsConfiguration coreHubsConfiguration;
 
-    private static final CoreHub CORE_HUB_1 = new CoreHub("France",
-                                                        "FR",
-                                                        "PTDF_FR",
-                                                        "FR-CORE",
-                                                        "FR",
-                                                        false,
-                                                        false,
-                                                        0.9);
+    private static final CoreHub CORE_HUB_1 = new CoreHub("France", "FR", "PTDF_FR", "FR-CORE", "FR", false, false, 0.9);
 
-    private static final CoreHub CORE_HUB_2 = new CoreHub("Allemagne",
-                                                                "DE",
-                                                                "PTDF_DE",
-                                                                "DE-CORE",
-                                                                "DE",
-                                                                false,
-                                                                true,
-                                                                0.5);
+    private static final CoreHub CORE_HUB_2 = new CoreHub("Allemagne", "DE", "PTDF_DE", "DE-CORE", "DE", false, true, 0.5);
 
     @Test
     void testStudyPoint() {
