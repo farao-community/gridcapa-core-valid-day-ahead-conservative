@@ -16,7 +16,7 @@ public final class CoreValidD2Constants {
     public static final String PROCESS_NAME = "CORE_VALID_DAY_AHEAD_CONSERVATIVE";
     public static final String MINIO_DESTINATION_PATH_FORMAT = "yyyy'/'MM'/'dd'/'HH_mm'/'";
     public static final String IVA_RESULT_FILE_TYPE = "IVA-RESULT";
-    public static final String STUDY_POINT_FILE_TYPE = "STUDY-POINT";
+    public static final String STUDY_POINT_FILE_TYPE = "STUDY-POINTS";
     public static final String IVA_BRANCH_JSON_FILE_NAME = "ivaBranch.json";
     public static final String STUDY_POINT_JSON_FILE_NAME = "studyPoint.json";
     //TASK MANAGING

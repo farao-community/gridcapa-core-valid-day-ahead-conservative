@@ -16,7 +16,6 @@ import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.
 import com.farao_community.gridcapa_core_valid_day_ahead_conservative.xsd.f230.Point;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -32,6 +31,7 @@ class StudyPointServiceTest {
     private static final int POSITION = 3;
     private static final Vertex VERTEX_2 = new Vertex(2, Map.of("FR", 2000, "DE", 2000));
     private static final Vertex VERTEX_1 = new Vertex(1, Map.of("FR", 100, "DE", 100));
+
     @Autowired
     private StudyPointService studyPointService;
 
@@ -45,13 +45,12 @@ class StudyPointServiceTest {
     @Test
     void testStudyPoint() {
         final List<CoreHub> coreHubs = getTestCoreHubs();
-        Mockito.when(coreHubsConfiguration.getCoreHubs()).thenReturn(coreHubs);
-        final List<StudyPoint> points1 = studyPointService.generateStudyPoints(getTestVertices(), getTestBranchesNoWorseVertices(), getTestNetPositions());
+        final List<StudyPoint> points1 = studyPointService.generateStudyPoints(getTestVertices(), getTestBranchesNoWorseVertices(), getTestNetPositions(), coreHubs);
         Assertions.assertThat(points1).hasSize(1);
         Assertions.assertThat(points1.getFirst().position()).isEqualTo(POSITION);
         Assertions.assertThat(points1.getFirst().vertex()).isEqualTo(VERTEX_1);
 
-        final List<StudyPoint> points2 = studyPointService.generateStudyPoints(getTestVertices(), getTestBranches(), getTestNetPositions());
+        final List<StudyPoint> points2 = studyPointService.generateStudyPoints(getTestVertices(), getTestBranches(), getTestNetPositions(), coreHubs);
         Assertions.assertThat(points2)
                 .hasSize(2)
                 .containsExactlyInAnyOrder(new StudyPoint(POSITION, VERTEX_1), new StudyPoint(POSITION, VERTEX_2));
@@ -63,7 +62,7 @@ class StudyPointServiceTest {
         final List<IvaBranchData> testBranches = getTestBranches();
         final Map<CoreHub, Point> testNetPositions = getTestNetPositions();
         Assertions.assertThatExceptionOfType(CoreValidD2ConservativeInvalidDataException.class)
-                .isThrownBy(() -> studyPointService.generateStudyPoints(vertices, testBranches, testNetPositions));
+                .isThrownBy(() -> studyPointService.generateStudyPoints(vertices, testBranches, testNetPositions, List.of()));
     }
 
     private List<CoreHub> getTestCoreHubs() {

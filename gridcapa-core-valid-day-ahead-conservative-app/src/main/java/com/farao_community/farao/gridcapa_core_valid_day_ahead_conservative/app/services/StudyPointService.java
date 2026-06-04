@@ -37,7 +37,9 @@ public class StudyPointService {
 
     public List<StudyPoint> generateStudyPoints(final List<Vertex> verticesForCalculus,
                                                 final List<IvaBranchData> branches,
-                                                final Map<CoreHub, Point> netPositions) {
+                                                final Map<CoreHub, Point> netPositions,
+                                                final List<CoreHub> requestCoreHubs
+    ) {
         final int position = netPositions.values()
                 .stream()
                 .findAny()
@@ -45,7 +47,7 @@ public class StudyPointService {
                 .getPosition();
 
         final Optional<Tuple<Vertex, BigDecimal>> closestVertexTuple = verticesForCalculus.stream()
-                .map(vertex -> new Tuple<>(vertex, calculateDistance(vertex, netPositions, coreHubsConfiguration)))
+                .map(vertex -> new Tuple<>(vertex, calculateDistance(vertex, netPositions, requestCoreHubs)))
                 .min(Comparator.comparing(Tuple::_2, BigDecimal::compareTo));
 
         if (closestVertexTuple.isPresent()) {
@@ -73,9 +75,8 @@ public class StudyPointService {
 
     private BigDecimal calculateDistance(final Vertex vertex,
                                          final Map<CoreHub, Point> netPositions,
-                                         final CoreHubsConfiguration coreHubsConfiguration) {
-        final List<CoreHub> coreHubs = coreHubsConfiguration.getCoreHubs();
-        return coreHubs.stream()
+                                         final List<CoreHub> requestCoreHubs) {
+        return requestCoreHubs.stream()
                 .map(coreHub -> {
                     final BigDecimal nps = netPositions.get(coreHub).getQuantity().subtract(BigDecimal.valueOf(vertex.coordinates().get(coreHub.clusterVerticeCode())));
                     return BigDecimal.valueOf(coreHub.coefficient()).multiply(nps.multiply(nps));
