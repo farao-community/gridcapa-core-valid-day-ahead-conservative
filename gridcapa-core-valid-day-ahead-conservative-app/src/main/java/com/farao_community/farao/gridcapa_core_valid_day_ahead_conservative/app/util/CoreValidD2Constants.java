@@ -25,7 +25,6 @@ public final class CoreValidD2Constants {
     public static final String BUSINESS_LOGGER = "BUSINESS_LOGGER";
     public static final String USE_AHC_HUBS = "USE_AHC";
     public static final String USE_PROJECTION = "USE_PROJECTION";
-    public static final String USE_AHC = "USE_AHC";
     public static final String BOOLEAN = "BOOLEAN";
     public static final String INT = "INT";
     public static final String STRING = "STRING";
@@ -36,6 +35,7 @@ public final class CoreValidD2Constants {
     public static final String CURATIVE_IVA_MARGIN = "CURATIVE_IVA_MARGIN";
     public static final String PREVENTIVE_IVA_MARGIN = "PREVENTIVE_IVA_MARGIN";
     public static final String JUSTIFICATION_MESSAGE = "JUSTIFICATION_MESSAGE";
+    public static final String EXPORT_STUDY_POINTS = "EXPORT_STUDY_POINTS";
     public static final String SEMICOLON = ";";
     //CSV HEADERS
     public static final String IS_PRESOLVED_REGION_HEADER = "PresolvedRegion";
@@ -60,6 +60,4 @@ public final class CoreValidD2Constants {
     public static final String SUFFIX_NEC_ID_AFTER = "_SpannedAfter";
     public static final String BRANCH_STATUS_OK = "OK";
     public static final int MIN_AMR_VALUE = 0;
-    //NET POSITION
-    public static final String FORECAST_SUFFIX_AHC_CODE = "_AHC";
 }

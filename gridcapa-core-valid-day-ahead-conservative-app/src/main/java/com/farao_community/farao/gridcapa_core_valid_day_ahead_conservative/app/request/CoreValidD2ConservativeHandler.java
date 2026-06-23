@@ -76,10 +76,11 @@ public class CoreValidD2ConservativeHandler {
         ConservativeIvaCalculationUtils.feedConservativeIVAs(branches, taskParameters);
         final OffsetDateTime targetTimestamp = request.getTimestamp();
         fileExporter.uploadOutputToMinio(toJson(branches), targetTimestamp, IVA_RESULT_FILE_TYPE, IVA_BRANCH_JSON_FILE_NAME);
-        final Map<CoreHub, Point> npForecast = fileImporter.importCoreNetPositions(request.getNetPositionForecast(), requestCoreHubs, targetTimestamp);
-        List<StudyPoint> studyPoints = studyPointService.generateStudyPoints(verticesForCalculus, branches, npForecast, requestCoreHubs);
-        fileExporter.uploadOutputToMinio(toJson(studyPoints),  targetTimestamp, STUDY_POINT_FILE_TYPE, STUDY_POINT_JSON_FILE_NAME);
-
+        if (taskParameters.shouldExportStudyPoints()) {
+            final Map<CoreHub, Point> npForecast = fileImporter.importCoreNetPositions(request.getNetPositionForecast(), requestCoreHubs, targetTimestamp);
+            List<StudyPoint> studyPoints = studyPointService.generateStudyPoints(verticesForCalculus, branches, npForecast, requestCoreHubs);
+            fileExporter.uploadOutputToMinio(toJson(studyPoints), targetTimestamp, STUDY_POINT_FILE_TYPE, STUDY_POINT_JSON_FILE_NAME);
+        }
         return request.getId();
     }
 
