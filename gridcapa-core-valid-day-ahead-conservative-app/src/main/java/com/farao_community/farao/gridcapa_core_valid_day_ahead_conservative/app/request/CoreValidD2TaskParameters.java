@@ -21,6 +21,7 @@ import java.util.function.Function;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.BOOLEAN;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.CURATIVE_IVA_MARGIN;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.EXCLUDED_BRANCHES;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.EXPORT_STUDY_POINTS;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.INT;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.JUSTIFICATION_MESSAGE;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.MAX_VERTICES_PER_BRANCH;
@@ -36,6 +37,7 @@ public class CoreValidD2TaskParameters {
     private static final String KEY_VALUE_JSON_FORMAT = "%n\t\"%s\": %s";
     private boolean useProjection;
     private boolean useAhcHubs;
+    private boolean exportStudyPoints;
     private int maxVerticesPerBranch;
     private int ramThreshold;
     private int minRamMccc;
@@ -51,8 +53,8 @@ public class CoreValidD2TaskParameters {
             switch (parameter.getId()) {
                 case USE_PROJECTION -> useProjection = validateIsBooleanAndGet(parameter, errors);
                 case USE_AHC_HUBS -> useAhcHubs = validateIsBooleanAndGet(parameter, errors);
-                case MAX_VERTICES_PER_BRANCH ->
-                        maxVerticesPerBranch = validateIsPositiveIntegerAndGet(parameter, errors);
+                case EXPORT_STUDY_POINTS -> exportStudyPoints = validateIsBooleanAndGet(parameter, errors);
+                case MAX_VERTICES_PER_BRANCH -> maxVerticesPerBranch = validateIsPositiveIntegerAndGet(parameter, errors);
                 case RAM_THRESHOLD -> ramThreshold = validateIsIntegerAndGet(parameter, errors);
                 case MIN_RAM_MCCC -> minRamMccc = validateIsPositiveIntegerAndGet(parameter, errors);
                 case EXCLUDED_BRANCHES -> excludedBranches = validateIsStringAndGet(parameter, errors);
@@ -129,6 +131,10 @@ public class CoreValidD2TaskParameters {
         return useAhcHubs;
     }
 
+    public boolean shouldExportStudyPoints() {
+        return exportStudyPoints;
+    }
+
     public int getMaxVerticesPerBranch() {
         return maxVerticesPerBranch;
     }
@@ -157,6 +163,7 @@ public class CoreValidD2TaskParameters {
         final List<String> appender = new ArrayList<>();
         appender.add(formatForJson(USE_PROJECTION, useProjection));
         appender.add(formatForJson(USE_AHC_HUBS, useAhcHubs));
+        appender.add(formatForJson(EXPORT_STUDY_POINTS, exportStudyPoints));
         appender.add(formatForJson(MAX_VERTICES_PER_BRANCH, maxVerticesPerBranch));
         appender.add(formatForJson(RAM_THRESHOLD, ramThreshold));
         appender.add(formatForJson(MIN_RAM_MCCC, minRamMccc));

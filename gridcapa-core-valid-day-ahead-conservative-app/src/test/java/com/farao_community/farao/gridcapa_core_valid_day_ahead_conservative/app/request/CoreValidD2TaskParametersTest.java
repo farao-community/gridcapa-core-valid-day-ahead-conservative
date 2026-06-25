@@ -21,6 +21,7 @@ import java.util.List;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.BOOLEAN;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.CURATIVE_IVA_MARGIN;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.EXCLUDED_BRANCHES;
+import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.EXPORT_STUDY_POINTS;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.INT;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.MAX_VERTICES_PER_BRANCH;
 import static com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.util.CoreValidD2Constants.MIN_RAM_MCCC;
@@ -125,10 +126,16 @@ class CoreValidD2TaskParametersTest {
         Mockito.when(parameter8.getParameterType()).thenReturn(BOOLEAN);
         Mockito.when(parameter8.getValue()).thenReturn("true");
         parameters.add(parameter8);
+        final TaskParameterDto parameter9 = Mockito.mock(TaskParameterDto.class);
+        Mockito.when(parameter9.getId()).thenReturn(EXPORT_STUDY_POINTS);
+        Mockito.when(parameter9.getParameterType()).thenReturn(BOOLEAN);
+        Mockito.when(parameter9.getValue()).thenReturn("true");
+        parameters.add(parameter9);
         assertEquals("""
                          {
                          \t"USE_PROJECTION": true,\s
                          \t"USE_AHC": true,\s
+                         \t"EXPORT_STUDY_POINTS": true,\s
                          \t"MAX_VERTICES_PER_BRANCH": 5,\s
                          \t"RAM_THRESHOLD": -500,\s
                          \t"MIN_RAM_MCCC": 20,\s
@@ -146,6 +153,7 @@ class CoreValidD2TaskParametersTest {
                 {
                 \t"USE_PROJECTION": false,\s
                 \t"USE_AHC": false,\s
+                \t"EXPORT_STUDY_POINTS": false,\s
                 \t"MAX_VERTICES_PER_BRANCH": 0,\s
                 \t"RAM_THRESHOLD": 0,\s
                 \t"MIN_RAM_MCCC": 0,\s

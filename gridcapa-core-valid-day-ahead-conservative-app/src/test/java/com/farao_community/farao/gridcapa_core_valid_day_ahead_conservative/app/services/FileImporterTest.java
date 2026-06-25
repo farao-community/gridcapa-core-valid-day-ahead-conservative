@@ -23,10 +23,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.net.URI;
 import java.net.URL;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -80,29 +82,22 @@ class FileImporterTest {
 
     @Test
     void shouldImportCoreNetPositions() {
+        final OffsetDateTime target = OffsetDateTime.parse("2025-09-20T22:00Z", ISO_DATE_TIME);
         final CoreValidD2ConservativeFileResource npfFile = createFileResource("netpositions", getClass().getResource("/20250921-F230-v4-17XTSO-CS------W-to-10V1001C--00085T.xml"));
-        final Map<CoreHub, List<Point>> resultNoAhc = fileImporter.importCoreNetPositions(npfFile, nonAhcCoreHubs, false);
-        final Map<CoreHub, List<Point>>  resultWithAhc = fileImporter.importCoreNetPositions(npfFile, nonAhcCoreHubs, true);
+        final Map<CoreHub, Point> resultNoAhc = fileImporter.importCoreNetPositions(npfFile, nonAhcCoreHubs, target);
+        final Map<CoreHub, Point>  resultWithAhc = fileImporter.importCoreNetPositions(npfFile, coreHubsConfiguration.getCoreHubs(), target);
         Assertions.assertThat(resultNoAhc).hasSize(2);
-        Assertions.assertThat(resultWithAhc).isEmpty();
-    }
-
-    @Test
-    void shouldImportCoreAhcNetPositions() {
-        final CoreValidD2ConservativeFileResource npfFile = createFileResource("netpositions", getClass().getResource("/20250921-F230-v4-17XTSO-CS------W-to-10V1001C--00085T_AHC.xml"));
-        final Map<CoreHub, List<Point>> resultNoAhc = fileImporter.importCoreNetPositions(npfFile, nonAhcCoreHubs, false);
-        final Map<CoreHub, List<Point>>  resultWithAhc = fileImporter.importCoreNetPositions(npfFile, nonAhcCoreHubs, true);
-        Assertions.assertThat(resultNoAhc).isEmpty();
-        Assertions.assertThat(resultWithAhc).hasSize(2);
+        Assertions.assertThat(resultWithAhc).hasSize(3);
     }
 
     @Test
     void shouldImportCoreNetPositionsAtWinterDst() {
+        final OffsetDateTime target = OffsetDateTime.parse("2025-10-25T22:00Z", ISO_DATE_TIME);
         final CoreValidD2ConservativeFileResource npfFile = createFileResource("netpositions", getClass().getResource("/20251025-F230-v4-17XTSO-CS------W-to-10V1001C--00085T.xml"));
-        final Map<CoreHub, List<Point>>  result = fileImporter.importCoreNetPositions(npfFile, nonAhcCoreHubs, false);
+        final Map<CoreHub, Point>  result = fileImporter.importCoreNetPositions(npfFile, nonAhcCoreHubs, target);
         final Optional<CoreHub> frCore = coreHubsConfiguration.getCoreHubs().stream().filter(hub -> hub.forecastCode().equals("FR-CORE")).findFirst();
         if (frCore.isPresent()) {
-            Assertions.assertThat(result.get(frCore.get())).hasSize(25);
+            Assertions.assertThat(result.get(frCore.get()).getPosition()).isEqualTo(25);
         } else {
             Assertions.fail();
         }
@@ -110,11 +105,12 @@ class FileImporterTest {
 
     @Test
     void shouldImportCoreNetPositionsAtSummerDst() {
+        final OffsetDateTime target = OffsetDateTime.parse("2026-03-29T21:00Z", ISO_DATE_TIME);
         final CoreValidD2ConservativeFileResource npfFile = createFileResource("netpositions", getClass().getResource("/20260328-F230-v4-17XTSO-CS------W-to-10V1001C--00085T.xml"));
-        final Map<CoreHub, List<Point>>  result = fileImporter.importCoreNetPositions(npfFile, nonAhcCoreHubs, false);
+        final Map<CoreHub, Point>  result = fileImporter.importCoreNetPositions(npfFile, nonAhcCoreHubs, target);
         final Optional<CoreHub> frCore = coreHubsConfiguration.getCoreHubs().stream().filter(hub -> hub.forecastCode().equals("FR-CORE")).findFirst();
         if (frCore.isPresent()) {
-            Assertions.assertThat(result.get(frCore.get())).hasSize(23);
+            Assertions.assertThat(result.get(frCore.get()).getPosition()).isEqualTo(23);
         } else {
             Assertions.fail();
         }
@@ -134,7 +130,7 @@ class FileImporterTest {
 
     @Test
     void shouldImportCnecRamFromCoreHubSettings() {
-        final CoreValidD2ConservativeFileResource cnecRamFile = createFileResource("cnec ram",  getClass().getResource("/cnecRamFileOk.csv"));
+        final CoreValidD2ConservativeFileResource cnecRamFile = createFileResource("cnec ram", getClass().getResource("/cnecRamFileOk.csv"));
         final List<CnecRamData> cnecRams = fileImporter.importCnecRam(cnecRamFile, nonAhcCoreHubs);
         Assertions.assertThat(cnecRams)
             .isNotNull()

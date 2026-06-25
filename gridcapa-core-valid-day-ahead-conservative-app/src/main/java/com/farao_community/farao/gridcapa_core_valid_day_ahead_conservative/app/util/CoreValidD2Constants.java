@@ -16,7 +16,9 @@ public final class CoreValidD2Constants {
     public static final String PROCESS_NAME = "CORE_VALID_DAY_AHEAD_CONSERVATIVE";
     public static final String MINIO_DESTINATION_PATH_FORMAT = "yyyy'/'MM'/'dd'/'HH_mm'/'";
     public static final String IVA_RESULT_FILE_TYPE = "IVA-RESULT";
+    public static final String STUDY_POINT_FILE_TYPE = "STUDY-POINTS";
     public static final String IVA_BRANCH_JSON_FILE_NAME = "ivaBranch.json";
+    public static final String STUDY_POINT_JSON_FILE_NAME = "studyPoint.json";
     //TASK MANAGING
     public static final String TASK_STATUS_UPDATE = "task-status-update";
     public static final String GRIDCAPA_TASK_ID = "gridcapa-task-id";
@@ -33,6 +35,7 @@ public final class CoreValidD2Constants {
     public static final String CURATIVE_IVA_MARGIN = "CURATIVE_IVA_MARGIN";
     public static final String PREVENTIVE_IVA_MARGIN = "PREVENTIVE_IVA_MARGIN";
     public static final String JUSTIFICATION_MESSAGE = "JUSTIFICATION_MESSAGE";
+    public static final String EXPORT_STUDY_POINTS = "EXPORT_STUDY_POINTS";
     public static final String SEMICOLON = ";";
     //CSV HEADERS
     public static final String IS_PRESOLVED_REGION_HEADER = "PresolvedRegion";
@@ -57,6 +60,4 @@ public final class CoreValidD2Constants {
     public static final String SUFFIX_NEC_ID_AFTER = "_SpannedAfter";
     public static final String BRANCH_STATUS_OK = "OK";
     public static final int MIN_AMR_VALUE = 0;
-    //NET POSITION
-    public static final String FORECAST_SUFFIX_AHC_CODE = "_AHC";
 }
