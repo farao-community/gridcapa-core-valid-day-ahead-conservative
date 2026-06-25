@@ -7,7 +7,6 @@
 package com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.app.services;
 
 import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHub;
-import com.farao_community.farao.gridcapa_core_valid_commons.core_hub.CoreHubsConfiguration;
 import com.farao_community.farao.gridcapa_core_valid_commons.vertex.Vertex;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.IvaBranchData;
 import com.farao_community.farao.gridcapa_core_valid_day_ahead_conservative.api.domain.RamVertex;
@@ -28,12 +27,6 @@ import java.util.Optional;
 
 @Service
 public class StudyPointService {
-
-    private final CoreHubsConfiguration coreHubsConfiguration;
-
-    public StudyPointService(final CoreHubsConfiguration coreHubsConfiguration) {
-        this.coreHubsConfiguration = coreHubsConfiguration;
-    }
 
     public List<StudyPoint> generateStudyPoints(final List<Vertex> verticesForCalculus,
                                                 final List<IvaBranchData> branches,
